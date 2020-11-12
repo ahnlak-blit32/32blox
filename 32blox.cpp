@@ -40,9 +40,9 @@ void init( void )
   blit::screen.clear();
 
   /* Create the game state handlers. */
-  for( int i = 0; i < STATE_MAX; i++ )
+  for( uint8_t i = 0; i < STATE_MAX; i++ )
   {
-    m_handlers[i] = NULL;
+    m_handlers[i] = nullptr;
   }
   m_handlers[STATE_SPLASH] = new SplashState();
 
@@ -62,7 +62,7 @@ void update( uint32_t p_time )
   gamestate_t l_newstate;
 
   /* Sanity check that the current state has a valid handler. */
-  if ( NULL == m_handlers[m_state] )
+  if ( nullptr == m_handlers[m_state] )
   {
     m_state = STATE_SPLASH;
   }
@@ -91,7 +91,7 @@ void update( uint32_t p_time )
 void render( uint32_t p_time )
 {
   /* Sanity check that the current state has a valid handler. */
-  if ( NULL == m_handlers[m_state] )
+  if ( nullptr == m_handlers[m_state] )
   {
     m_state = STATE_SPLASH;
   }

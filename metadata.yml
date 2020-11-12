@@ -1,3 +1,5 @@
+# Metadata, game details embedded into the bin file
+
 title: 32Blox
 description: A breakout clone
 author: ahnlak
@@ -7,3 +9,4 @@ icon:
   file: assets/no-icon.png
 version: v2.0.1
 
+# End of metadata.yml

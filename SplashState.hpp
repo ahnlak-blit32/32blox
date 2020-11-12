@@ -12,11 +12,19 @@
 #ifndef   _SPLASHSTATE_HPP_
 #define   _SPLASHSTATE_HPP_
 
+#define SPLASHSTATE_GRADIENT_HEIGHT 160
+
 class SplashState : public GameStateInterface
 {
+private:
+  blit::Surface  *splash_surface;
+  blit::Pen       gradient_pen[SPLASHSTATE_GRADIENT_HEIGHT];
+  uint8_t         gradient_offset;
+
 public:
-  gamestate_t update( uint32_t );
-  void        render( uint32_t );
+                  SplashState( void );
+  gamestate_t     update( uint32_t );
+  void            render( uint32_t );
 };
 
 #endif /* _SPLASHSTATE_HPP_ */
