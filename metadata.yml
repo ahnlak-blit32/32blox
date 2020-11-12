@@ -1,9 +1,9 @@
-title: game title
-description: game description
-author: you
+title: 32Blox
+description: A breakout clone
+author: ahnlak
 splash:
   file: assets/no-image.png
 icon:
   file: assets/no-icon.png
-version: v0.0.1
+version: v2.0.1
 

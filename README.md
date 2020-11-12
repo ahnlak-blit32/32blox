@@ -1,22 +1,15 @@
-# 32Blit Boilerplate
+# 32Blox
 
-This is a basic template for starting 32blit projects. It shows the basic
-code layout and asset pipeline, hopefully giving folk a starting point for
-any new projects.
+This is a breakout-style game for the 32Blit console.
 
-It's based on the original `template` project from the 
-[32Blit Beta](https://github.com/pimoroni/32blit-beta), with added asset
-handling, and some tidying up to fit in with how I do things.
+It's been rebuilt from the ground up to reflect the current state of the
+32Blit API, as we approach release.
 
-## Usage
+As before, this is more of a technical demonstration than a formal tutorial.
+I am probably not doing everything "the right way" (see also, the rambling
+debates I'm having with DaftFreak about CMake files!), but with any luck it
+will at least give you a starting point for your own projects.
 
-[Use this template](https://github.com/ahnlak-blit32/32blit-boilerplate/generate) to
-generate your own project.
+This game and all it's source code is licensed under the MIT License.
 
-Edit the CMakeList.txt file to:
-
-* point to the directory containing 32blit.cmake
-* set the name of your project
-
-You should then be able to follow the usual build instructions.
-
+Share, and Enjoy!
