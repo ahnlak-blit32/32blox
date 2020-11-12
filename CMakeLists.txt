@@ -11,3 +11,4 @@ include (${32BLIT_PATH}/32blit.cmake)
 blit_executable (${PROJECT_NAME} ${PROJECT_SOURCE})
 blit_assets_yaml (${PROJECT_NAME} assets.yml)
 blit_metadata (${PROJECT_NAME} metadata.yml)
+
