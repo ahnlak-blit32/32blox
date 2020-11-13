@@ -32,10 +32,14 @@ SplashState::SplashState( void )
   splash_surface = blit::Surface::load( asset_splash );
 
   /* And compute the gradient colours for the background. */
-  for ( uint8_t i = 0; i < SPLASHSTATE_GRADIENT_HEIGHT/2; i++ )
+  for ( uint8_t i = 0; i < SPLASHSTATE_GRADIENT_HEIGHT / 2; i++ )
   {
-    gradient_pen[i] = gradient_pen[SPLASHSTATE_GRADIENT_HEIGHT-i-1] = blit::Pen( 40-i/2, 10+i, 30+i/2 );
+    gradient_pen[i] = gradient_pen[SPLASHSTATE_GRADIENT_HEIGHT - i - 1]
+                    = blit::Pen( 40 - i / 2, 10 + i, 30 + i / 2 );
   }
+
+  /* The font pen will be simpler. */
+  font_pen = blit::Pen( 255, 255, 255 );
 }
 
 /*
@@ -53,8 +57,15 @@ gamestate_t SplashState::update( uint32_t p_time )
     gradient_offset = 0;
   }
 
-  /* We also need to check to see if the user has pressed the A button. */
+  /* The font pen we use will pulse more subtlely. */
+  font_pen.r = 200 + ( ( p_time / 5 ) % 50 );
+  font_pen.g = 200 + ( ( p_time / 13 ) % 50 );
 
+  /* We also need to check to see if the user has pressed the A button. */
+  if ( blit::buttons.pressed & blit::Button::A )
+  {
+    return STATE_GAME;
+  }
 
   /* All done, remain in our current state */
   return STATE_SPLASH;
@@ -75,16 +86,25 @@ void SplashState::render( uint32_t p_time )
   /* Draw an animated background gradient, to look pretty. */
   for ( uint8_t i = 0; i < blit::screen.bounds.h; i++ )
   {
-    blit::screen.pen = gradient_pen[(i+gradient_offset)%SPLASHSTATE_GRADIENT_HEIGHT];
+    blit::screen.pen = gradient_pen[( i + gradient_offset ) % SPLASHSTATE_GRADIENT_HEIGHT];
     blit::screen.h_span( blit::Point( 0, i ), blit::screen.bounds.w );
   }
-
 
   /* And then blit the splash screen over the top of that. */
   if ( nullptr != splash_surface )
   {
     blit::screen.blit( splash_surface, splash_surface->clip, blit::Point( 0, 0 ) );
   }
+
+  /* Lastly, prompt the user to press a button. */
+  blit::screen.pen = font_pen;
+  blit::screen.text(
+    "PRESS 'A' TO START",
+    blit::fat_font,
+    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 20 ),
+    true,
+    blit::TextAlign::center_center
+  );
 
   /* All done. */
   return;

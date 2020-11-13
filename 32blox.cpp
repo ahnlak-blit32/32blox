@@ -20,8 +20,9 @@
 
 /* Module variables. */
 
-static gamestate_t m_state = STATE_SPLASH;
-static GameStateInterface *m_handlers[STATE_MAX];
+static gamestate_t          m_state = STATE_SPLASH;
+static GameStateInterface  *m_handlers[STATE_MAX];
+static uint32_t             m_current_tick;
 
 
 /* Functions. */
@@ -45,6 +46,9 @@ void init( void )
     m_handlers[i] = nullptr;
   }
   m_handlers[STATE_SPLASH] = new SplashState();
+
+  /* We track what tick we're in, to avoid infinite recursion. */
+  m_current_tick = 0;
 
   /* All done. */
   return;
@@ -73,8 +77,15 @@ void update( uint32_t p_time )
   /* If the state has changed, re-call the update for it. */
   if ( l_newstate != m_state )
   {
+    /* Switch to the new state. */
     m_state = l_newstate;
-    update( p_time );
+
+    /* Only call the update if we haven't been here before. */
+    if ( m_current_tick != p_time )
+    {
+      m_current_tick = p_time;
+      update( p_time );
+    }
   }
 
   /* All done. */

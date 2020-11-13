@@ -18,6 +18,7 @@ class SplashState : public GameStateInterface
 {
 private:
   blit::Surface  *splash_surface;
+  blit::Pen       font_pen;
   blit::Pen       gradient_pen[SPLASHSTATE_GRADIENT_HEIGHT];
   uint8_t         gradient_offset;
 
