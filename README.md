@@ -2,6 +2,8 @@
 
 This is a breakout-style game for the 32Blit console.
 
+![Build](https://github.com/ahnlak-blit32/32blox/workflows/Build/badge.svg)
+
 It's been rebuilt from the ground up to reflect the current state of the
 32Blit API, as we approach release.
 
