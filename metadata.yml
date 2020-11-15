@@ -4,9 +4,9 @@ title: 32Blox
 description: A breakout clone
 author: ahnlak
 splash:
-  file: assets/no-image.png
+  file: assets/32blox-image.png
 icon:
-  file: assets/no-icon.png
+  file: assets/32blox-icon.png
 version: v2.0.1
 
 # End of metadata.yml
