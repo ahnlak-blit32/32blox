@@ -16,6 +16,7 @@
 #include "32blit.hpp"
 #include "32blox.hpp"
 #include "SplashState.hpp"
+#include "GameState.hpp"
 
 
 /* Module variables. */
@@ -46,6 +47,7 @@ void init( void )
     m_handlers[i] = nullptr;
   }
   m_handlers[STATE_SPLASH] = new SplashState();
+  m_handlers[STATE_GAME] = new GameState();
 
   /* We track what tick we're in, to avoid infinite recursion. */
   m_current_tick = 0;

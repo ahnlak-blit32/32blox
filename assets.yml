@@ -2,8 +2,14 @@
 # link automagically.
 # References can be picked up by including assets.hpp
 
-assets.cpp:
+assets_images.cpp:
   assets/splash.png:
-    name: asset_splash
+    name: a_splash_img
+  assets/game-sprites.png:
+    name: a_game_sprites_img
+
+assets_levels.cpp:
+  assets/level01.csv: 
+    name: a_level_01_dat
 
 # End of assets.yml

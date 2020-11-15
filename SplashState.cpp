@@ -15,7 +15,7 @@
 
 #include "32blit.hpp"
 #include "32blox.hpp"
-#include "assets.hpp"
+#include "assets_images.hpp"
 
 #include "SplashState.hpp"
 
@@ -29,10 +29,10 @@
 SplashState::SplashState( void )
 {
   /* Create the surface containing our splash screen. */
-  splash_surface = blit::Surface::load( asset_splash );
+  splash_surface = blit::Surface::load( a_splash_img );
 
   /* And compute the gradient colours for the background. */
-  for ( uint8_t i = 0; i < SPLASHSTATE_GRADIENT_HEIGHT / 2; i++ )
+  for ( uint16_t i = 0; i < SPLASHSTATE_GRADIENT_HEIGHT / 2; i++ )
   {
     gradient_pen[i] = gradient_pen[SPLASHSTATE_GRADIENT_HEIGHT - i - 1]
                     = blit::Pen( 40 - i / 2, 10 + i, 30 + i / 2 );
@@ -84,7 +84,7 @@ void SplashState::render( uint32_t p_time )
   blit::screen.clear();
 
   /* Draw an animated background gradient, to look pretty. */
-  for ( uint8_t i = 0; i < blit::screen.bounds.h; i++ )
+  for ( uint16_t i = 0; i < blit::screen.bounds.h; i++ )
   {
     blit::screen.pen = gradient_pen[( i + gradient_offset ) % SPLASHSTATE_GRADIENT_HEIGHT];
     blit::screen.h_span( blit::Point( 0, i ), blit::screen.bounds.w );

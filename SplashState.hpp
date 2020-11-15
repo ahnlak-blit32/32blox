@@ -5,8 +5,8 @@
  *
  * This file is released under the MIT License; see LICENSE for details
  *
- * This is the main entry point of the game; it provides the init/update/render
- * functions expected by the 32blit firmware.
+ * The SplashState is the entry to the game, prompting the player to start
+ * the game by pressing the button.
  */
 
 #ifndef   _SPLASHSTATE_HPP_
