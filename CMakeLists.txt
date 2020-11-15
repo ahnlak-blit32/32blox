@@ -3,7 +3,11 @@ cmake_minimum_required(VERSION 3.8)
 
 project(32blox)
 set(32BLIT_PATH "../" CACHE PATH "Path to 32blit.cmake")
-set(PROJECT_SOURCE 32blox.cpp SplashState.cpp GameState.cpp Level.cpp)
+set(32BLIT_SDL_TITLE "32Blox v2.0.1")
+set(PROJECT_SOURCE 32blox.cpp Level.cpp HighScore.cpp
+                   SplashState.cpp GameState.cpp DeathState.cpp)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g") 
 
 # Build configuration; approach this with caution!
 if(NOT EXISTS ${32BLIT_PATH}/32blit.cmake)

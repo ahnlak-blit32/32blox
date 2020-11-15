@@ -17,6 +17,7 @@
 #include "32blox.hpp"
 #include "SplashState.hpp"
 #include "GameState.hpp"
+#include "DeathState.hpp"
 
 
 /* Module variables. */
@@ -48,9 +49,14 @@ void init( void )
   }
   m_handlers[STATE_SPLASH] = new SplashState();
   m_handlers[STATE_GAME] = new GameState();
+  m_handlers[STATE_DEATH] = new DeathState();
 
   /* We track what tick we're in, to avoid infinite recursion. */
   m_current_tick = 0;
+
+  /* And we set the starting state to something sensible. */
+  m_state = STATE_SPLASH;
+  m_handlers[m_state]->init( nullptr );
 
   /* All done. */
   return;
@@ -77,9 +83,13 @@ void update( uint32_t p_time )
   l_newstate = m_handlers[m_state]->update( p_time );
 
   /* If the state has changed, re-call the update for it. */
-  if ( l_newstate != m_state )
+  if ( ( l_newstate != m_state ) && ( nullptr != m_handlers[l_newstate] ) )
   {
+    /* Initialise the new state. */
+    m_handlers[l_newstate]->init( m_handlers[m_state] );
+
     /* Switch to the new state. */
+printf( "Switching states: %d -> %d\n", m_state, l_newstate );    
     m_state = l_newstate;
 
     /* Only call the update if we haven't been here before. */

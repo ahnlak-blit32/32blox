@@ -24,6 +24,7 @@ private:
 
 public:
                   SplashState( void );
+  void            init( GameStateInterface * );
   gamestate_t     update( uint32_t );
   void            render( uint32_t );
 };

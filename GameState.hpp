@@ -19,11 +19,15 @@ class GameState : public GameStateInterface
 private:
   blit::SpriteSheet  *sprites;
   Level              *level;
+  uint8_t             lives;
+  uint16_t            score;
 
   void                init( void );
 
 public:
                       GameState( void );
+  void                init( GameStateInterface * );
+  uint16_t            get_score( void );
   gamestate_t         update( uint32_t );
   void                render( uint32_t );
 };

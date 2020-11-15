@@ -42,6 +42,20 @@ SplashState::SplashState( void )
   font_pen = blit::Pen( 255, 255, 255 );
 }
 
+
+/*
+ * init - called whenever the game engine is switching to this state
+ *
+ * GameStateInterface * - the state we were most recently in
+ */
+
+void SplashState::init( GameStateInterface *p_previous )
+{
+  /* Nothing to do for this state. */
+  return;
+}
+
+
 /*
  * update - called every tick (~10ms) to update the state of the game.
  * 

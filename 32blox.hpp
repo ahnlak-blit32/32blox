@@ -18,6 +18,7 @@
 
 typedef enum 
 {
+  STATE_NONE,
   STATE_SPLASH,
   STATE_GAME,
   STATE_DEATH,
@@ -33,6 +34,7 @@ class GameStateInterface
 public:
   virtual gamestate_t update( uint32_t ) = 0;
   virtual void        render( uint32_t ) = 0;
+  virtual void        init( GameStateInterface * ) = 0;
 };
 
 

@@ -19,7 +19,6 @@
 
 #include "32blit.hpp"
 #include "32blox.hpp"
-#include "assets.hpp"
 #include "assets_levels.hpp"
 
 #include "Level.hpp"

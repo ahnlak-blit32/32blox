@@ -1,12 +1,12 @@
 /*
- * GameState.cpp - part of 32Blox (revised edition!)
+ * DeathState.cpp - part of 32Blox (revised edition!)
  *
  * Copyright (C) 2020 Pete Favelle <32blit@ahnlak.com>
  *
  * This file is released under the MIT License; see LICENSE for details
  *
- * This state contains the core gameplay logic; by definition, it is by far
- * the largest and most complex state.
+ * The Death state is reached once the game is over; we check to see if there
+ * is a new hi score to record and, if so, get the player initials.
  */
 
 /* System headers. */
@@ -17,8 +17,9 @@
 #include "32blox.hpp"
 #include "assets_images.hpp"
 
+#include "DeathState.hpp"
 #include "GameState.hpp"
-#include "Level.hpp"
+#include "HighScore.hpp"
 
 
 /* Functions. */
@@ -27,10 +28,13 @@
  * constructor - create the contents of this State container.
  */
 
-GameState::GameState( void )
+DeathState::DeathState( void )
 {
   /* Load up the game spritesheet. */
-  sprites = blit::SpriteSheet::load( a_game_sprites_img );
+  //sprites = blit::SpriteSheet::load( a_game_sprites_img );
+
+  /* And we'll need access to the high score table. */
+  high_score = new HighScore();
 }
 
 
@@ -40,25 +44,26 @@ GameState::GameState( void )
  * GameStateInterface * - the state we were most recently in
  */
 
-void GameState::init( GameStateInterface *p_previous )
+void DeathState::init( GameStateInterface *p_previous )
 {
-  /* Load the first level. */
-  level = new Level( 1 );
+  /* The previous state *should* have been a GameState. */
+  GameState *l_game = dynamic_cast<GameState *>( p_previous );
+  if ( nullptr == l_game )
+  {
+    /* Then we have no idea what state we're in, and have to move on. */
+    score = 0;
+    return;
+  }
+  score = l_game->get_score();
 
-  /* Reset the lives count and score. */
+  /* If the ranking is zero, that means there's no point in recording it. */
+  if ( 0 == high_score->rank( score ) )
+  {
+    score = 0;
+  }
 
   /* All done. */
   return;
-}
-
-
-/*
- * get_score - exposes the current score for the current game
- */
-
-uint16_t GameState::get_score( void )
-{
-  return score;
 }
 
 
@@ -68,16 +73,16 @@ uint16_t GameState::get_score( void )
  * uint32_t - the elapsed time (in ms) since the game launched.
  */
 
-gamestate_t GameState::update( uint32_t p_time )
+gamestate_t DeathState::update( uint32_t p_time )
 {
-
-if ( p_time % 1000 == 0 ) {
-printf( "%d bricks left..\n", level->get_brick_count() );
-return STATE_DEATH;
-}
+  /* If our score doesn't even rank, then we move on. */
+  if ( 0 == score )
+  {
+    return STATE_HISCORE;
+  }
 
   /* All done, remain in our current state */
-  return STATE_GAME;
+  return STATE_DEATH;
 }
 
 
@@ -87,7 +92,7 @@ return STATE_DEATH;
  * uint32_t - the elapsed time (in ms) since the game launched.
  */
 
-void GameState::render( uint32_t p_time )
+void DeathState::render( uint32_t p_time )
 {
   /* Clear the screen down. */
   blit::screen.clear();
@@ -103,4 +108,5 @@ void GameState::render( uint32_t p_time )
   return;
 }
 
-/* End of GameState.cpp */
+
+/* End of DeathState.cpp */
