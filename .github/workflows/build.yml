@@ -54,8 +54,8 @@ jobs:
     - name: Checkout 32Blit API
       uses: actions/checkout@v2
       with:
-        repository: ahnlak-blit32/32blit-beta
-        ref: ahnlak-macos-build-patch
+        repository: Daft-Freak/32blit-beta
+        ref: mac-bundle-fix
         path: 32blit
       
     # Linux dependencies
