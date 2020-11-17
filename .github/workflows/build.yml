@@ -54,8 +54,8 @@ jobs:
     - name: Checkout 32Blit API
       uses: actions/checkout@v2
       with:
-        repository: pimoroni/32blit-beta
-        ref: b545f7f8c46e5100c5f9565e07cfd437bf3320a5
+        repository: ahnlak-blit32/32blit-beta
+        ref: ahnlak-macos-build-patch
         path: 32blit
       
     # Linux dependencies
