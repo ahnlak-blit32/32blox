@@ -5,7 +5,7 @@ project(32blox)
 set(32BLIT_PATH "../" CACHE PATH "Path to 32blit.cmake")
 set(32BLIT_SDL_TITLE "32Blox v2.0.1")
 set(PROJECT_SOURCE 32blox.cpp Level.cpp HighScore.cpp
-                   SplashState.cpp GameState.cpp DeathState.cpp)
+                   SplashState.cpp GameState.cpp DeathState.cpp HiscoreState.cpp)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g") 
 

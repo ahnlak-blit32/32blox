@@ -35,6 +35,10 @@ DeathState::DeathState( void )
 
   /* And we'll need access to the high score table. */
   high_score = new HighScore();
+
+  /* The font pen will be simpler. */
+  font_pen = blit::Pen( 255, 255, 0 );
+  font_tween.init( blit::tween_sine, 255.0f, 100.0f, 500, -1 );  
 }
 
 
@@ -46,6 +50,9 @@ DeathState::DeathState( void )
 
 void DeathState::init( GameStateInterface *p_previous )
 {
+  /* Set the font tween running. */
+  font_tween.start();
+
   /* The previous state *should* have been a GameState. */
   GameState *l_game = dynamic_cast<GameState *>( p_previous );
   if ( nullptr == l_game )
@@ -78,8 +85,12 @@ gamestate_t DeathState::update( uint32_t p_time )
   /* If our score doesn't even rank, then we move on. */
   if ( 0 == score )
   {
+    font_tween.stop();
     return STATE_HISCORE;
   }
+
+  /* The font pen we use will pulse more subtlely. */
+  font_pen.g = font_tween.value;
 
   /* All done, remain in our current state */
   return STATE_DEATH;
@@ -100,9 +111,21 @@ void DeathState::render( uint32_t p_time )
   /* Draw a smooth gradient backdrop. */
   for ( uint16_t i = 0; i < blit::screen.bounds.h; i++ )
   {
-    blit::screen.pen = blit::Pen( 10, 10, ( ( blit::screen.bounds.h - i ) / 2 ) );
+    blit::screen.pen = blit::Pen( ( ( blit::screen.bounds.h - i ) / 2 ), 10, 10 );
     blit::screen.h_span( blit::Point( 0, i ), blit::screen.bounds.w );
   }
+
+  /* The static messaging next. */
+  /* Lastly, prompt the user to press a button. */
+  blit::screen.pen = font_pen;
+  blit::screen.text(
+    "PRESS 'B' TO SAVE",
+    blit::fat_font,
+    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 20 ),
+    true,
+    blit::TextAlign::center_center
+  );
+
 
   /* All done. */
   return;

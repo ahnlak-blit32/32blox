@@ -18,6 +18,7 @@
 #include "SplashState.hpp"
 #include "GameState.hpp"
 #include "DeathState.hpp"
+#include "HiscoreState.hpp"
 
 
 /* Module variables. */
@@ -50,6 +51,7 @@ void init( void )
   m_handlers[STATE_SPLASH] = new SplashState();
   m_handlers[STATE_GAME] = new GameState();
   m_handlers[STATE_DEATH] = new DeathState();
+  m_handlers[STATE_HISCORE] = new HiscoreState();
 
   /* We track what tick we're in, to avoid infinite recursion. */
   m_current_tick = 0;

@@ -39,7 +39,8 @@ SplashState::SplashState( void )
   }
 
   /* The font pen will be simpler. */
-  font_pen = blit::Pen( 255, 255, 255 );
+  font_pen = blit::Pen( 255, 255, 0 );
+  font_tween.init( blit::tween_sine, 255.0f, 100.0f, 500, -1 );
 }
 
 
@@ -51,7 +52,10 @@ SplashState::SplashState( void )
 
 void SplashState::init( GameStateInterface *p_previous )
 {
-  /* Nothing to do for this state. */
+  /* Set the font tween running. */
+  font_tween.start();
+
+  /* All done. */
   return;
 }
 
@@ -64,6 +68,13 @@ void SplashState::init( GameStateInterface *p_previous )
 
 gamestate_t SplashState::update( uint32_t p_time )
 {
+  /* We also need to check to see if the user has pressed the A button. */
+  if ( blit::buttons.pressed & blit::Button::A )
+  {
+    font_tween.stop();
+    return STATE_GAME;
+  }
+
   /* In this state, we'll update the background gradient, to make it look */
   /* pretty (or at least, moving so it's obvious we haven't crashed)      */
   if ( SPLASHSTATE_GRADIENT_HEIGHT < ++gradient_offset )
@@ -72,14 +83,7 @@ gamestate_t SplashState::update( uint32_t p_time )
   }
 
   /* The font pen we use will pulse more subtlely. */
-  font_pen.r = 200 + ( ( p_time / 5 ) % 50 );
-  font_pen.g = 200 + ( ( p_time / 13 ) % 50 );
-
-  /* We also need to check to see if the user has pressed the A button. */
-  if ( blit::buttons.pressed & blit::Button::A )
-  {
-    return STATE_GAME;
-  }
+  font_pen.g = font_tween.value;
 
   /* All done, remain in our current state */
   return STATE_SPLASH;
