@@ -30,8 +30,8 @@
 
 DeathState::DeathState( void )
 {
-  /* Load up the game spritesheet. */
-  //sprites = blit::SpriteSheet::load( a_game_sprites_img );
+  /* Set our name to a default. */
+  name[0] = name[1] = name[2] = 'A';
 
   /* And we'll need access to the high score table. */
   high_score = new HighScore();
@@ -64,7 +64,7 @@ void DeathState::init( GameStateInterface *p_previous )
   score = l_game->get_score();
 
   /* If the ranking is zero, that means there's no point in recording it. */
-  if ( 0 == high_score->rank( score ) )
+  if ( high_score->rank( score ) == MAX_SCORES )
   {
     score = 0;
   }
@@ -91,6 +91,15 @@ gamestate_t DeathState::update( uint32_t p_time )
 
   /* The font pen we use will pulse more subtlely. */
   font_pen.g = font_tween.value;
+
+
+  /* If the user presses the save button, then we save their score and move on. */
+  if ( blit::buttons.pressed & blit::Button::B )
+  {
+    high_score->save( score, "XXX" );
+    font_tween.stop();
+    return STATE_HISCORE;
+  }
 
   /* All done, remain in our current state */
   return STATE_DEATH;

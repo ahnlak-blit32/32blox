@@ -12,11 +12,23 @@
 #ifndef   _HIGHSCORE_HPP_
 #define   _HIGHSCORE_HPP_
 
+#define MAX_SCORES 10
+
+typedef struct
+{
+  char      name[3];
+  uint16_t  score;
+} hiscore_t;
+
 class HighScore
 {
+private:
+  hiscore_t         scores[MAX_SCORES];
 public:
-          HighScore( void );
-  uint8_t rank( uint16_t );
+                    HighScore( void );
+  uint8_t           rank( uint16_t );
+  void              save( uint16_t, const char * );
+  const hiscore_t  *get_entry( uint8_t );
 };
 
 

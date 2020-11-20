@@ -12,14 +12,18 @@
 #ifndef   _SPLASHSTATE_HPP_
 #define   _SPLASHSTATE_HPP_
 
+#include "AssetFactory.hpp"
+
 #define SPLASHSTATE_GRADIENT_HEIGHT 160
 
 class SplashState : public GameStateInterface
 {
 private:
-  blit::Surface  *splash_surface;
+  AssetFactory   &assets = AssetFactory::get_instance();
   blit::Pen       font_pen;
   blit::Tween     font_tween;
+  blit::Tween     logo_tween_x;
+  blit::Tween     logo_tween_y;
   blit::Pen       gradient_pen[SPLASHSTATE_GRADIENT_HEIGHT];
   uint8_t         gradient_offset;
 

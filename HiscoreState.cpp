@@ -105,6 +105,7 @@ void HiscoreState::render( uint32_t p_time )
 {
   char l_buffer[32];
   uint8_t l_row_offset = 9;
+  const hiscore_t *l_entry;
 
   /* Clear the screen down. */
   blit::screen.clear();
@@ -121,11 +122,20 @@ void HiscoreState::render( uint32_t p_time )
   for( uint8_t i = 0; i < 10; i++ )
   {
     /* Fetch the high score entry for this position. */
+    l_entry = high_score->get_entry( i );
 
     /* If there isn't one, we're done. */
+    if ( ( l_entry == nullptr ) || ( l_entry->score == 0 ) ) 
+    {
+      break;
+    }
 
     /* Format it up nicely, using fixed width for safety. */
-    snprintf( l_buffer, 32, "A I M - %05d", 100+i );
+    snprintf( 
+      l_buffer, 32, "%c %c %c - %05d", 
+      l_entry->name[0], l_entry->name[1], l_entry->name[2],
+      l_entry->score
+    );
     blit::screen.text (
       l_buffer,
       blit::minimal_font,
