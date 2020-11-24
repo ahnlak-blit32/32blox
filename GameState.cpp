@@ -58,7 +58,7 @@ void GameState::init( GameStateInterface *p_previous )
 
 uint16_t GameState::get_score( void )
 {
-  return 1; // score;
+  return 4; // score;
 }
 
 

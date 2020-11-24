@@ -32,6 +32,7 @@ DeathState::DeathState( void )
 {
   /* Set our name to a default. */
   name[0] = name[1] = name[2] = 'A';
+  name[3] = 0;
 
   /* And we'll need access to the high score table. */
   high_score = new HighScore();
@@ -96,7 +97,8 @@ gamestate_t DeathState::update( uint32_t p_time )
   /* If the user presses the save button, then we save their score and move on. */
   if ( blit::buttons.pressed & blit::Button::B )
   {
-    high_score->save( score, "XXX" );
+    printf( "%s has scored %d\n", name, score );
+    high_score->save( score, name );
     font_tween.stop();
     return STATE_HISCORE;
   }

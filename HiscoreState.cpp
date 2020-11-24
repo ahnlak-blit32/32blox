@@ -57,6 +57,9 @@ HiscoreState::HiscoreState( void )
 
 void HiscoreState::init( GameStateInterface *p_previous )
 {
+  /* Ask the high score table to reload itself. */
+  high_score->load();
+
   /* Set the font tween running. */
   font_tween.start();
 

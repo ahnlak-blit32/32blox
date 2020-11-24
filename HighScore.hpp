@@ -27,6 +27,7 @@ private:
 public:
                     HighScore( void );
   uint8_t           rank( uint16_t );
+  void              load( void );
   void              save( uint16_t, const char * );
   const hiscore_t  *get_entry( uint8_t );
 };

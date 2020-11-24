@@ -53,22 +53,7 @@ HighScore::HighScore( void )
   }
 
   /* Try and open the file then! */
-  blit::File *l_fptr = new blit::File( GAME_DATAFILE_HISCORE );
-  if ( l_fptr )
-  {
-    /* Read it in, in one big lump. */
-    l_fptr->read( 0, sizeof( hiscore_t ) * MAX_SCORES, (char *)scores );
-    l_fptr->close();
-  }
-  else
-  {
-    /* Initialise the table to empty, then. */
-    for( uint8_t i = 0; i < MAX_SCORES; i++ )
-    {
-      scores[i].name[0] = scores[i].name[1] = scores[i].name[2] = 'A';
-      scores[i].score = 0;
-    }
-  }
+  load();
 
   /* All done. */
   return;
@@ -97,6 +82,35 @@ uint8_t HighScore::rank( uint16_t p_score )
 
   /* If we drop out here, we found nothing matching. */
   return MAX_SCORES;
+}
+
+
+/*
+ * load - loads the table from the file, if we can.
+ */
+
+void HighScore::load( void )
+{
+  /* Try to open the data file. */
+  blit::File *l_fptr = new blit::File( GAME_DATAFILE_HISCORE );
+  if ( l_fptr )
+  {
+    /* Read it in, in one big lump. */
+    l_fptr->read( 0, sizeof( hiscore_t ) * MAX_SCORES, (char *)scores );
+    l_fptr->close();
+  }
+  else
+  {
+    /* Initialise the table to empty, then. */
+    for( uint8_t i = 0; i < MAX_SCORES; i++ )
+    {
+      scores[i].name[0] = scores[i].name[1] = scores[i].name[2] = 'A';
+      scores[i].score = 0;
+    }
+  }
+
+  /* All done. */
+  return;
 }
 
 

@@ -13,7 +13,7 @@
 
 /* Constants. */
 
-#define GAME_DATAFILE_HISCORE   "gamedata/32blox/hiscores.txt"
+#define GAME_DATAFILE_HISCORE   ".gamedata/32blox/hiscores.txt"
 
 #define SPRITE_ROW_BRICK     0
 #define SPRITE_ROW_BALL      1
