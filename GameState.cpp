@@ -46,6 +46,8 @@ void GameState::init( GameStateInterface *p_previous )
   level = new Level( 1 );
 
   /* Reset the lives count and score. */
+  lives = 3;
+  score = 0;
 
   /* All done. */
   return;
@@ -58,7 +60,7 @@ void GameState::init( GameStateInterface *p_previous )
 
 uint16_t GameState::get_score( void )
 {
-  return 4; // score;
+  return score;
 }
 
 
@@ -71,10 +73,11 @@ uint16_t GameState::get_score( void )
 gamestate_t GameState::update( uint32_t p_time )
 {
 
-if ( p_time % 1000 == 0 ) {
-printf( "%d bricks left..\n", level->get_brick_count() );
-return STATE_DEATH;
-}
+  /* If after all that we have no more lives, it's game over. */
+  if ( lives == 0 )
+  {
+    return STATE_DEATH;
+  }
 
   /* All done, remain in our current state */
   return STATE_GAME;
@@ -89,6 +92,8 @@ return STATE_DEATH;
 
 void GameState::render( uint32_t p_time )
 {
+  uint8_t l_brick;
+
   /* Clear the screen down. */
   blit::screen.clear();
 
@@ -97,6 +102,28 @@ void GameState::render( uint32_t p_time )
   {
     blit::screen.pen = blit::Pen( 10, 10, ( ( blit::screen.bounds.h - i ) / 2 ) );
     blit::screen.h_span( blit::Point( 0, i ), blit::screen.bounds.w );
+  }
+
+  /* Now we work through the level one brick at a time... */
+  for ( uint8_t l_row = 0; l_row < BOARD_HEIGHT; l_row++ )
+  {
+    for ( uint8_t l_column = 0; l_column < BOARD_WIDTH; l_column++ )
+    {
+      /* Fetch the brick for this location. */
+      l_brick = level->get_brick( l_row, l_column );
+
+      /* Move on if it's empty. */
+      if ( l_brick == 0 )
+      {
+        continue;
+      }
+
+      /* Then draw the appropriate brick from the spritesheet. */
+      blit::screen.sprite( 
+        blit::Rect( ( l_brick - 1 ) * 2, SPRITE_ROW_BRICK, 2, 1 ),
+        blit::Point( l_column * 16, l_row * 8 )
+      );
+    }
   }
 
   /* All done. */

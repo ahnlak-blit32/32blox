@@ -84,6 +84,7 @@ uint8_t Level::get_level( void )
   return level;
 }
 
+
 /*
  * get_brick_count - return an absolute count of remaining breakable bricks.
  */
@@ -108,6 +109,18 @@ uint16_t Level::get_brick_count( void )
   /* Return the count we found. */
   return l_total;
 }
+
+
+/*
+ * get_brick - returns the brick value at the given co-ordinate, zero if none.
+ *
+ * uint8_t * 2 - the row and column in the level being queried.
+ */
+
+ uint8_t Level::get_brick( uint8_t p_row, uint8_t p_column )
+ {
+  return bricks[p_row][p_column];
+ }
 
 
 /* End of Level.cpp */

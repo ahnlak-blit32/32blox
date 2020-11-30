@@ -26,6 +26,7 @@ public:
             Level( uint8_t );
   uint8_t   get_level( void );
   uint16_t  get_brick_count( void );
+  uint8_t   get_brick( uint8_t, uint8_t );
 };
 
 #endif /* _LEVEL_HPP_ */
