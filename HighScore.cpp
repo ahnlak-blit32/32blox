@@ -93,7 +93,7 @@ void HighScore::load( void )
 {
   /* Try to open the data file. */
   blit::File *l_fptr = new blit::File( GAME_DATAFILE_HISCORE );
-  if ( l_fptr )
+  if ( l_fptr && l_fptr->is_open() )
   {
     /* Read it in, in one big lump. */
     l_fptr->read( 0, sizeof( hiscore_t ) * MAX_SCORES, (char *)scores );
@@ -104,7 +104,7 @@ void HighScore::load( void )
     /* Initialise the table to empty, then. */
     for( uint8_t i = 0; i < MAX_SCORES; i++ )
     {
-      scores[i].name[0] = scores[i].name[1] = scores[i].name[2] = 'A';
+      strcpy( scores[i].name, "ahnlak" );
       scores[i].score = 0;
     }
   }
@@ -135,16 +135,12 @@ void HighScore::save( uint16_t p_score, const char *p_name )
   /* Shuffle entries below down, to make room. */
   for( uint8_t i = MAX_SCORES-1; i > l_position; i-- )
   {
-    scores[i].name[0] = scores[i-1].name[0];
-    scores[i].name[1] = scores[i-1].name[1];
-    scores[i].name[2] = scores[i-1].name[2];
+    strcpy( scores[i].name, scores[i-1].name );
     scores[i].score = scores[i-1].score;
   }
 
   /* Fill in the new data. */
-  scores[l_position].name[0] = p_name[0];
-  scores[l_position].name[1] = p_name[1];
-  scores[l_position].name[2] = p_name[2];
+  strcpy( scores[l_position].name, p_name );
   scores[l_position].score = p_score;
 
   /* And lastly, write this out to the high score storage. */

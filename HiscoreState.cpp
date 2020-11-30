@@ -135,8 +135,8 @@ void HiscoreState::render( uint32_t p_time )
 
     /* Format it up nicely, using fixed width for safety. */
     snprintf( 
-      l_buffer, 32, "%c %c %c - %05d", 
-      l_entry->name[0], l_entry->name[1], l_entry->name[2],
+      l_buffer, 32, "%-6s - %05d", 
+      l_entry->name,
       l_entry->score
     );
     blit::screen.text (

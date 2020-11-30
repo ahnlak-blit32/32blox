@@ -11,6 +11,9 @@
 
 /* System headers. */
 
+#include <string.h>
+
+
 /* Local headers. */
 
 #include "32blit.hpp"
@@ -31,8 +34,7 @@
 DeathState::DeathState( void )
 {
   /* Set our name to a default. */
-  name[0] = name[1] = name[2] = 'A';
-  name[3] = 0;
+  strcpy( name, "AAAAAA" );
 
   /* And we'll need access to the high score table. */
   high_score = new HighScore();
@@ -70,6 +72,9 @@ void DeathState::init( GameStateInterface *p_previous )
     score = 0;
   }
 
+  /* Set the cursor to the beginning of the name. */
+  cursor = 0;
+
   /* All done. */
   return;
 }
@@ -93,6 +98,23 @@ gamestate_t DeathState::update( uint32_t p_time )
   /* The font pen we use will pulse more subtlely. */
   font_pen.g = font_tween.value;
 
+  /* Left and right simply move the cursor. */
+  if ( ( blit::buttons.pressed & blit::Button::DPAD_LEFT ) && ( cursor > 0 ) )
+  {
+    cursor--;
+  }
+  if ( ( blit::buttons.pressed & blit::Button::DPAD_RIGHT ) && ( cursor < 5 ) )
+  {
+    cursor++;
+  }
+  if ( ( blit::buttons.pressed & blit::Button::DPAD_UP ) && ( name[cursor] < 'Z' ) )
+  {
+    name[cursor]++;
+  }
+  if ( ( blit::buttons.pressed & blit::Button::DPAD_DOWN ) && ( name[cursor] > 'A' ) )
+  {
+    name[cursor]--;
+  }
 
   /* If the user presses the save button, then we save their score and move on. */
   if ( blit::buttons.pressed & blit::Button::B )
@@ -116,6 +138,8 @@ gamestate_t DeathState::update( uint32_t p_time )
 
 void DeathState::render( uint32_t p_time )
 {
+  char l_buffer[16];
+
   /* Clear the screen down. */
   blit::screen.clear();
 
@@ -126,13 +150,65 @@ void DeathState::render( uint32_t p_time )
     blit::screen.h_span( blit::Point( 0, i ), blit::screen.bounds.w );
   }
 
-  /* The static messaging next. */
-  /* Lastly, prompt the user to press a button. */
+  /* Show what the score was. */
+  blit::screen.pen = blit::Pen( 255, 255, 255 );
+  snprintf( l_buffer, 12, "%05d", score );
+  blit::screen.text(
+    l_buffer,
+    blit::minimal_font,
+    blit::Point( blit::screen.bounds.w / 2, 30 ),
+    true,
+    blit::TextAlign::center_center
+  );
+
+  /* And the name, ready for them to change if they want to... */
+  snprintf( l_buffer, 12, "%c %c %c %c %c %c", 
+            name[0], name[1], name[2], name[3], name[4], name[5] );
+  blit::screen.text(
+    l_buffer,
+    blit::minimal_font,
+    blit::Point( blit::screen.bounds.w / 2, 50 ),
+    true,
+    blit::TextAlign::center_center
+  );
+
+  /* The rest is all in a nicely tweened pen. */
   blit::screen.pen = font_pen;
+
+  /* Draw a box around the current letter being edited. */
+  blit::screen.h_span( blit::Point( 53 + cursor * 9, 43 ), 8 );
+  blit::screen.h_span( blit::Point( 53 + cursor * 9, 56 ), 8 );
+  blit::screen.v_span( blit::Point( 53 + cursor * 9, 43 ), 14 );
+  blit::screen.v_span( blit::Point( 61 + cursor * 9, 43 ), 14 );
+
+  /* The static messaging next - congrats, and how to enter your name... */
+  blit::screen.text(
+    "NEW HIGH SCORE!",
+    blit::fat_font,
+    blit::Point( blit::screen.bounds.w / 2, 10 ),
+    true,
+    blit::TextAlign::center_center
+  );
+  blit::screen.text(
+    "LEFT/RIGHT TO SELECT",
+    blit::fat_font,
+    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 40 ),
+    true,
+    blit::TextAlign::center_center
+  );
+  blit::screen.text(
+    "UP/DOWN TO CHANGE",
+    blit::fat_font,
+    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 30 ),
+    true,
+    blit::TextAlign::center_center
+  );
+
+  /* Lastly, prompt the user to press a button. */
   blit::screen.text(
     "PRESS 'B' TO SAVE",
     blit::fat_font,
-    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 20 ),
+    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,
     blit::TextAlign::center_center
   );

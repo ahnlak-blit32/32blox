@@ -17,8 +17,9 @@
 class DeathState : public GameStateInterface
 {
 private:
-  char            name[4];
-  uint16_t        score;  
+  char            name[7];
+  uint16_t        score;
+  uint8_t         cursor;  
   HighScore      *high_score;
   blit::Pen       font_pen;
   blit::Tween     font_tween;
