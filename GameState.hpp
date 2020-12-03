@@ -12,6 +12,14 @@
 #ifndef   _GAMESTATE_HPP_
 #define   _GAMESTATE_HPP_
 
+typedef enum
+{
+  BAT_NORMAL,
+  BAT_NARROW,
+  BAT_WIDE,
+  BAT_MAX
+} bat_type_t;
+
 #include "Level.hpp"
 
 class GameState : public GameStateInterface
@@ -20,9 +28,15 @@ private:
   blit::SpriteSheet  *sprites;
   Level              *level;
   uint8_t             lives;
+  float               bat_position;
+  float               bat_speed;
+  bat_type_t          bat_type;
+  uint8_t             bat_width[BAT_MAX] = { 16, 8, 24 };
+  
   uint16_t            score;
 
   void                init( void );
+  void                move_bat( float );
 
 public:
                       GameState( void );

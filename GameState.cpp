@@ -49,7 +49,37 @@ void GameState::init( GameStateInterface *p_previous )
   lives = 3;
   score = 0;
 
+  /* Centre the bat, and set it to a default type. */
+  bat_position = blit::screen.bounds.w / 2;
+  bat_speed = 0.5f;
+  bat_type = BAT_NORMAL;
+
   /* All done. */
+  return;
+}
+
+
+/*
+ * move_bat - updates the bat position, taking into account the bat size and
+ *            the edges of the screen.
+ * float - the movement amount wanted; this may get clipped if the edge is hit
+ */
+void GameState::move_bat( float p_movement )
+{
+  /* First up, let's apply the full movement. */
+  bat_position += p_movement;
+
+  /* And then clamp it, top and bottom. */
+  if ( bat_position < ( bat_width[bat_type] / 2 ) )
+  {
+    bat_position = bat_width[bat_type] / 2;
+  }
+  if ( bat_position > blit::screen.bounds.w - ( bat_width[bat_type] / 2 ) )
+  {
+    bat_position = blit::screen.bounds.w - ( bat_width[bat_type] / 2 );
+  }
+
+  /* All done! */
   return;
 }
 
@@ -72,6 +102,42 @@ uint16_t GameState::get_score( void )
 
 gamestate_t GameState::update( uint32_t p_time )
 {
+  /* Calculate any bat movement that's required. */
+  float l_movement = 0.0f;
+
+  /* Handle the joystick, which is slightly more gradiated. */
+  if ( blit::joystick.x < -0.66f )
+  {
+    l_movement = bat_speed - 1;
+  }
+  else if ( blit::joystick.x > 0.66f )
+  {
+    l_movement = bat_speed;
+  }
+  else
+  {
+    l_movement = bat_speed * 1.5 * blit::joystick.x;
+  }
+
+  /* But if the player has moved the dpad, then use that instead. */
+  if ( blit::buttons.state & blit::Button::DPAD_LEFT )
+  {
+    l_movement = bat_speed * -1;
+  }
+  if ( blit::buttons.state & blit::Button::DPAD_RIGHT )
+  {
+    l_movement = bat_speed;
+  }
+
+  /* And lastly, apply that movement. */
+  if ( l_movement != 0.0f )
+  {
+    move_bat( l_movement );
+  }
+
+  /* Next up, we work our way through all the balls we have, and update their */
+  /* positions. We'll deal with any collisions in a little while...           */
+
 
   /* If after all that we have no more lives, it's game over. */
   if ( lives == 0 )
@@ -124,6 +190,17 @@ void GameState::render( uint32_t p_time )
         blit::Point( l_column * 16, l_row * 8 )
       );
     }
+  }
+
+  /* Add in the bat; the position is the centre location. */
+  switch( bat_type )
+  {
+    case BAT_NORMAL:  /* Simple bat, two sprites wide. */
+      blit::screen.sprite(
+        blit::Rect( 0, SPRITE_ROW_BAT, 2, 1 ),
+        blit::Point( bat_position - ( bat_width[bat_type] / 2 ), blit::screen.bounds.h - 10 )
+      );
+      break;
   }
 
   /* All done. */
