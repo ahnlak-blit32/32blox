@@ -29,6 +29,7 @@ private:
 public:
               Ball( blit::Point, ball_type_t = BALL_NORMAL );
   blit::Point get_location( void );
+  ball_type_t get_type( void );
   void        update( void );
   void        bounce( bool );
 };
