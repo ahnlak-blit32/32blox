@@ -42,12 +42,27 @@ Ball::Ball( blit::Point p_origin, ball_type_t p_type )
 
 
 /*
- * get_location - accessor for the balls current location
+ * get_render_location - returns the render location of the ball, taking into
+ *                       account the ball time and offsets and suchlike.
  */
 
-blit::Point Ball::get_location( void )
+blit::Point Ball::get_render_location( void )
 {
-  return location;
+  /* The inner location represents the middle of the ball; every type of ball */
+  /* (currently) fits into one sprite, so just move half a sprite up/left.    */
+  return location - blit::Vec2( 4, 4 );
+}
+
+
+/*
+ * get_bounds - returns a rectangle describing the bounding box around the 
+ *              ball, taking into account it's size. This is for quick and
+ *              dirty collision detection (the best kind).
+ */
+
+blit::Rect Ball::get_bounds( void )
+{
+  
 }
 
 

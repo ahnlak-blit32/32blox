@@ -12,6 +12,10 @@
 #ifndef   _GAMESTATE_HPP_
 #define   _GAMESTATE_HPP_
 
+#include <forward_list>
+#include "AssetFactory.hpp"
+#include "Ball.hpp"
+
 typedef enum
 {
   BAT_NORMAL,
@@ -25,25 +29,25 @@ typedef enum
 class GameState : public GameStateInterface
 {
 private:
-  blit::SpriteSheet  *sprites;
-  Level              *level;
-  uint8_t             lives;
-  float               bat_position;
-  float               bat_speed;
-  bat_type_t          bat_type;
-  uint8_t             bat_width[BAT_MAX] = { 16, 8, 24 };
-  
-  uint16_t            score;
+  AssetFactory             &assets = AssetFactory::get_instance();
+  Level                    *level;
+  uint8_t                   lives;
+  float                     bat_position;
+  float                     bat_speed;
+  bat_type_t                bat_type;
+  const uint8_t             bat_width[BAT_MAX] = { 16, 8, 24 };
+  uint16_t                  score;
+  std::forward_list<Ball*>  balls;
 
-  void                init( void );
-  void                move_bat( float );
+  void                      init( void );
+  void                      move_bat( float );
 
 public:
-                      GameState( void );
-  void                init( GameStateInterface * );
-  uint16_t            get_score( void );
-  gamestate_t         update( uint32_t );
-  void                render( uint32_t );
+                            GameState( void );
+  void                      init( GameStateInterface * );
+  uint16_t                  get_score( void );
+  gamestate_t               update( uint32_t );
+  void                      render( uint32_t );
 };
 
 #endif /* _GAMESTATE_HPP_ */

@@ -29,8 +29,8 @@
 
 GameState::GameState( void )
 {
-  /* Load up the game spritesheet. */
-  sprites = blit::SpriteSheet::load( a_game_sprites_img );
+  /* All done. */
+  return;
 }
 
 
@@ -42,6 +42,9 @@ GameState::GameState( void )
 
 void GameState::init( GameStateInterface *p_previous )
 {
+  /* Select the game spritesheet into the screen. */
+  blit::screen.sprites = assets.spritesheet_game;
+
   /* Load the first level. */
   level = new Level( 1 );
 
@@ -53,6 +56,12 @@ void GameState::init( GameStateInterface *p_previous )
   bat_position = blit::screen.bounds.w / 2;
   bat_speed = 0.5f;
   bat_type = BAT_NORMAL;
+
+  /* Clear out the list of balls, and spawn one on the bat. */
+  balls.clear();
+  Ball *l_ball = new Ball( blit::Point( bat_position, blit::screen.bounds.h - 13 ) );
+  l_ball->sticky = true;
+  balls.push_front( l_ball );
 
   /* All done. */
   return;
@@ -77,6 +86,19 @@ void GameState::move_bat( float p_movement )
   if ( bat_position > blit::screen.bounds.w - ( bat_width[bat_type] / 2 ) )
   {
     bat_position = blit::screen.bounds.w - ( bat_width[bat_type] / 2 );
+  }
+
+  /* Now, check to see if any of our balls are sticky. */
+  for ( auto l_ball : balls )
+  {
+    /* No point in even checking if they aren't. */
+    if ( !l_ball->sticky )
+    {
+      continue;
+    }
+
+    /* So, consider if the ball is (a) at the height of the bat. */
+
   }
 
   /* All done! */
@@ -137,7 +159,10 @@ gamestate_t GameState::update( uint32_t p_time )
 
   /* Next up, we work our way through all the balls we have, and update their */
   /* positions. We'll deal with any collisions in a little while...           */
-
+  for ( auto l_ball : balls )
+  {
+    l_ball->update();
+  }
 
   /* If after all that we have no more lives, it's game over. */
   if ( lives == 0 )
@@ -201,6 +226,16 @@ void GameState::render( uint32_t p_time )
         blit::Point( bat_position - ( bat_width[bat_type] / 2 ), blit::screen.bounds.h - 10 )
       );
       break;
+  }
+
+  /* Balls next; we could have a number of them, in a handy container. */
+  for ( auto l_ball : balls )
+  {
+    /* Render the ball. */
+    blit::screen.sprite(
+      blit::Rect( l_ball->get_type(), SPRITE_ROW_BALL, 1, 1 ),
+      l_ball->get_render_location()
+    );
   }
 
   /* All done. */

@@ -28,10 +28,13 @@ private:
 
 public:
               Ball( blit::Point, ball_type_t = BALL_NORMAL );
-  blit::Point get_location( void );
+  blit::Point get_render_location( void );
+  blit::Rect  get_bounds( void );
   ball_type_t get_type( void );
   void        update( void );
   void        bounce( bool );
+
+  bool        sticky;
 };
 
 #endif /* _BALL_HPP_ */
