@@ -29,6 +29,10 @@
 
 GameState::GameState( void )
 {
+  /* The bat height will always be the same, but is bound by the screen size */
+  /* so can't quite be hard coded.                                           */
+  bat_height = blit::screen.bounds.h - 10;
+
   /* All done. */
   return;
 }
@@ -59,7 +63,7 @@ void GameState::init( GameStateInterface *p_previous )
 
   /* Clear out the list of balls, and spawn one on the bat. */
   balls.clear();
-  Ball *l_ball = new Ball( blit::Point( bat_position, blit::screen.bounds.h - 13 ) );
+  Ball *l_ball = new Ball( blit::Vec2( bat_position, bat_height - 3 ) );
   l_ball->sticky = true;
   balls.push_front( l_ball );
 
@@ -76,6 +80,7 @@ void GameState::init( GameStateInterface *p_previous )
 void GameState::move_bat( float p_movement )
 {
   /* First up, let's apply the full movement. */
+  float l_last_pos = bat_position;
   bat_position += p_movement;
 
   /* And then clamp it, top and bottom. */
@@ -98,7 +103,16 @@ void GameState::move_bat( float p_movement )
     }
 
     /* So, consider if the ball is (a) at the height of the bat. */
-
+    blit::Rect l_bounds = l_ball->get_bounds();
+    if ( ( l_bounds.bl().y ) == bat_height )
+    {
+      /* Obviously we're only stuck to the bat if we're on it! */
+      if ( ( l_bounds.bl().x >= bat_position - ( bat_width[bat_type] / 2 ) ) &&
+           ( l_bounds.br().x <= bat_position + ( bat_width[bat_type] / 2 ) ) )
+      {
+        l_ball->offset( blit::Vec2( bat_position - l_last_pos, 0.0f ) );
+      }
+    }
   }
 
   /* All done! */
@@ -223,7 +237,7 @@ void GameState::render( uint32_t p_time )
     case BAT_NORMAL:  /* Simple bat, two sprites wide. */
       blit::screen.sprite(
         blit::Rect( 0, SPRITE_ROW_BAT, 2, 1 ),
-        blit::Point( bat_position - ( bat_width[bat_type] / 2 ), blit::screen.bounds.h - 10 )
+        blit::Point( bat_position - ( bat_width[bat_type] / 2 ), bat_height )
       );
       break;
   }

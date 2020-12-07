@@ -27,7 +27,7 @@
  * constructor - Spawns a ball at the specified location, of the specfied type
  */
 
-Ball::Ball( blit::Point p_origin, ball_type_t p_type )
+Ball::Ball( blit::Vec2 p_origin, ball_type_t p_type )
 {
   /* Save the origin and type. */
   location = p_origin;
@@ -62,7 +62,10 @@ blit::Point Ball::get_render_location( void )
 
 blit::Rect Ball::get_bounds( void )
 {
-  
+  return blit::Rect( 
+    location - blit::Vec2( ball_size[ball_type] / 2, ball_size[ball_type] / 2 ),
+    location + blit::Vec2( ball_size[ball_type] / 2, ball_size[ball_type] / 2 )
+  );
 }
 
 
@@ -112,5 +115,19 @@ void Ball::bounce( bool p_horizontal )
   return;
 }
 
+
+/*
+ * offset - adds a (signed) offset to the current location, to allow for
+ *          moving the ball outside of it's normal vectoring.
+ */
+
+void Ball::offset( blit::Vec2 l_offset )
+{
+  /* Nice and simple. */
+  location += l_offset;
+
+  /* All done. */
+  return;
+}
 
 /* End of Ball.cpp */
