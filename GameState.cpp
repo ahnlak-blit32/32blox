@@ -63,7 +63,7 @@ void GameState::init( GameStateInterface *p_previous )
 
   /* Clear out the list of balls, and spawn one on the bat. */
   balls.clear();
-  Ball *l_ball = new Ball( blit::Vec2( bat_position, bat_height - 3 ) );
+  Ball *l_ball = new Ball( blit::Vec2( bat_position, bat_height - 4 ) );
   l_ball->sticky = true;
   balls.push_front( l_ball );
 
@@ -225,8 +225,8 @@ void GameState::render( uint32_t p_time )
 
       /* Then draw the appropriate brick from the spritesheet. */
       blit::screen.sprite( 
-        blit::Rect( ( l_brick - 1 ) * 2, SPRITE_ROW_BRICK, 2, 1 ),
-        blit::Point( l_column * 16, l_row * 8 )
+        blit::Rect( ( l_brick - 1 ) * 4, SPRITE_ROW_BRICK, 4, 2 ),
+        blit::Point( l_column * 32, l_row * 16 )
       );
     }
   }
@@ -236,7 +236,7 @@ void GameState::render( uint32_t p_time )
   {
     case BAT_NORMAL:  /* Simple bat, two sprites wide. */
       blit::screen.sprite(
-        blit::Rect( 0, SPRITE_ROW_BAT, 2, 1 ),
+        blit::Rect( 0, SPRITE_ROW_BAT, 3, 1 ),
         blit::Point( bat_position - ( bat_width[bat_type] / 2 ), bat_height )
       );
       break;

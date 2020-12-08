@@ -15,7 +15,6 @@ typedef enum
 {
   BALL_NORMAL,
   BALL_SMALL,
-  BALL_LARGE,
   BALL_MAX
 } ball_type_t;
 
@@ -25,7 +24,7 @@ private:
   blit::Vec2    location;
   blit::Vec2    vector;
   ball_type_t   ball_type;
-  const uint8_t ball_size[BALL_MAX] = { 6, 4, 8 };
+  const uint8_t ball_size[BALL_MAX] = { 8, 6 };
 
 public:
                 Ball( blit::Vec2, ball_type_t = BALL_NORMAL );

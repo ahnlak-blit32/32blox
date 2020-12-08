@@ -38,7 +38,7 @@ private:
   bat_type_t                bat_type;
   uint16_t                  score;
   std::forward_list<Ball*>  balls;
-  const uint8_t             bat_width[BAT_MAX] = { 16, 8, 24 };
+  const uint8_t             bat_width[BAT_MAX] = { 24, 16, 32 };
 
   void                      init( void );
   void                      move_bat( float );

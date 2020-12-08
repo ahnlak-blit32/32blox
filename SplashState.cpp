@@ -126,36 +126,36 @@ void SplashState::render( uint32_t p_time )
 
   /* And some bricks in the corners, from the spritesheet. */
   blit::screen.sprite( 
-    blit::Rect( 0, SPRITE_ROW_BRICK, 2, 1 ),
+    blit::Rect( 0, SPRITE_ROW_BRICK, 4, 2 ),
     blit::Point( 0, 0 )
   );
   blit::screen.sprite( 
-    blit::Rect( 2, SPRITE_ROW_BRICK, 2, 1 ),
-    blit::Point( 16, 0 )
+    blit::Rect( 4, SPRITE_ROW_BRICK, 4, 2 ),
+    blit::Point( 32, 0 )
   );
   blit::screen.sprite( 
-    blit::Rect( 2, SPRITE_ROW_BRICK, 2, 1 ),
+    blit::Rect( 4, SPRITE_ROW_BRICK, 4, 2 ),
+    blit::Point( blit::screen.bounds.w - 64, 0 )
+  );
+  blit::screen.sprite( 
+    blit::Rect( 0, SPRITE_ROW_BRICK, 4, 2 ),
     blit::Point( blit::screen.bounds.w - 32, 0 )
   );
   blit::screen.sprite( 
-    blit::Rect( 0, SPRITE_ROW_BRICK, 2, 1 ),
-    blit::Point( blit::screen.bounds.w - 16, 0 )
+    blit::Rect( 0, SPRITE_ROW_BRICK, 4, 2 ),
+    blit::Point( 0, blit::screen.bounds.h - 16 )
   );
   blit::screen.sprite( 
-    blit::Rect( 0, SPRITE_ROW_BRICK, 2, 1 ),
-    blit::Point( 0, blit::screen.bounds.h - 8 )
+    blit::Rect( 4, SPRITE_ROW_BRICK, 4, 2 ),
+    blit::Point( 32, blit::screen.bounds.h - 16 )
   );
   blit::screen.sprite( 
-    blit::Rect( 2, SPRITE_ROW_BRICK, 2, 1 ),
-    blit::Point( 16, blit::screen.bounds.h - 8 )
+    blit::Rect( 4, SPRITE_ROW_BRICK, 4, 2 ),
+    blit::Point( blit::screen.bounds.w - 64, blit::screen.bounds.h - 16 )
   );
   blit::screen.sprite( 
-    blit::Rect( 2, SPRITE_ROW_BRICK, 2, 1 ),
-    blit::Point( blit::screen.bounds.w - 32, blit::screen.bounds.h - 8 )
-  );
-  blit::screen.sprite( 
-    blit::Rect( 0, SPRITE_ROW_BRICK, 2, 1 ),
-    blit::Point( blit::screen.bounds.w - 16, blit::screen.bounds.h - 8 )
+    blit::Rect( 0, SPRITE_ROW_BRICK, 4, 2 ),
+    blit::Point( blit::screen.bounds.w - 32, blit::screen.bounds.h - 16 )
   );
 
   /* Lastly, prompt the user to press a button. */

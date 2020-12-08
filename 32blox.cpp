@@ -36,8 +36,8 @@ static uint32_t             m_current_tick;
 
 void init( void )
 {
-  /* Switch the screen into low res (160x120) mode. */
-  blit::set_screen_mode( blit::ScreenMode::lores );
+  /* Switch the screen into high res (320x240) mode. */
+  blit::set_screen_mode( blit::ScreenMode::hires );
 
   /* Black then screen to a nice dark blue. */
   blit::screen.pen = blit::Pen( 100, 0, 0 );
