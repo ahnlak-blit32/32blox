@@ -121,13 +121,49 @@ void Ball::bounce( bool p_horizontal )
  *          moving the ball outside of it's normal vectoring.
  */
 
-void Ball::offset( blit::Vec2 l_offset )
+void Ball::offset( blit::Vec2 p_offset )
 {
   /* Nice and simple. */
-  location += l_offset;
+  location += p_offset;
 
   /* All done. */
   return;
 }
+
+
+/*
+ * move_bat - handles the bat moving, if we happen to be stuck to it
+ * Rect     - the location of the current bat
+ * float    - the offset by which the bat has moved
+ */
+
+void Ball::move_bat( blit::Rect p_bat, float p_offset )
+{
+  /* So, this is only significant if the ball is sticky. */
+  if ( !sticky )
+  {
+    return;
+  }
+
+  /* If we're on the bat, then we should probably stick to it. */
+  blit::Rect l_bounds = get_bounds();
+
+  if ( ( l_bounds.bl().y == p_bat.y ) && 
+       ( l_bounds.br().x >= p_bat.x ) && ( l_bounds.bl().x < ( p_bat.x + p_bat.w ) ) )
+  {
+    /* If we're already stuck, just follow the bat. */
+    if ( stuck )
+    {
+      location.x += p_offset;
+    }
+
+    /* Otherwise, remember we're stuck and have done with it. */
+    stuck = true;
+
+  }
+  /* All done. */
+  return;
+}
+
 
 /* End of Ball.cpp */

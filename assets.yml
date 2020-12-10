@@ -12,4 +12,10 @@ assets_levels.cpp:
   assets/level01.csv: 
     name: a_level_01_dat
 
+assets_fonts.cpp:
+  assets/PixelCaps-LOnE.ttf:
+    name: a_pixel_font
+    type: font/font
+    height: 16
+
 # End of assets.yml

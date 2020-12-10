@@ -34,7 +34,9 @@ public:
   void          update( void );
   void          bounce( bool );
   void          offset( blit::Vec2 );
+  void          move_bat( blit::Rect, float );
 
+  bool          stuck;
   bool          sticky;
 };
 

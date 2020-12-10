@@ -32,6 +32,8 @@ private:
   AssetFactory             &assets = AssetFactory::get_instance();
   Level                    *level;
   uint8_t                   lives;
+  blit::Pen                 font_pen;
+  blit::Tween               font_tween;
   float                     bat_position;
   float                     bat_speed;
   uint16_t                  bat_height;

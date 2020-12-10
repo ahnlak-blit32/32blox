@@ -33,6 +33,10 @@ GameState::GameState( void )
   /* so can't quite be hard coded.                                           */
   bat_height = blit::screen.bounds.h - 10;
 
+  /* The font pen will be simpler. */
+  font_pen = blit::Pen( 255, 255, 0 );
+  font_tween.init( blit::tween_sine, 255.0f, 100.0f, 500 );
+
   /* All done. */
   return;
 }
@@ -51,6 +55,9 @@ void GameState::init( GameStateInterface *p_previous )
 
   /* Load the first level. */
   level = new Level( 1 );
+
+  /* Set the tweens running. */
+  font_tween.start();
 
   /* Reset the lives count and score. */
   lives = 3;
@@ -102,17 +109,10 @@ void GameState::move_bat( float p_movement )
       continue;
     }
 
-    /* So, consider if the ball is (a) at the height of the bat. */
-    blit::Rect l_bounds = l_ball->get_bounds();
-    if ( ( l_bounds.bl().y ) == bat_height )
-    {
-      /* Obviously we're only stuck to the bat if we're on it! */
-      if ( ( l_bounds.bl().x >= bat_position - ( bat_width[bat_type] / 2 ) ) &&
-           ( l_bounds.br().x <= bat_position + ( bat_width[bat_type] / 2 ) ) )
-      {
-        l_ball->offset( blit::Vec2( bat_position - l_last_pos, 0.0f ) );
-      }
-    }
+    /* Then we can just ask the ball to move itself! */
+    l_ball->move_bat( blit::Rect( bat_position - ( bat_width[bat_type] / 2 ), 
+                                  bat_height, bat_width[bat_type], 1 ), 
+                      bat_position - l_last_pos );
   }
 
   /* All done! */
@@ -181,8 +181,12 @@ gamestate_t GameState::update( uint32_t p_time )
   /* If after all that we have no more lives, it's game over. */
   if ( lives == 0 )
   {
+    font_tween.stop();
     return STATE_DEATH;
   }
+
+  /* The font pen we use will pulse more subtlely. */
+  font_pen.g = font_tween.value;
 
   /* All done, remain in our current state */
   return STATE_GAME;
@@ -198,6 +202,7 @@ gamestate_t GameState::update( uint32_t p_time )
 void GameState::render( uint32_t p_time )
 {
   uint8_t l_brick;
+  bool    l_sticky_ball = false;
 
   /* Clear the screen down. */
   blit::screen.clear();
@@ -250,6 +255,26 @@ void GameState::render( uint32_t p_time )
       blit::Rect( l_ball->get_type(), SPRITE_ROW_BALL, 1, 1 ),
       l_ball->get_render_location()
     );
+
+    /* And remember if it's stuck to the bat... */
+    if ( l_ball->stuck )
+    {
+      l_sticky_ball = true;
+    }
+  }
+
+  /* So, if we have a sticky ball, explain what the user needs to do... */
+  if ( l_sticky_ball )
+  {
+    blit::screen.pen = font_pen;
+    blit::screen.text(
+      "Press 'B' To Launch",
+      *assets.pixel_font,
+      blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 45 ),
+      true,
+      blit::TextAlign::center_center
+    );
+
   }
 
   /* All done. */

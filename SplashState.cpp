@@ -119,7 +119,7 @@ void SplashState::render( uint32_t p_time )
   /* Place the logo in the middle of the screen. */
   blit::Point l_pos;
   l_pos.x = (blit::screen.bounds.w - assets.surface_logo->bounds.w) / 2;
-  l_pos.y = ((blit::screen.bounds.h - assets.surface_logo->bounds.h) / 2) - 10;
+  l_pos.y = ((blit::screen.bounds.h - assets.surface_logo->bounds.h) / 2) - 20;
   l_pos.x += logo_tween_x.value;
   l_pos.y += logo_tween_y.value;
   blit::screen.blit( assets.surface_logo, assets.surface_logo->clip, l_pos );
@@ -161,9 +161,9 @@ void SplashState::render( uint32_t p_time )
   /* Lastly, prompt the user to press a button. */
   blit::screen.pen = font_pen;
   blit::screen.text(
-    "PRESS 'A' TO START",
-    blit::fat_font,
-    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 20 ),
+    "Press 'A' To Start",
+    *assets.pixel_font,
+    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 45 ),
     true,
     blit::TextAlign::center_center
   );
