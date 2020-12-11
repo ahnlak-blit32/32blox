@@ -13,9 +13,11 @@ assets_levels.cpp:
     name: a_level_01_dat
 
 assets_fonts.cpp:
-  assets/PixelCaps-LOnE.ttf:
-    name: a_pixel_font
-    type: font/font
+  assets/PressStart2P-Regular.ttf:
+    name: a_number_font
+    height: 8
+  assets/PressStart2P-Regular-copy.ttf:
+    name: a_message_font
     height: 16
 
 # End of assets.yml

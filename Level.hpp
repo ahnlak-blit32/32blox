@@ -17,16 +17,17 @@
 class Level
 {
 private:
-  uint8_t   level;
-  uint8_t   bricks[BOARD_HEIGHT][BOARD_WIDTH];
+  uint8_t     level;
+  uint8_t     bricks[BOARD_HEIGHT][BOARD_WIDTH];
 
-  void      init( const uint8_t *, uint32_t );
+  void        init( const uint8_t *, uint32_t );
 
 public:
-            Level( uint8_t );
-  uint8_t   get_level( void );
-  uint16_t  get_brick_count( void );
-  uint8_t   get_brick( uint8_t, uint8_t );
+              Level( uint8_t );
+  uint8_t     get_level( void );
+  uint16_t    get_brick_count( void );
+  uint8_t     get_brick( uint8_t, uint8_t );
+  blit::Point get_brick_location( uint8_t, uint8_t );
 };
 
 #endif /* _LEVEL_HPP_ */

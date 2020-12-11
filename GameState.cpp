@@ -35,6 +35,7 @@ GameState::GameState( void )
 
   /* The font pen will be simpler. */
   font_pen = blit::Pen( 255, 255, 0 );
+  number_pen = blit::Pen( 255, 255, 0 );
   font_tween.init( blit::tween_sine, 255.0f, 100.0f, 500 );
 
   /* All done. */
@@ -203,6 +204,7 @@ void GameState::render( uint32_t p_time )
 {
   uint8_t l_brick;
   bool    l_sticky_ball = false;
+  char    l_buffer[32];
 
   /* Clear the screen down. */
   blit::screen.clear();
@@ -213,6 +215,29 @@ void GameState::render( uint32_t p_time )
     blit::screen.pen = blit::Pen( 10, 10, ( ( blit::screen.bounds.h - i ) / 2 ) );
     blit::screen.h_span( blit::Point( 0, i ), blit::screen.bounds.w );
   }
+
+  /* Draw in the score line. */
+  snprintf( l_buffer, 30, "SCORE: %05d", score );
+  blit::screen.pen = number_pen;
+  blit::screen.text(
+    l_buffer,
+    *assets.number_font,
+    blit::Point( 1, 1 ),
+    true,
+    blit::TextAlign::top_left
+  );
+  snprintf( l_buffer, 30, "HI: %05d", score );
+  blit::screen.pen = number_pen;
+  blit::screen.text(
+    l_buffer,
+    *assets.number_font,
+    blit::Point( blit::screen.bounds.w - 1, 1 ),
+    true,
+    blit::TextAlign::top_right
+  );
+
+  /* And a display of the remaining lives. */
+  /*__RETURN__*/
 
   /* Now we work through the level one brick at a time... */
   for ( uint8_t l_row = 0; l_row < BOARD_HEIGHT; l_row++ )
@@ -231,7 +256,7 @@ void GameState::render( uint32_t p_time )
       /* Then draw the appropriate brick from the spritesheet. */
       blit::screen.sprite( 
         blit::Rect( ( l_brick - 1 ) * 4, SPRITE_ROW_BRICK, 4, 2 ),
-        blit::Point( l_column * 32, l_row * 16 )
+        blit::Point( l_column * 32, l_row * 16 + 10 )
       );
     }
   }
@@ -269,12 +294,11 @@ void GameState::render( uint32_t p_time )
     blit::screen.pen = font_pen;
     blit::screen.text(
       "Press 'B' To Launch",
-      *assets.pixel_font,
+      *assets.message_font,
       blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 45 ),
       true,
       blit::TextAlign::center_center
     );
-
   }
 
   /* All done. */

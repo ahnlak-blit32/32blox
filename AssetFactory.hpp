@@ -21,7 +21,8 @@ public:
 
   blit::Surface        *surface_logo;
   blit::SpriteSheet    *spritesheet_game;
-  blit::Font           *pixel_font;
+  blit::Font           *number_font;
+  blit::Font           *message_font;
 };
 
 
