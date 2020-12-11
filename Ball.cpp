@@ -35,6 +35,7 @@ Ball::Ball( blit::Vec2 p_origin, ball_type_t p_type )
 
   /* And set some defaults, for now. */
   vector = blit::Vec2( 0, 0 );
+  bat_position = blit::Rect( 0, 0, 0, 0 );
 
   /* All done. */
   return;
@@ -92,6 +93,33 @@ void Ball::update( void )
   return;
 }
 
+
+/*
+ * launch - releases a stuck ball from the bat; a random vector is picked,
+ *          but it's (partially) influenced by how close to the centre of the
+ *          bat it is...
+ */
+
+void Ball::launch( void )
+{
+  /* Our x vector is dependent on our offset from the centre of the bat. */
+  uint16_t l_bat_centre = bat_position.x + bat_position.w / 2;
+
+  if ( l_bat_centre > location.x )
+  {
+    /* So, we're to the *left* of the bat. */
+    vector.x = -0.5;
+  }
+  else
+  {
+    /* So, we're to the *right* of the bat. */
+    vector.x = 0.5;
+  }
+
+  vector.y = -0.5;
+  /* All done. */
+  return;
+}
 
 /*
  * bounce - bounces the ball off a horizontal or vertical surface; this is
@@ -161,6 +189,10 @@ void Ball::move_bat( blit::Rect p_bat, float p_offset )
     stuck = true;
 
   }
+
+  /* Remeber the position of the bat, for launching later. */
+  bat_position = p_bat;
+
   /* All done. */
   return;
 }

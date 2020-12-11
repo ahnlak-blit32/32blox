@@ -24,6 +24,7 @@ private:
   blit::Vec2    location;
   blit::Vec2    vector;
   ball_type_t   ball_type;
+  blit::Rect    bat_position;
   const uint8_t ball_size[BALL_MAX] = { 8, 6 };
 
 public:
@@ -32,6 +33,7 @@ public:
   blit::Rect    get_bounds( void );
   ball_type_t   get_type( void );
   void          update( void );
+  void          launch( void );
   void          bounce( bool );
   void          offset( blit::Vec2 );
   void          move_bat( blit::Rect, float );

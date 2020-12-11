@@ -66,7 +66,7 @@ void GameState::init( GameStateInterface *p_previous )
 
   /* Centre the bat, and set it to a default type. */
   bat_position = blit::screen.bounds.w / 2;
-  bat_speed = 0.5f;
+  bat_speed = 1.0f;
   bat_type = BAT_NORMAL;
 
   /* Clear out the list of balls, and spawn one on the bat. */
@@ -170,6 +170,22 @@ gamestate_t GameState::update( uint32_t p_time )
   if ( l_movement != 0.0f )
   {
     move_bat( l_movement );
+  }
+
+  /* Next, if the user presses B and there's a ball on the bat, fire it. */
+  /* And yes, if we've collected multiple balls, we launch them all!     */
+  if ( blit::buttons.state & blit::Button::B )
+  {
+    /* Work through all our balls then. */
+    for ( auto l_ball : balls )
+    {
+      /* Only interested in one that's stuck. */
+      if ( l_ball->stuck )
+      {
+        /* Balls know how to launch themselves, happily. */
+        l_ball->launch();
+      }
+    }
   }
 
   /* Next up, we work our way through all the balls we have, and update their */

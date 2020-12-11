@@ -122,5 +122,5 @@ uint16_t Level::get_brick_count( void )
   return bricks[p_row][p_column];
  }
 
-
+ 
 /* End of Level.cpp */
