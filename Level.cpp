@@ -117,10 +117,15 @@ uint16_t Level::get_brick_count( void )
  * uint8_t * 2 - the row and column in the level being queried.
  */
 
- uint8_t Level::get_brick( uint8_t p_row, uint8_t p_column )
- {
+uint8_t Level::get_brick( uint8_t p_row, uint8_t p_column )
+{
   return bricks[p_row][p_column];
- }
+}
+
+uint8_t Level::get_brick( blit::Point p_point )
+{
+  return get_brick( p_point.y, p_point.x );
+}
 
  
 /* End of Level.cpp */

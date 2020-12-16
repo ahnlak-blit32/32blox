@@ -43,6 +43,26 @@ Ball::Ball( blit::Vec2 p_origin, ball_type_t p_type )
 
 
 /*
+ * compute_bat_angle - works out the (radian) angle from vertical to rotate
+ *                     a bat bounce from; the central zone is a straight bounce,
+ *                     but close to the edge we rotate downwards a little
+ */
+
+float Ball::compute_bat_angle( void )
+{
+  /* So, work out the centre of the bat. */
+  uint16_t l_bat_centre = bat_position.x + bat_position.w / 2;
+
+  /* And the ratio away from the centre we are. */
+  float l_offset = ( location.x - l_bat_centre ) / (float)bat_position.w;
+
+printf( "offset is %f\n", l_offset );
+  /* So, this is the angle to twist at... */
+  return l_offset;
+}
+
+
+/*
  * get_render_location - returns the render location of the ball, taking into
  *                       account the ball time and offsets and suchlike.
  */
@@ -81,6 +101,20 @@ ball_type_t Ball::get_type( void )
 
 
 /*
+ * moving_up and _left; boolean flags to show the balls current direction of travel
+ */
+
+bool Ball::moving_up( void )
+{
+  return vector.y < 0.0;
+}
+bool Ball::moving_left( void )
+{
+  return vector.x < 0.0;
+}
+
+
+/*
  * update - moves the ball along it's defined vectore
  */
 
@@ -102,21 +136,16 @@ void Ball::update( void )
 
 void Ball::launch( void )
 {
-  /* Our x vector is dependent on our offset from the centre of the bat. */
-  uint16_t l_bat_centre = bat_position.x + bat_position.w / 2;
+  /* First off, start with a launch-speed vertical vector. */
+  vector.x = 0;
+  vector.y = -1.5;
 
-  if ( l_bat_centre > location.x )
-  {
-    /* So, we're to the *left* of the bat. */
-    vector.x = -0.5;
-  }
-  else
-  {
-    /* So, we're to the *right* of the bat. */
-    vector.x = 0.5;
-  }
+  /* And apply a launch angle to that. */
+  vector.rotate( compute_bat_angle() );
 
-  vector.y = -0.5;
+  /* This means we're unstuck. */
+  stuck = false;
+
   /* All done. */
   return;
 }
@@ -132,12 +161,45 @@ void Ball::bounce( bool p_horizontal )
   /* Also fairly easy, thanks to vectors. */
   if ( p_horizontal )
   {
-    vector.y *= -1;
+    vector.x *= -1;
   }
   else
   {
-    vector.x *= -1;
+    vector.y *= -1;
   }
+
+  /* All done. */
+  return;
+}
+
+
+/*
+ * bat_bounce - a special kind of bounce to handle the bat being involved.
+ *              Called whenever the ball is in proximity to the bat.
+ * uint16_t - the height of the bat, needed to know if we've just hit. 
+ */
+
+void Ball::bat_bounce( uint16_t p_bat_height )
+{
+  /* Sanity check; nothing to do if the ball is already stuck to the bat. */
+  if ( stuck )
+  {
+    return;
+  }
+
+  /* Only consider this bounce if (a) we weren't on the bat before, and (b) */
+  /* we are now.                                                            */
+  blit::Rect l_bounds = get_bounds();
+  if ( l_bounds.br().y < p_bat_height || ( l_bounds.br().y - vector.y ) >= p_bat_height )
+  {
+    return;
+  }
+
+  /* So... do a vertical bounce first. */
+  bounce( false );
+
+  /* And apply a suitable rotation, too. */
+  vector.rotate( compute_bat_angle() );
 
   /* All done. */
   return;
@@ -167,8 +229,17 @@ void Ball::offset( blit::Vec2 p_offset )
 
 void Ball::move_bat( blit::Rect p_bat, float p_offset )
 {
+  /* Remeber the position of the bat, we'll often need it. */
+  bat_position = p_bat;
+
   /* So, this is only significant if the ball is sticky. */
-  if ( !sticky )
+  if ( !stuck && !sticky )
+  {
+    return;
+  }
+
+  /* And if there's no movement, there's nothing to do. */
+  if ( p_offset == 0.0f )
   {
     return;
   }
@@ -189,9 +260,6 @@ void Ball::move_bat( blit::Rect p_bat, float p_offset )
     stuck = true;
 
   }
-
-  /* Remeber the position of the bat, for launching later. */
-  bat_position = p_bat;
 
   /* All done. */
   return;

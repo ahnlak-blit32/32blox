@@ -26,15 +26,19 @@ private:
   ball_type_t   ball_type;
   blit::Rect    bat_position;
   const uint8_t ball_size[BALL_MAX] = { 8, 6 };
+  float         compute_bat_angle( void );
 
 public:
                 Ball( blit::Vec2, ball_type_t = BALL_NORMAL );
   blit::Point   get_render_location( void );
   blit::Rect    get_bounds( void );
   ball_type_t   get_type( void );
+  bool          moving_up( void );
+  bool          moving_left( void );
   void          update( void );
   void          launch( void );
   void          bounce( bool );
+  void          bat_bounce( uint16_t );
   void          offset( blit::Vec2 );
   void          move_bat( blit::Rect, float );
 
