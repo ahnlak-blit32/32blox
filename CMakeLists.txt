@@ -7,7 +7,7 @@ set(PROJECT_SOURCE 32blox.cpp AssetFactory.cpp Ball.cpp Level.cpp HighScore.cpp
                    SplashState.cpp GameState.cpp DeathState.cpp HiscoreState.cpp)
 set(DISTRIBS README.md LICENSE)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall") 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wdouble-promotion") 
 
 # Build configuration; approach this with caution!
 if(NOT EXISTS ${32BLIT_PATH}/32blit.cmake)
