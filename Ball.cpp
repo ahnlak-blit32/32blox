@@ -56,7 +56,6 @@ float Ball::compute_bat_angle( void )
   /* And the ratio away from the centre we are. */
   float l_offset = ( location.x - l_bat_centre ) / (float)bat_position.w;
 
-printf( "offset is %f\n", l_offset );
   /* So, this is the angle to twist at... */
   return l_offset;
 }
@@ -106,11 +105,11 @@ ball_type_t Ball::get_type( void )
 
 bool Ball::moving_up( void )
 {
-  return vector.y < 0.0;
+  return vector.y < 0.0f;
 }
 bool Ball::moving_left( void )
 {
-  return vector.x < 0.0;
+  return vector.x < 0.0f;
 }
 
 

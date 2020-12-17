@@ -173,7 +173,7 @@ gamestate_t GameState::update( uint32_t p_time )
   }
   else
   {
-    l_movement = bat_speed * 1.5 * blit::joystick.x;
+    l_movement = bat_speed * 1.5f * blit::joystick.x;
   }
 
   /* But if the player has moved the dpad, then use that instead. */

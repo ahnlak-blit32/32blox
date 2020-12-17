@@ -7,9 +7,12 @@ set(PROJECT_SOURCE 32blox.cpp AssetFactory.cpp Ball.cpp Level.cpp HighScore.cpp
                    SplashState.cpp GameState.cpp DeathState.cpp HiscoreState.cpp)
 set(DISTRIBS README.md LICENSE)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wdouble-promotion") 
-
 # Build configuration; approach this with caution!
+if(MSVC)
+  add_compile_options("/W4" "/wd4244" "/wd4324" "/O2")
+else()
+  add_compile_options("-Wall" "-Wextra" "-Wdouble-promotion" "-Os" "-Wno-unused-parameter" "-Wno-switch")
+endif()
 if(NOT EXISTS ${32BLIT_PATH}/32blit.cmake)
   message(FATAL_ERROR "Define location of 32Blit API with -D32BLIT_PATH=<path to 32blit.cmake>")
 endif()
