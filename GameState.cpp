@@ -11,6 +11,9 @@
 
 /* System headers. */
 
+#include <iterator>
+
+
 /* Local headers. */
 
 #include "32blit.hpp"
@@ -61,7 +64,7 @@ void GameState::init( GameStateInterface *p_previous )
   font_tween.start();
 
   /* Reset the lives count and score. */
-  lives = 3;
+  lives = 1;
   score = 0;
 
   /* Centre the bat, and set it to a default type. */
@@ -165,7 +168,7 @@ gamestate_t GameState::update( uint32_t p_time )
   /* Handle the joystick, which is slightly more gradiated. */
   if ( blit::joystick.x < -0.66f )
   {
-    l_movement = bat_speed - 1;
+    l_movement = bat_speed * -1;
   }
   else if ( blit::joystick.x > 0.66f )
   {
@@ -250,15 +253,21 @@ gamestate_t GameState::update( uint32_t p_time )
     }
 
     /* And lastly, the bat itself. */
-    if ( ( ( l_new_bounds.x + l_new_bounds.w ) <= ( bat_position + bat_width[bat_type] / 2 ) ) &&
-         ( l_new_bounds.x >= ( bat_position - bat_width[bat_type] / 2 ) ) &&
+    if ( ( l_new_bounds.x <= ( bat_position + bat_width[bat_type] / 2 ) ) &&
+         ( ( l_new_bounds.x + l_new_bounds.w ) >= ( bat_position - bat_width[bat_type] / 2 ) ) &&
          ( ( l_new_bounds.y + l_new_bounds.h ) >= bat_height ) )
     {
       l_ball->bat_bounce( bat_height );
     }
+  }
 
-    /* If we fall off the bottom of the screen, the ball is lost! */
-    /*__RETURN__*/
+  /* Clean up any balls that drop off the bottom of the screen. */
+  balls.remove_if( []( auto l_ball) { return l_ball->get_bounds().y > blit::screen.bounds.h; } );
+
+  /* If there are no more balls in play, then we lose a life. */
+  if ( std::distance( balls.begin(), balls.end() ) == 0 )
+  {
+    lives--;
   }
 
   /* If after all that we have no more lives, it's game over. */
@@ -309,7 +318,6 @@ void GameState::render( uint32_t p_time )
     blit::TextAlign::top_left
   );
   snprintf( l_buffer, 30, "HI: %05d", score );
-  blit::screen.pen = number_pen;
   blit::screen.text(
     l_buffer,
     *assets.number_font,
