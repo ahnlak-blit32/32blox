@@ -36,6 +36,8 @@ Ball::Ball( blit::Vec2 p_origin, ball_type_t p_type )
   /* And set some defaults, for now. */
   vector = blit::Vec2( 0, 0 );
   bat_position = blit::Rect( 0, 0, 0, 0 );
+  stuck = false;
+  sticky = false;
 
   /* All done. */
   return;

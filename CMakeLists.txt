@@ -21,4 +21,5 @@ install(FILES ${DISTRIBS} DESTINATION bin)
 blit_executable (${PROJECT_NAME} ${PROJECT_SOURCE})
 blit_assets_yaml (${PROJECT_NAME} assets.yml)
 blit_metadata (${PROJECT_NAME} metadata.yml)
+add_custom_target (flash DEPENDS ${PROJECT_NAME}.flash)
 # End of CMakeList.txt
