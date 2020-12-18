@@ -28,6 +28,7 @@ public:
   uint16_t    get_brick_count( void );
   uint8_t     get_brick( uint8_t, uint8_t );
   uint8_t     get_brick( blit::Point );
+  uint8_t     hit_brick( blit::Point );
 };
 
 #endif /* _LEVEL_HPP_ */

@@ -12,11 +12,13 @@
 #ifndef   _DEATHSTATE_HPP_
 #define   _DEATHSTATE_HPP_
 
+#include "AssetFactory.hpp"
 #include "HighScore.hpp"
 
 class DeathState : public GameStateInterface
 {
 private:
+  AssetFactory   &assets = AssetFactory::get_instance();
   char            name[7];
   uint16_t        score;
   uint8_t         cursor;  

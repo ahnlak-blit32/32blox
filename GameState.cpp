@@ -247,9 +247,14 @@ gamestate_t GameState::update( uint32_t p_time )
         /* We've crossed a line. See if it's occupied! */
         if ( level->get_brick( l_new_tl ) > 0 )
         {
+          score += level->hit_brick( l_new_tl );
           l_ball->bounce( false );
         }
       }
+    }
+    else
+    {
+      /* Moving down, check if the brick row has changed on the bottom edge. */
     }
 
     /* And lastly, the bat itself. */

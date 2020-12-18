@@ -12,6 +12,7 @@
 #ifndef   _HISCORESTATE_HPP_
 #define   _HISCORESTATE_HPP_
 
+#include "AssetFactory.hpp"
 #include "HighScore.hpp"
 
 #define HISCORESTATE_GRADIENT_HEIGHT 160
@@ -19,6 +20,7 @@
 class HiscoreState : public GameStateInterface
 {
 private:
+  AssetFactory   &assets = AssetFactory::get_instance();
   HighScore      *high_score;
   blit::Pen       font_pen;
   blit::Tween     font_tween;

@@ -151,66 +151,76 @@ void DeathState::render( uint32_t p_time )
   }
 
   /* Show what the score was. */
-  blit::screen.pen = blit::Pen( 255, 255, 255 );
+  blit::screen.pen = blit::Pen( 255, 255, 0 );
   snprintf( l_buffer, 12, "%05d", score );
   blit::screen.text(
     l_buffer,
-    blit::minimal_font,
-    blit::Point( blit::screen.bounds.w / 2, 30 ),
+    *assets.message_font,
+    blit::Point( blit::screen.bounds.w / 2, 50 ),
     true,
-    blit::TextAlign::center_center
+    blit::TextAlign::top_center
   );
 
   /* And the name, ready for them to change if they want to... */
+  blit::screen.pen = blit::Pen( 255, 255, 255 );
   snprintf( l_buffer, 12, "%c %c %c %c %c %c", 
             name[0], name[1], name[2], name[3], name[4], name[5] );
+  blit::Size l_name_sz = blit::screen.measure_text( l_buffer, *assets.message_font, true );
+  blit::Point l_name_box = blit::Point( 
+    ( blit::screen.bounds.w - l_name_sz.w ) / 2, 
+    ( blit::screen.bounds.h - l_name_sz.h ) / 2
+  );
+
   blit::screen.text(
     l_buffer,
-    blit::minimal_font,
-    blit::Point( blit::screen.bounds.w / 2, 50 ),
+    *assets.message_font,
+    l_name_box,
     true,
-    blit::TextAlign::center_center
+    blit::TextAlign::top_left
   );
 
   /* The rest is all in a nicely tweened pen. */
   blit::screen.pen = font_pen;
 
   /* Draw a box around the current letter being edited. */
-  blit::screen.h_span( blit::Point( 53 + cursor * 9, 43 ), 8 );
-  blit::screen.h_span( blit::Point( 53 + cursor * 9, 56 ), 8 );
-  blit::screen.v_span( blit::Point( 53 + cursor * 9, 43 ), 14 );
-  blit::screen.v_span( blit::Point( 61 + cursor * 9, 43 ), 14 );
+  blit::Point l_char_box = l_name_box;
+  l_char_box.x += cursor * 32 - 5;
+  l_char_box.y -= 9;
+  blit::screen.h_span( l_char_box, 24 );
+  blit::screen.h_span( l_char_box + blit::Point( 0, 32 ), 24 );
+  blit::screen.v_span( l_char_box, 32 );
+  blit::screen.v_span( l_char_box + blit::Point( 23, 0 ), 32 );
 
   /* The static messaging next - congrats, and how to enter your name... */
   blit::screen.text(
     "NEW HIGH SCORE!",
-    blit::fat_font,
+    *assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 10 ),
     true,
-    blit::TextAlign::center_center
+    blit::TextAlign::top_center
   );
   blit::screen.text(
     "LEFT/RIGHT TO SELECT",
-    blit::fat_font,
-    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 40 ),
+    *assets.number_font,
+    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 55 ),
     true,
-    blit::TextAlign::center_center
+    blit::TextAlign::bottom_center
   );
   blit::screen.text(
     "UP/DOWN TO CHANGE",
-    blit::fat_font,
-    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 30 ),
+    *assets.number_font,
+    blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 40 ),
     true,
-    blit::TextAlign::center_center
+    blit::TextAlign::bottom_center
   );
 
   /* Lastly, prompt the user to press a button. */
   blit::screen.text(
     "PRESS 'B' TO SAVE",
-    blit::fat_font,
+    *assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,
-    blit::TextAlign::center_center
+    blit::TextAlign::bottom_center
   );
 
 
