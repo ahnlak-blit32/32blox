@@ -21,6 +21,7 @@
 #include "assets_images.hpp"
 
 #include "GameState.hpp"
+#include "HighScore.hpp"
 #include "Level.hpp"
 
 
@@ -41,6 +42,9 @@ GameState::GameState( void )
   number_pen = blit::Pen( 255, 255, 0 );
   font_tween.init( blit::tween_sine, 255.0f, 100.0f, 500 );
 
+  /* And we'll need access to the high score table. */
+  high_score = new HighScore();
+
   /* All done. */
   return;
 }
@@ -56,6 +60,17 @@ void GameState::init( GameStateInterface *p_previous )
 {
   /* Select the game spritesheet into the screen. */
   blit::screen.sprites = assets.spritesheet_game;
+
+  /* Fetch the current top score. */
+  const hiscore_t *l_top_entry = high_score->get_entry( 0 );
+  if ( l_top_entry == nullptr )
+  {
+    hiscore = 0;
+  }
+  else
+  {
+    hiscore = l_top_entry->score;
+  }
 
   /* Load the first level. */
   level = new Level( 1 );
@@ -215,6 +230,9 @@ gamestate_t GameState::update( uint32_t p_time )
   /* positions. We'll deal with any collisions in a little while...           */
   for ( auto l_ball : balls )
   {
+    bool l_bounce_vertical = false;
+    bool l_bounce_horizontal = false;
+
     /* Fetch the bounds of the ball's current position. */
     blit::Rect l_old_bounds = l_ball->get_bounds();
 
@@ -242,19 +260,114 @@ gamestate_t GameState::update( uint32_t p_time )
       /* Check if the brick row has changed for the leading (top) edge. */
       blit::Point l_old_tl = screen_to_brick( l_old_bounds.tl() );
       blit::Point l_new_tl = screen_to_brick( l_new_bounds.tl() );
+      blit::Point l_new_tr = screen_to_brick( l_new_bounds.tr() );
       if ( l_old_tl.y != l_new_tl.y )
       {
         /* We've crossed a line. See if it's occupied! */
         if ( level->get_brick( l_new_tl ) > 0 )
         {
           score += level->hit_brick( l_new_tl );
-          l_ball->bounce( false );
+          l_bounce_vertical = true;
+        }
+
+        /* Also consider the top right corner, in case we bounced on a boundary. */
+        if ( ( l_new_tl.x != l_new_tr.x ) || ( l_new_tl.y != l_new_tr.y ) )
+        {
+          if ( level->get_brick( l_new_tr ) > 0 )
+          {
+            score += level->hit_brick( l_new_tr );
+            l_bounce_vertical = true;
+          }
         }
       }
     }
     else
     {
       /* Moving down, check if the brick row has changed on the bottom edge. */
+      blit::Point l_old_bl = screen_to_brick( l_old_bounds.bl() );
+      blit::Point l_new_bl = screen_to_brick( l_new_bounds.bl() );
+      blit::Point l_new_br = screen_to_brick( l_new_bounds.br() );
+      if ( l_old_bl.y != l_new_bl.y )
+      {
+        /* We've crossed a line. See if it's occupied! */
+        if ( level->get_brick( l_new_bl ) > 0 )
+        {
+          score += level->hit_brick( l_new_bl );
+          l_bounce_vertical = true;
+        }
+
+        /* Also consider the top right corner, in case we bounced on a boundary. */
+        if ( ( l_new_bl.x != l_new_br.x ) || ( l_new_bl.y != l_new_br.y ) )
+        {
+          if ( level->get_brick( l_new_br ) > 0 )
+          {
+            score += level->hit_brick( l_new_br );
+            l_bounce_vertical = true;
+          }
+        }
+      }
+    }
+    if ( l_ball->moving_left() )
+    {
+      /* Check if the brick row has changed for the leading (left) edge. */
+      blit::Point l_old_tl = screen_to_brick( l_old_bounds.tl() );
+      blit::Point l_new_tl = screen_to_brick( l_new_bounds.tl() );
+      blit::Point l_new_bl = screen_to_brick( l_new_bounds.bl() );
+      if ( l_old_tl.x != l_new_tl.x )
+      {
+        /* We've crossed a line. See if it's occupied! */
+        if ( level->get_brick( l_new_tl ) > 0 )
+        {
+          score += level->hit_brick( l_new_tl );
+          l_bounce_horizontal = true;
+        }
+
+        /* Also consider the top right corner, in case we bounced on a boundary. */
+        if ( ( l_new_tl.x != l_new_bl.x ) || ( l_new_tl.y != l_new_bl.y ) )
+        {
+          if ( level->get_brick( l_new_bl ) > 0 )
+          {
+            score += level->hit_brick( l_new_bl );
+            l_bounce_horizontal = true;
+          }
+        }
+      }
+    }
+    else
+    {
+      /* Moving down, check if the brick row has changed on the bottom edge. */
+      blit::Point l_old_tr = screen_to_brick( l_old_bounds.tr() );
+      blit::Point l_new_tr = screen_to_brick( l_new_bounds.tr() );
+      blit::Point l_new_br = screen_to_brick( l_new_bounds.br() );
+      if ( l_old_tr.x != l_new_tr.x )
+      {
+        /* We've crossed a line. See if it's occupied! */
+        if ( level->get_brick( l_new_tr ) > 0 )
+        {
+          score += level->hit_brick( l_new_tr );
+          l_bounce_horizontal = true;
+        }
+
+        /* Also consider the top right corner, in case we bounced on a boundary. */
+        if ( ( l_new_tr.x != l_new_br.x ) || ( l_new_tr.y != l_new_br.y ) )
+        {
+          if ( level->get_brick( l_new_br ) > 0 )
+          {
+            score += level->hit_brick( l_new_br );
+            l_bounce_horizontal = true;
+          }
+        }
+      }
+    }
+
+    /* Apply the required ball bounces. */
+    if ( l_bounce_vertical )
+    {
+      l_ball->bounce( false );
+    }
+    if ( l_bounce_horizontal )
+    {
+      l_ball->bounce( true );
     }
 
     /* And lastly, the bat itself. */
@@ -322,7 +435,7 @@ void GameState::render( uint32_t p_time )
     true,
     blit::TextAlign::top_left
   );
-  snprintf( l_buffer, 30, "HI: %05d", score );
+  snprintf( l_buffer, 30, "HI: %05d", hiscore );
   blit::screen.text(
     l_buffer,
     *assets.number_font,

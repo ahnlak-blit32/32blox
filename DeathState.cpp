@@ -156,7 +156,7 @@ void DeathState::render( uint32_t p_time )
   blit::screen.text(
     l_buffer,
     *assets.message_font,
-    blit::Point( blit::screen.bounds.w / 2, 50 ),
+    blit::Point( blit::screen.bounds.w / 2, 55 ),
     true,
     blit::TextAlign::top_center
   );

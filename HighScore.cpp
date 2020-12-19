@@ -11,7 +11,7 @@
 
 /* System headers. */
 
-#include <string.h>
+#include <string.h> 
 
 
 /* Local headers. */
@@ -30,29 +30,7 @@
 
 HighScore::HighScore( void )
 {
-  char    l_buffer[256];
-
-  /* First off, check to see if the game data space exists and, if not, make it. */
-  for( uint8_t i = 0; i < 255 && i < strlen( GAME_DATAFILE_HISCORE ); i++ )
-  {
-    /* If we find a path divider, check that the current path exists and, */
-    /* if not, create it.                                                 */
-    if ( '/' == GAME_DATAFILE_HISCORE[i] )
-    {
-      /* Pull out this bit of the path. */
-      strncpy( l_buffer, GAME_DATAFILE_HISCORE, i );
-      l_buffer[i] = '\0';
-
-      /* Does it exist? */
-      if ( !blit::directory_exists( l_buffer ) )
-      {
-        printf( "Creating '%s'\n", l_buffer);
-        blit::create_directory( l_buffer );
-      }
-    }
-  }
-
-  /* Try and open the file then! */
+  /* File stuff now handled by the API, we just ask it nicely to load. */
   load();
 
   /* All done. */
@@ -91,17 +69,10 @@ uint8_t HighScore::rank( uint16_t p_score )
 
 void HighScore::load( void )
 {
-  /* Try to open the data file. */
-  blit::File *l_fptr = new blit::File( GAME_DATAFILE_HISCORE );
-  if ( l_fptr && l_fptr->is_open() )
+  /* We can just let the API handle this now. */
+  if ( !blit::read_save( scores, sizeof( hiscore_t ) * MAX_SCORES ) )
   {
-    /* Read it in, in one big lump. */
-    l_fptr->read( 0, sizeof( hiscore_t ) * MAX_SCORES, (char *)scores );
-    l_fptr->close();
-  }
-  else
-  {
-    /* Initialise the table to empty, then. */
+    /* Failure means the file was empty. */
     for( uint8_t i = 0; i < MAX_SCORES; i++ )
     {
       strcpy( scores[i].name, "ahnlak" );
@@ -143,14 +114,8 @@ void HighScore::save( uint16_t p_score, const char *p_name )
   strcpy( scores[l_position].name, p_name );
   scores[l_position].score = p_score;
 
-  /* And lastly, write this out to the high score storage. */
-  blit::File *l_fptr = new blit::File( GAME_DATAFILE_HISCORE, blit::OpenMode::write );
-  if ( l_fptr )
-  {
-    /* Read it in, in one big lump. */
-    l_fptr->write( 0, sizeof( hiscore_t ) * MAX_SCORES, (const char *)scores );
-    l_fptr->close();
-  }
+  /* And lastly, ask the API to save all this. */
+  blit::write_save( scores, sizeof( hiscore_t ) * MAX_SCORES );
 
   /* All done. */
   return;

@@ -15,6 +15,8 @@
 #include <forward_list>
 #include "AssetFactory.hpp"
 #include "Ball.hpp"
+#include "HighScore.hpp"
+
 
 typedef enum
 {
@@ -30,6 +32,7 @@ class GameState : public GameStateInterface
 {
 private:
   AssetFactory             &assets = AssetFactory::get_instance();
+  HighScore                *high_score;
   Level                    *level;
   uint8_t                   lives;
   blit::Pen                 font_pen;
@@ -40,6 +43,7 @@ private:
   uint16_t                  bat_height;
   bat_type_t                bat_type;
   uint16_t                  score;
+  uint16_t                  hiscore;
   std::forward_list<Ball*>  balls;
   const uint8_t             bat_width[BAT_MAX] = { 24, 16, 32 };
 
