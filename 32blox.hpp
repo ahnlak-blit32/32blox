@@ -41,6 +41,7 @@ public:
   virtual gamestate_t update( uint32_t ) = 0;
   virtual void        render( uint32_t ) = 0;
   virtual void        init( GameStateInterface * ) = 0;
+  virtual void        fini( GameStateInterface * ) = 0;
 };
 
 

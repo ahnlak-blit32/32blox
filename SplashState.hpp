@@ -30,6 +30,7 @@ private:
 public:
                   SplashState( void );
   void            init( GameStateInterface * );
+  void            fini( GameStateInterface * );
   gamestate_t     update( uint32_t );
   void            render( uint32_t );
 };

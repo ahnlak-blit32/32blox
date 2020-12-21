@@ -67,6 +67,24 @@ void SplashState::init( GameStateInterface *p_previous )
 
 
 /*
+ * fini - called whenever the game engine turns off this state.
+ * 
+ * GameStateInterface * - the state we were switching to
+ */
+
+void SplashState::fini( GameStateInterface *p_next )
+{
+  /* Turn off all our tweens. */
+  font_tween.stop();
+  logo_tween_x.stop();
+  logo_tween_y.stop();
+
+  /* And return. */
+  return; 
+}
+
+
+/*
  * update - called every tick (~10ms) to update the state of the game.
  * 
  * uint32_t - the elapsed time (in ms) since the game launched.
@@ -77,9 +95,6 @@ gamestate_t SplashState::update( uint32_t p_time )
   /* We also need to check to see if the user has pressed the A button. */
   if ( blit::buttons.pressed & blit::Button::A )
   {
-    font_tween.stop();
-    logo_tween_x.stop();
-    logo_tween_y.stop();
     return STATE_GAME;
   }
 

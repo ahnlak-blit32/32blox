@@ -20,6 +20,7 @@ public:
   static AssetFactory  &get_instance( void );
 
   blit::Surface        *surface_logo;
+  blit::Surface        *surface_long_logo;
   blit::SpriteSheet    *spritesheet_game;
   blit::Font           *number_font;
   blit::Font           *message_font;

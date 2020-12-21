@@ -55,6 +55,7 @@ private:
 public:
                             GameState( void );
   void                      init( GameStateInterface * );
+  void                      fini( GameStateInterface * );
   uint16_t                  get_score( void );
   gamestate_t               update( uint32_t );
   void                      render( uint32_t );

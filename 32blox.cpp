@@ -19,6 +19,7 @@
 #include "GameState.hpp"
 #include "DeathState.hpp"
 #include "HiscoreState.hpp"
+#include "MenuState.hpp"
 
 
 /* Module variables. */
@@ -26,6 +27,8 @@
 static gamestate_t          m_state = STATE_SPLASH;
 static GameStateInterface  *m_handlers[STATE_MAX];
 static uint32_t             m_current_tick;
+static bool                 m_game_menu = false;
+static MenuState           *m_menu_state;
 
 
 /* Functions. */
@@ -60,6 +63,9 @@ void init( void )
   m_state = STATE_SPLASH;
   m_handlers[m_state]->init( nullptr );
 
+  /* We'll also need a menu state for the in-game menu. */
+  m_menu_state = new MenuState();
+
   /* All done. */
   return;
 }
@@ -75,6 +81,33 @@ void update( uint32_t p_time )
 {
   gamestate_t l_newstate;
 
+  /* The game menu sits on top of the normal state handling. */
+  if ( blit::buttons.pressed & blit::Button::HOME )
+  {
+    /* Toggle the menu. */
+    m_game_menu = !m_game_menu;
+
+    /* And call a suitable init/fini method. */
+    if ( m_game_menu )
+    {
+      m_menu_state->init( nullptr );
+    }
+    else
+    {
+      m_menu_state->fini( nullptr );
+    }
+  }
+
+  /* And then if the game menu is active, handle that instead of the normal flow. */
+  if ( m_game_menu )
+  {
+    /* Handle updates in the menu. */
+    m_menu_state->update( p_time );
+
+    /* All done. */
+    return;
+  }
+
   /* Sanity check that the current state has a valid handler. */
   if ( nullptr == m_handlers[m_state] )
   {
@@ -87,11 +120,13 @@ void update( uint32_t p_time )
   /* If the state has changed, re-call the update for it. */
   if ( ( l_newstate != m_state ) && ( nullptr != m_handlers[l_newstate] ) )
   {
-    /* Initialise the new state. */
+    /* Finish up the current state. */
+    m_handlers[m_state]->fini( m_handlers[l_newstate] );
+
+    /* And initialise the new state. */
     m_handlers[l_newstate]->init( m_handlers[m_state] );
 
     /* Switch to the new state. */
-printf( "Switching states: %d -> %d\n", m_state, l_newstate );    
     m_state = l_newstate;
 
     /* Only call the update if we haven't been here before. */
@@ -115,6 +150,16 @@ printf( "Switching states: %d -> %d\n", m_state, l_newstate );
 
 void render( uint32_t p_time )
 {
+  /* If the game menu is active, handle that instead of the normal flow. */
+  if ( m_game_menu )
+  {
+    /* Just render the menu. */
+    m_menu_state->render( p_time );
+
+    /* All done. */
+    return;
+  }
+
   /* Sanity check that the current state has a valid handler. */
   if ( nullptr == m_handlers[m_state] )
   {

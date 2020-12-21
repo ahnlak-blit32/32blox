@@ -5,6 +5,8 @@
 assets_images.cpp:
   assets/32blox-logo.png:
     name: a_logo_img
+  assets/32blox-long-logo.png:
+    name: a_long_logo_img
   assets/game-sprites.png:
     name: a_game_sprites_img
 

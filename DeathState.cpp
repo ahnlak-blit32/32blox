@@ -81,6 +81,22 @@ void DeathState::init( GameStateInterface *p_previous )
 
 
 /*
+ * fini - called whenever the game engine turns off this state.
+ * 
+ * GameStateInterface * - the state we were switching to
+ */
+
+void DeathState::fini( GameStateInterface *p_next )
+{
+  /* Turn off the tweens. */
+  font_tween.stop();
+
+  /* All done. */
+  return;
+}
+
+
+/*
  * update - called every tick (~10ms) to update the state of the game.
  * 
  * uint32_t - the elapsed time (in ms) since the game launched.
@@ -91,7 +107,6 @@ gamestate_t DeathState::update( uint32_t p_time )
   /* If our score doesn't even rank, then we move on. */
   if ( 0 == score )
   {
-    font_tween.stop();
     return STATE_HISCORE;
   }
 
@@ -121,7 +136,6 @@ gamestate_t DeathState::update( uint32_t p_time )
   {
     printf( "%s has scored %d\n", name, score );
     high_score->save( score, name );
-    font_tween.stop();
     return STATE_HISCORE;
   }
 

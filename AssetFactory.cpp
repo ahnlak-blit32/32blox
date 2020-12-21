@@ -34,6 +34,7 @@ AssetFactory::AssetFactory( void )
 
   /* And then any individual image assets. */
   surface_logo = blit::Surface::load( a_logo_img );
+  surface_long_logo = blit::Surface::load( a_long_logo_img );
 
   /* And the fonts. */
   number_font = new blit::Font( a_number_font );

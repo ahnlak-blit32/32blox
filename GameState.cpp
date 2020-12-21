@@ -101,6 +101,21 @@ void GameState::init( GameStateInterface *p_previous )
 
 
 /*
+ * fini - called whenever the game engine turns off this state.
+ * 
+ * GameStateInterface * - the state we were switching to
+ */
+
+void GameState::fini( GameStateInterface *p_next )
+{
+  /* Turn oiff the tweens. */
+  font_tween.stop();
+
+  /* All done. */
+  return;
+}
+
+/*
  * move_bat - updates the bat position, taking into account the bat size and
  *            the edges of the screen.
  * float - the movement amount wanted; this may get clipped if the edge is hit
@@ -212,7 +227,7 @@ gamestate_t GameState::update( uint32_t p_time )
 
   /* Next, if the user presses B and there's a ball on the bat, fire it. */
   /* And yes, if we've collected multiple balls, we launch them all!     */
-  if ( blit::buttons.state & blit::Button::B )
+  if ( blit::buttons.pressed & blit::Button::B )
   {
     /* Work through all our balls then. */
     for ( auto l_ball : balls )
@@ -391,7 +406,6 @@ gamestate_t GameState::update( uint32_t p_time )
   /* If after all that we have no more lives, it's game over. */
   if ( lives == 0 )
   {
-    font_tween.stop();
     return STATE_DEATH;
   }
 

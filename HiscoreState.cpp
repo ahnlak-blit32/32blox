@@ -69,6 +69,21 @@ void HiscoreState::init( GameStateInterface *p_previous )
 
 
 /*
+ * fini - called whenever the game engine turns off this state.
+ * 
+ * GameStateInterface * - the state we were switching to
+ */
+
+void HiscoreState::fini( GameStateInterface *p_next )
+{
+  /* Stop the tweens. */
+  font_tween.stop();
+
+  /* All done. */
+  return;
+}
+
+/*
  * update - called every tick (~10ms) to update the state of the game.
  * 
  * uint32_t - the elapsed time (in ms) since the game launched.
@@ -79,7 +94,6 @@ gamestate_t HiscoreState::update( uint32_t p_time )
   /* Only real inputs here, is asking for the A button to restart. */
   if ( blit::buttons.pressed & blit::Button::A )
   {
-    font_tween.stop();
     return STATE_GAME;
   }
 
