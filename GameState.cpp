@@ -260,12 +260,14 @@ gamestate_t GameState::update( uint32_t p_time )
     /* Collision detect on the top of the screen. */
     if ( l_new_bounds.y <= 0 )
     {
+      output.trigger_haptic( 0.25f, 50 );
       l_ball->bounce( false );
     }
 
     /* And the edges of the screen. */
     if ( l_new_bounds.x <= 0 || ( l_new_bounds.x + l_new_bounds.w ) >= blit::screen.bounds.w )
     {
+      output.trigger_haptic( 0.25f, 50 );
       l_ball->bounce( true );
     }
 

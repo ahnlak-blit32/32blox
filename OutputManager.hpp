@@ -25,6 +25,7 @@ class OutputManager
 private:
                         OutputManager( void );
   output_flags_t        flags;
+  blit::Tween           haptic_tween;
 public:
   static OutputManager &get_instance( void );
   bool                  sound_enabled( void );
@@ -33,6 +34,8 @@ public:
   void                  enable_sound( bool );
   void                  enable_music( bool );
   void                  enable_haptic( bool );
+  void                  update( uint32_t );
+  void                  trigger_haptic( float, uint32_t );
 };
 
 

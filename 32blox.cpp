@@ -81,6 +81,10 @@ void update( uint32_t p_time )
 {
   gamestate_t l_newstate;
 
+  /* Update the output manager. */
+  OutputManager &l_output = OutputManager::get_instance();
+  l_output.update( p_time );
+
   /* The game menu sits on top of the normal state handling. */
   if ( blit::buttons.pressed & blit::Button::HOME )
   {

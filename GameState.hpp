@@ -16,6 +16,8 @@
 #include "AssetFactory.hpp"
 #include "Ball.hpp"
 #include "HighScore.hpp"
+#include "Level.hpp"
+#include "OutputManager.hpp"
 
 
 typedef enum
@@ -26,12 +28,12 @@ typedef enum
   BAT_MAX
 } bat_type_t;
 
-#include "Level.hpp"
 
 class GameState : public GameStateInterface
 {
 private:
   AssetFactory             &assets = AssetFactory::get_instance();
+  OutputManager            &output = OutputManager::get_instance();
   HighScore                *high_score;
   Level                    *level;
   uint8_t                   lives;

@@ -97,4 +97,46 @@ void OutputManager::enable_haptic( bool p_flag )
 }
 
 
-/* End of AssetFactory.cpp */
+/*
+ * update - called every tick to do any output processing that is required;
+ *          playing or decaying music and sound effects, and the haptic stuff.
+ *
+ * uint32_t - the time index from the main update() function.
+ */
+
+void OutputManager::update( uint32_t p_time )
+{
+  /* Update the haptic setting if the tween is active, and haptics are on. */
+  if ( flags.haptic_enabled && haptic_tween.is_running() )
+  {
+    blit::vibration = haptic_tween.value;
+  }
+  else
+  {
+    blit::vibration = 0.0f;
+  }
+
+  /* All done. */
+  return;
+}
+
+
+/*
+ * trigger_haptic - launches a haptic buzz
+ *
+ * float - the strength of the buzz, from 0.0 to 1.0
+ * uint32_t - the duratio nof the buzz, in milliseconds
+ */
+
+void OutputManager::trigger_haptic( float p_strength, uint32_t p_duration )
+{
+  /* Just set the tween running. */
+  haptic_tween.init( blit::tween_linear, p_strength, 0.0f, p_duration, 1 );
+  haptic_tween.start();
+
+  /* All done. */
+  return;
+}
+
+
+/* End of OutputManager.cpp */
