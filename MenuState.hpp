@@ -13,6 +13,7 @@
 #define   _MENUSTATE_HPP_
 
 #include "AssetFactory.hpp"
+#include "OutputManager.hpp"
 
 #define MENUSTATE_GRADIENT_HEIGHT 160
 
@@ -20,12 +21,14 @@ class MenuState : public GameStateInterface
 {
 private:
   AssetFactory   &assets = AssetFactory::get_instance();
+  OutputManager  &output = OutputManager::get_instance();
   blit::Pen       font_pen;
   blit::Pen       plain_pen;
   blit::Tween     font_tween;
   blit::Pen       gradient_pen[MENUSTATE_GRADIENT_HEIGHT];
   uint8_t         gradient_offset;
   blit::Size      menu_size;
+  uint8_t         cursor;
 
 public:
                   MenuState( void );

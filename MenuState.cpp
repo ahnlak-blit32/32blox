@@ -15,6 +15,8 @@
 
 /* System headers. */
 
+#include <string.h>
+
 /* Local headers. */
 
 #include "32blit.hpp"
@@ -42,7 +44,7 @@ MenuState::MenuState( void )
   /* The font pen will be simpler. */
   plain_pen = blit::Pen( 255, 255, 0 );
   font_pen = blit::Pen( 255, 255, 0 );
-  font_tween.init( blit::tween_sine, 225.0f, 150.0f, 750 );
+  font_tween.init( blit::tween_sine, 255.0f, 100.0f, 500 );
 }
 
 
@@ -59,6 +61,9 @@ void MenuState::init( GameStateInterface *p_previous )
 
   /* And work out the size of menu entries. */
   menu_size = blit::screen.measure_text( "Haptic <OFF>", *assets.message_font );
+
+  /* And set the cursor to the first option. */
+  cursor = 0;
 
   /* All done. */
   return;
@@ -97,7 +102,50 @@ gamestate_t MenuState::update( uint32_t p_time )
   }
 
   /* The font pen we use will pulse more subtlely. */
-  font_pen.r = font_tween.value;
+  font_pen.g = font_tween.value;
+
+  /* Fade any active vibrations. */
+  if ( blit::vibration > 0.0f )
+  {
+    blit::vibration -= 0.05f;
+  }
+  if ( blit::vibration < 0.05f )
+  {
+    blit::vibration = 0.0f;
+  }
+
+  /* Check for the user pressing up or down, to move the cursor. */
+  if ( ( blit::buttons.pressed & blit::Button::DPAD_UP ) && ( cursor > 0 ) )
+  {
+    blit::vibration = 0.25f;
+    cursor--;
+  }
+  if ( ( blit::buttons.pressed & blit::Button::DPAD_DOWN ) && ( cursor < 2 ) )
+  {
+    blit::vibration = 0.25f;
+    cursor++;
+  }
+
+  /* Left or right just toggles. */
+  if ( ( blit::buttons.pressed & blit::Button::DPAD_LEFT ) || 
+       ( blit::buttons.pressed & blit::Button::DPAD_RIGHT ) )
+  {
+    blit::vibration = 0.2f;
+    switch( cursor )
+    {
+      case 0:       /* Sound. */
+        output.enable_sound( !output.sound_enabled() );
+        break;
+      case 1:       /* Music. */
+        output.enable_music( !output.music_enabled() );
+        break;
+      case 2:       /* Haptic. */
+        output.enable_haptic( !output.haptic_enabled() );
+        break;
+      default:      /* Should never be reached. */
+        break;
+    }
+  }
 
   /* For this state, the return value is meaningless. */
   return STATE_NONE;
@@ -112,6 +160,8 @@ gamestate_t MenuState::update( uint32_t p_time )
 
 void MenuState::render( uint32_t p_time )
 {
+  char l_buffer[16];
+
   /* Clear the screen down. */
   blit::screen.clear();
 
@@ -137,6 +187,24 @@ void MenuState::render( uint32_t p_time )
     true,
     blit::TextAlign::center_left
   );
+  if ( output.sound_enabled() )
+  {
+    strcpy( l_buffer, "  <ON>" );
+  }
+  else
+  {
+    strcpy( l_buffer, " <OFF>" );
+  }
+  blit::screen.pen = ( cursor == 0 ) ? font_pen : plain_pen;
+  blit::screen.text(
+    l_buffer,
+    *assets.message_font,
+    blit::Point( blit::screen.bounds.w / 2, 100 ),
+    true,
+    blit::TextAlign::center_left
+  );
+
+  blit::screen.pen = plain_pen;
   blit::screen.text(
     "Music ",
     *assets.message_font,
@@ -144,12 +212,55 @@ void MenuState::render( uint32_t p_time )
     true,
     blit::TextAlign::center_left
   );
+  if ( output.music_enabled() )
+  {
+    strcpy( l_buffer, "  <ON>" );
+  }
+  else
+  {
+    strcpy( l_buffer, " <OFF>" );
+  }
+  blit::screen.pen = ( cursor == 1 ) ? font_pen : plain_pen;
+  blit::screen.text(
+    l_buffer,
+    *assets.message_font,
+    blit::Point( blit::screen.bounds.w / 2, 130 ),
+    true,
+    blit::TextAlign::center_left
+  );
+
+  blit::screen.pen = plain_pen;
   blit::screen.text(
     "Haptic",
     *assets.message_font,
     blit::Point( ( blit::screen.bounds.w - menu_size.w ) / 2, 160 ),
     true,
     blit::TextAlign::center_left
+  );
+  if ( output.haptic_enabled() )
+  {
+    strcpy( l_buffer, "  <ON>" );
+  }
+  else
+  {
+    strcpy( l_buffer, " <OFF>" );
+  }
+  blit::screen.pen = ( cursor == 2 ) ? font_pen : plain_pen;
+  blit::screen.text(
+    l_buffer,
+    *assets.message_font,
+    blit::Point( blit::screen.bounds.w / 2, 160 ),
+    true,
+    blit::TextAlign::center_left
+  );
+
+  blit::screen.pen = plain_pen;
+  blit::screen.text(
+    "PRESS <MENU> TO RETURN",
+    *assets.number_font,
+    blit::Point( blit::screen.bounds.w / 2, 200 ),
+    true,
+    blit::TextAlign::bottom_center
   );
 
   /* Lastly some gratuitous self-promotion. */

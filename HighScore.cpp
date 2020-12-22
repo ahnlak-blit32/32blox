@@ -70,7 +70,7 @@ uint8_t HighScore::rank( uint16_t p_score )
 void HighScore::load( void )
 {
   /* We can just let the API handle this now. */
-  if ( !blit::read_save( scores, sizeof( hiscore_t ) * MAX_SCORES ) )
+  if ( !blit::read_save( scores, SAVE_SLOT_HISCORE ) )
   {
     /* Failure means the file was empty. */
     for( uint8_t i = 0; i < MAX_SCORES; i++ )
@@ -115,7 +115,7 @@ void HighScore::save( uint16_t p_score, const char *p_name )
   scores[l_position].score = p_score;
 
   /* And lastly, ask the API to save all this. */
-  blit::write_save( scores, sizeof( hiscore_t ) * MAX_SCORES );
+  blit::write_save( scores, SAVE_SLOT_HISCORE );
 
   /* All done. */
   return;
