@@ -20,6 +20,9 @@ typedef struct
   bool                  haptic_enabled;  
 } output_flags_t;
 
+#define CHANNEL_BOUNCE  7
+
+
 class OutputManager
 {
 private:
@@ -36,6 +39,7 @@ public:
   void                  enable_haptic( bool );
   void                  update( uint32_t );
   void                  trigger_haptic( float, uint32_t );
+  void                  play_effect_bounce( uint16_t );
 };
 
 

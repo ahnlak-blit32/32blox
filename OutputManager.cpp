@@ -37,6 +37,14 @@ OutputManager::OutputManager( void )
     flags.haptic_enabled = false;
   }
 
+  /* Set up the sound channels. */
+  blit::channels[CHANNEL_BOUNCE].waveforms  = blit::Waveform::SAW | blit::Waveform::NOISE;
+  blit::channels[CHANNEL_BOUNCE].volume     = 0x7fff;
+  blit::channels[CHANNEL_BOUNCE].attack_ms  = 8;
+  blit::channels[CHANNEL_BOUNCE].decay_ms   = 32;
+  blit::channels[CHANNEL_BOUNCE].sustain    = 0;
+  blit::channels[CHANNEL_BOUNCE].release_ms = 16;
+
   /* All done. */
   return;
 }
@@ -134,6 +142,27 @@ void OutputManager::trigger_haptic( float p_strength, uint32_t p_duration )
   haptic_tween.init( blit::tween_linear, p_strength, 0.0f, p_duration, 1 );
   haptic_tween.start();
 
+  /* All done. */
+  return;
+}
+
+
+/*
+ * play_effect_bounce - plays the sound effect of the ball bouncing off something
+ *
+ * uint16_t - the frequency to use
+ */
+
+void OutputManager::play_effect_bounce( uint16_t p_frequency )
+{
+  /* Only do this if sound effects are enabled. */
+  if ( flags.sound_enabled )
+  {
+    blit::channels[CHANNEL_BOUNCE].frequency  = p_frequency;
+    blit::channels[CHANNEL_BOUNCE].trigger_attack();
+  }
+
+  printf( "Bounce sound!\n" );
   /* All done. */
   return;
 }

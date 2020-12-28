@@ -28,6 +28,9 @@ typedef enum
   BAT_MAX
 } bat_type_t;
 
+#define FREQ_BOUNDS 96
+#define FREQ_BRICK  640
+
 
 class GameState : public GameStateInterface
 {

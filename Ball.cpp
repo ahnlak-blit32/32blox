@@ -178,14 +178,16 @@ void Ball::bounce( bool p_horizontal )
  * bat_bounce - a special kind of bounce to handle the bat being involved.
  *              Called whenever the ball is in proximity to the bat.
  * uint16_t - the height of the bat, needed to know if we've just hit. 
+ *
+ * Returns a bool flag to indicate whether this was, indeed, a bounce
  */
 
-void Ball::bat_bounce( uint16_t p_bat_height )
+bool Ball::bat_bounce( uint16_t p_bat_height )
 {
   /* Sanity check; nothing to do if the ball is already stuck to the bat. */
   if ( stuck )
   {
-    return;
+    return false;
   }
 
   /* Only consider this bounce if (a) we weren't on the bat before, and (b) */
@@ -193,7 +195,7 @@ void Ball::bat_bounce( uint16_t p_bat_height )
   blit::Rect l_bounds = get_bounds();
   if ( l_bounds.br().y < p_bat_height || ( l_bounds.br().y - vector.y ) >= p_bat_height )
   {
-    return;
+    return false;
   }
 
   /* So... do a vertical bounce first. */
@@ -203,7 +205,7 @@ void Ball::bat_bounce( uint16_t p_bat_height )
   vector.rotate( compute_bat_angle() );
 
   /* All done. */
-  return;
+  return true;
 }
 
 

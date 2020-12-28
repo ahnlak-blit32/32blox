@@ -261,6 +261,7 @@ gamestate_t GameState::update( uint32_t p_time )
     if ( l_new_bounds.y <= 0 )
     {
       output.trigger_haptic( 0.25f, 50 );
+      output.play_effect_bounce( FREQ_BOUNDS );
       l_ball->bounce( false );
     }
 
@@ -268,6 +269,7 @@ gamestate_t GameState::update( uint32_t p_time )
     if ( l_new_bounds.x <= 0 || ( l_new_bounds.x + l_new_bounds.w ) >= blit::screen.bounds.w )
     {
       output.trigger_haptic( 0.25f, 50 );
+      output.play_effect_bounce( FREQ_BOUNDS );
       l_ball->bounce( true );
     }
 
@@ -380,10 +382,12 @@ gamestate_t GameState::update( uint32_t p_time )
     /* Apply the required ball bounces. */
     if ( l_bounce_vertical )
     {
+      output.play_effect_bounce( FREQ_BRICK );
       l_ball->bounce( false );
     }
     if ( l_bounce_horizontal )
     {
+      output.play_effect_bounce( FREQ_BRICK );
       l_ball->bounce( true );
     }
 
@@ -392,7 +396,10 @@ gamestate_t GameState::update( uint32_t p_time )
          ( ( l_new_bounds.x + l_new_bounds.w ) >= ( bat_position - bat_width[bat_type] / 2 ) ) &&
          ( ( l_new_bounds.y + l_new_bounds.h ) >= bat_height ) )
     {
-      l_ball->bat_bounce( bat_height );
+      if ( l_ball->bat_bounce( bat_height ) )
+      {
+        output.play_effect_bounce( FREQ_BOUNDS );
+      }
     }
   }
 

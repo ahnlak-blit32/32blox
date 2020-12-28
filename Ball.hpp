@@ -38,7 +38,7 @@ public:
   void          update( void );
   void          launch( void );
   void          bounce( bool );
-  void          bat_bounce( uint16_t );
+  bool          bat_bounce( uint16_t );
   void          offset( blit::Vec2 );
   void          move_bat( blit::Rect, float );
 
