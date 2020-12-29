@@ -45,6 +45,9 @@ GameState::GameState( void )
   /* And we'll need access to the high score table. */
   high_score = new HighScore();
 
+  /* Prepare the tween for splashing messages. */
+  splash_tween.init( blit::tween_linear, 255.0f, 0.0f, 1750, 1 );
+
   /* All done. */
   return;
 }
@@ -73,23 +76,14 @@ void GameState::init( GameStateInterface *p_previous )
   }
 
   /* Load the first level. */
-  level = new Level( 1 );
+  load_level( 1 );
 
   /* Set the tweens running. */
   font_tween.start();
 
   /* Reset the lives count and score. */
-  lives = 1;
+  lives = 3;
   score = 0;
-
-  /* Centre the bat, and set it to a default type. */
-  bat_position = blit::screen.bounds.w / 2;
-  bat_speed = 1.0f;
-  bat_type = BAT_NORMAL;
-
-  /* Clear out the list of balls, and spawn one on the bat. */
-  balls.clear();
-  spawn_ball();
 
   /* All done. */
   return;
@@ -106,6 +100,7 @@ void GameState::fini( GameStateInterface *p_next )
 {
   /* Turn oiff the tweens. */
   font_tween.stop();
+  splash_tween.stop();
 
   /* All done. */
   return;
@@ -194,6 +189,34 @@ void GameState::spawn_ball( void )
 
 
 /*
+ * load_level - loads the required level data, resets the balls, the bats and
+ *              everything else for the start of a whole new level
+ */
+
+void GameState::load_level( uint8_t p_level )
+{
+  /* Load up the level data. */
+  level = new Level( p_level );
+
+  /* Centre the bat, and set it to a default type. */
+  bat_position = blit::screen.bounds.w / 2;
+  bat_speed = 1.0f;
+  bat_type = BAT_NORMAL;
+
+  /* Clear out the list of balls, and spawn one on the bat. */
+  balls.clear();
+  spawn_ball();
+
+  /* Let the user know what level they're on. */
+  snprintf( splash_message, 30, "Level\n%02d", level->get_level() );
+  splash_tween.start();
+
+  /* All done. */
+  return;
+}
+
+
+/*
  * get_score - exposes the current score for the current game
  */
 
@@ -246,7 +269,7 @@ gamestate_t GameState::update( uint32_t p_time )
 
   /* Next, if the user presses B and there's a ball on the bat, fire it. */
   /* And yes, if we've collected multiple balls, we launch them all!     */
-  if ( blit::buttons.pressed & blit::Button::B )
+  if ( blit::buttons.pressed & blit::Button::B && lives > 0 )
   {
     /* Work through all our balls then. */
     for ( auto l_ball : balls )
@@ -401,11 +424,13 @@ gamestate_t GameState::update( uint32_t p_time )
     /* Apply the required ball bounces. */
     if ( l_bounce_vertical )
     {
+      output.trigger_haptic( 0.25f, 50 );
       output.play_effect_bounce( FREQ_BRICK );
       l_ball->bounce( false );
     }
     if ( l_bounce_horizontal )
     {
+      output.trigger_haptic( 0.25f, 50 );
       output.play_effect_bounce( FREQ_BRICK );
       l_ball->bounce( true );
     }
@@ -417,6 +442,7 @@ gamestate_t GameState::update( uint32_t p_time )
     {
       if ( l_ball->bat_bounce( bat_height ) )
       {
+        output.trigger_haptic( 0.25f, 50 );
         output.play_effect_bounce( FREQ_BOUNDS );
       }
     }
@@ -429,10 +455,20 @@ gamestate_t GameState::update( uint32_t p_time )
   if ( std::distance( balls.begin(), balls.end() ) == 0 )
   {
     lives--;
+    spawn_ball();
+    if ( lives == 0 )
+    {
+      snprintf( splash_message, 30, "Game\nOver" );
+    }
+    else
+    {
+      snprintf( splash_message, 30, "Ball\nLost" );
+    }
+    splash_tween.start();
   }
 
   /* If after all that we have no more lives, it's game over. */
-  if ( lives == 0 )
+  if ( lives == 0 && splash_tween.is_finished() ) 
   {
     return STATE_DEATH;
   }
@@ -487,7 +523,21 @@ void GameState::render( uint32_t p_time )
   );
 
   /* And a display of the remaining lives. */
-  /*__RETURN__*/
+  blit::screen.sprite(
+    blit::Rect( 0, SPRITE_ROW_BAT, 1, 1 ),
+    blit::Point( blit::screen.bounds.w / 2 - 24, 1 )
+  );
+  blit::screen.sprite(
+    blit::Rect( 2, SPRITE_ROW_BAT, 1, 1 ),
+    blit::Point( blit::screen.bounds.w / 2 - 16, 1 )
+  );
+  snprintf( l_buffer, 30, "x%d", lives );
+  blit::screen.text( 
+    l_buffer, 
+    assets.number_font, 
+    blit::Point( blit::screen.bounds.w / 2 - 4, 1 ),
+    true, blit::TextAlign::top_left
+  );
 
   /* Now we work through the level one brick at a time... */
   for ( uint8_t l_row = 0; l_row < BOARD_HEIGHT; l_row++ )
@@ -539,7 +589,7 @@ void GameState::render( uint32_t p_time )
   }
 
   /* So, if we have a sticky ball, explain what the user needs to do... */
-  if ( l_stuck_ball )
+  if ( l_stuck_ball && lives > 0 )
   {
     blit::screen.pen = font_pen;
     blit::screen.text(
@@ -547,6 +597,20 @@ void GameState::render( uint32_t p_time )
       assets.message_font,
       blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 45 ),
       true,
+      blit::TextAlign::center_center
+    );
+  }
+
+  /* If there's a splash tween running, we have a message to display. */
+  if ( splash_tween.is_running() )
+  {
+    blit::screen.pen = font_pen;
+    blit::screen.pen.a = splash_tween.value;
+    blit::screen.text(
+      splash_message,
+      assets.splash_font,
+      blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h / 2 ),
+      false,
       blit::TextAlign::center_center
     );
   }

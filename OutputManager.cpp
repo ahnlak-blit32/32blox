@@ -162,7 +162,6 @@ void OutputManager::play_effect_bounce( uint16_t p_frequency )
     blit::channels[CHANNEL_BOUNCE].trigger_attack();
   }
 
-  printf( "Bounce sound!\n" );
   /* All done. */
   return;
 }

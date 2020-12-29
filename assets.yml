@@ -21,5 +21,8 @@ assets_fonts.cpp:
   assets/PressStart2P-Regular-copy.ttf:
     name: a_message_font
     height: 16
+  assets/Audiowide-Regular.ttf:
+    name: a_splash_font
+    height: 48
 
 # End of assets.yml

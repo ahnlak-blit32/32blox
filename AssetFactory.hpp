@@ -26,6 +26,7 @@ public:
   blit::SpriteSheet    *spritesheet_game;
   const blit::Font      number_font = blit::Font( a_number_font );
   const blit::Font      message_font = blit::Font( a_message_font );
+  const blit::Font      splash_font = blit::Font( a_splash_font );
 };
 
 

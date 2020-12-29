@@ -86,7 +86,7 @@ void update( uint32_t p_time )
   l_output.update( p_time );
 
   /* The game menu sits on top of the normal state handling. */
-  if ( blit::buttons.pressed & blit::Button::HOME )
+  if ( blit::buttons.pressed & blit::Button::MENU )
   {
     /* Toggle the menu. */
     m_game_menu = !m_game_menu;

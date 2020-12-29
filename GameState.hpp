@@ -43,6 +43,8 @@ private:
   blit::Pen                 font_pen;
   blit::Pen                 number_pen;
   blit::Tween               font_tween;
+  blit::Tween               splash_tween;
+  char                      splash_message[32];
   float                     bat_position;
   float                     bat_speed;
   uint16_t                  bat_height;
@@ -57,6 +59,7 @@ private:
   blit::Rect                brick_to_screen( uint8_t, uint8_t );
   blit::Point               screen_to_brick( blit::Point );
   void                      spawn_ball( void );
+  void                      load_level( uint8_t );
 
 public:
                             GameState( void );
