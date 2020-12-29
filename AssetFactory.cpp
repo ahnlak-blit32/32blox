@@ -18,7 +18,6 @@
 
 #include "AssetFactory.hpp"
 #include "assets_images.hpp"
-#include "assets_fonts.hpp"
 
 
 /* Functions. */
@@ -37,8 +36,8 @@ AssetFactory::AssetFactory( void )
   surface_long_logo = blit::Surface::load( a_long_logo_img );
 
   /* And the fonts. */
-  number_font = new blit::Font( a_number_font );
-  message_font = new blit::Font( a_message_font );
+  //number_font = blit::Font( a_number_font );
+  //message_font = blit::Font( a_message_font );
 
   /* All done. */
   return;

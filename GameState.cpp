@@ -89,11 +89,7 @@ void GameState::init( GameStateInterface *p_previous )
 
   /* Clear out the list of balls, and spawn one on the bat. */
   balls.clear();
-  Ball *l_ball = new Ball( blit::Vec2( bat_position, bat_height - 4 ) );
-  l_ball->stuck = true;
-  l_ball->move_bat( blit::Rect( bat_position - ( bat_width[bat_type] / 2 ), 
-                                bat_height, bat_width[bat_type], 1 ), 0.0f );
-  balls.push_front( l_ball );
+  spawn_ball();
 
   /* All done. */
   return;
@@ -171,6 +167,29 @@ blit::Rect GameState::brick_to_screen( uint8_t p_row, uint8_t p_column )
 blit::Point GameState::screen_to_brick( blit::Point p_location )
 {
   return blit::Point( p_location.x / 32, ( p_location.y - 10 ) / 16 );
+}
+
+
+/*
+ * spawn_ball - creates a new ball on the bat; either at the start of the level,
+ *              or after a ball is lost 
+ */
+
+void GameState::spawn_ball( void )
+{
+  /* create a new ball. */
+  Ball *l_ball = new Ball( blit::Vec2( bat_position, bat_height - 4 ) );
+
+  /* Stick it to the bat. */
+  l_ball->stuck = true;
+  l_ball->move_bat( blit::Rect( bat_position - ( bat_width[bat_type] / 2 ), 
+                                bat_height, bat_width[bat_type], 1 ), 0.0f );
+
+  /* And add it to the internal ball list. */
+  balls.push_front( l_ball );
+
+  /* All done. */
+  return;
 }
 
 
@@ -453,7 +472,7 @@ void GameState::render( uint32_t p_time )
   blit::screen.pen = number_pen;
   blit::screen.text(
     l_buffer,
-    *assets.number_font,
+    assets.number_font,
     blit::Point( 1, 1 ),
     true,
     blit::TextAlign::top_left
@@ -461,7 +480,7 @@ void GameState::render( uint32_t p_time )
   snprintf( l_buffer, 30, "HI: %05d", hiscore );
   blit::screen.text(
     l_buffer,
-    *assets.number_font,
+    assets.number_font,
     blit::Point( blit::screen.bounds.w - 1, 1 ),
     true,
     blit::TextAlign::top_right
@@ -525,7 +544,7 @@ void GameState::render( uint32_t p_time )
     blit::screen.pen = font_pen;
     blit::screen.text(
       "Press 'B' To Launch",
-      *assets.message_font,
+      assets.message_font,
       blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 45 ),
       true,
       blit::TextAlign::center_center

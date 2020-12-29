@@ -157,7 +157,7 @@ void HiscoreState::render( uint32_t p_time )
     blit::screen.pen.g -= 25;
     blit::screen.text (
       l_buffer,
-      *assets.number_font,
+      assets.number_font,
       blit::Point( blit::screen.bounds.w / 2, 45 + i * l_row_offset ),
       false,
       blit::TextAlign::center_center
@@ -168,7 +168,7 @@ void HiscoreState::render( uint32_t p_time )
   blit::screen.pen = font_pen;
   blit::screen.text(
     "HIGH SCORES",
-    *assets.message_font,
+    assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 10 ),
     true,
     blit::TextAlign::top_center
@@ -177,7 +177,7 @@ void HiscoreState::render( uint32_t p_time )
   /* Lastly, prompt the user to press a button. */
   blit::screen.text(
     "PRESS 'A' TO START",
-    *assets.message_font,
+    assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,
     blit::TextAlign::bottom_center

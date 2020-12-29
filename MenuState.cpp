@@ -60,7 +60,7 @@ void MenuState::init( GameStateInterface *p_previous )
   font_tween.start();
 
   /* And work out the size of menu entries. */
-  menu_size = blit::screen.measure_text( "Haptic <OFF>", *assets.message_font );
+  menu_size = blit::screen.measure_text( "Haptic <OFF>", assets.message_font );
 
   /* And set the cursor to the first option. */
   cursor = 0;
@@ -182,7 +182,7 @@ void MenuState::render( uint32_t p_time )
   blit::screen.pen = plain_pen;
   blit::screen.text(
     "Sounds",
-    *assets.message_font,
+    assets.message_font,
     blit::Point( ( blit::screen.bounds.w - menu_size.w ) / 2, 100 ),
     true,
     blit::TextAlign::center_left
@@ -198,7 +198,7 @@ void MenuState::render( uint32_t p_time )
   blit::screen.pen = ( cursor == 0 ) ? font_pen : plain_pen;
   blit::screen.text(
     l_buffer,
-    *assets.message_font,
+    assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 100 ),
     true,
     blit::TextAlign::center_left
@@ -207,7 +207,7 @@ void MenuState::render( uint32_t p_time )
   blit::screen.pen = plain_pen;
   blit::screen.text(
     "Music ",
-    *assets.message_font,
+    assets.message_font,
     blit::Point( ( blit::screen.bounds.w - menu_size.w ) / 2, 130 ),
     true,
     blit::TextAlign::center_left
@@ -223,7 +223,7 @@ void MenuState::render( uint32_t p_time )
   blit::screen.pen = ( cursor == 1 ) ? font_pen : plain_pen;
   blit::screen.text(
     l_buffer,
-    *assets.message_font,
+    assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 130 ),
     true,
     blit::TextAlign::center_left
@@ -232,7 +232,7 @@ void MenuState::render( uint32_t p_time )
   blit::screen.pen = plain_pen;
   blit::screen.text(
     "Haptic",
-    *assets.message_font,
+    assets.message_font,
     blit::Point( ( blit::screen.bounds.w - menu_size.w ) / 2, 160 ),
     true,
     blit::TextAlign::center_left
@@ -248,7 +248,7 @@ void MenuState::render( uint32_t p_time )
   blit::screen.pen = ( cursor == 2 ) ? font_pen : plain_pen;
   blit::screen.text(
     l_buffer,
-    *assets.message_font,
+    assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 160 ),
     true,
     blit::TextAlign::center_left
@@ -257,7 +257,7 @@ void MenuState::render( uint32_t p_time )
   blit::screen.pen = plain_pen;
   blit::screen.text(
     "PRESS <MENU> TO RETURN",
-    *assets.number_font,
+    assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, 200 ),
     true,
     blit::TextAlign::bottom_center
@@ -266,7 +266,7 @@ void MenuState::render( uint32_t p_time )
   /* Lastly some gratuitous self-promotion. */
   blit::screen.text(
     "VISIT US AT https://32blit.ahnlak.com",
-    *assets.number_font,
+    assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,
     blit::TextAlign::bottom_center

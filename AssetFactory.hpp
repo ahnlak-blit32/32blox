@@ -12,6 +12,8 @@
 #ifndef   _ASSETFACTORY_HPP_
 #define   _ASSETFACTORY_HPP_
 
+#include "assets_fonts.hpp"
+
 class AssetFactory
 {
 private:
@@ -22,8 +24,8 @@ public:
   blit::Surface        *surface_logo;
   blit::Surface        *surface_long_logo;
   blit::SpriteSheet    *spritesheet_game;
-  blit::Font           *number_font;
-  blit::Font           *message_font;
+  const blit::Font      number_font = blit::Font( a_number_font );
+  const blit::Font      message_font = blit::Font( a_message_font );
 };
 
 

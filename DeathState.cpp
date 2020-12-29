@@ -169,7 +169,7 @@ void DeathState::render( uint32_t p_time )
   snprintf( l_buffer, 12, "%05d", score );
   blit::screen.text(
     l_buffer,
-    *assets.message_font,
+    assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 55 ),
     true,
     blit::TextAlign::top_center
@@ -179,7 +179,7 @@ void DeathState::render( uint32_t p_time )
   blit::screen.pen = blit::Pen( 255, 255, 255 );
   snprintf( l_buffer, 12, "%c %c %c %c %c %c", 
             name[0], name[1], name[2], name[3], name[4], name[5] );
-  blit::Size l_name_sz = blit::screen.measure_text( l_buffer, *assets.message_font, true );
+  blit::Size l_name_sz = blit::screen.measure_text( l_buffer, assets.message_font, true );
   blit::Point l_name_box = blit::Point( 
     ( blit::screen.bounds.w - l_name_sz.w ) / 2, 
     ( blit::screen.bounds.h - l_name_sz.h ) / 2
@@ -187,7 +187,7 @@ void DeathState::render( uint32_t p_time )
 
   blit::screen.text(
     l_buffer,
-    *assets.message_font,
+    assets.message_font,
     l_name_box,
     true,
     blit::TextAlign::top_left
@@ -208,21 +208,21 @@ void DeathState::render( uint32_t p_time )
   /* The static messaging next - congrats, and how to enter your name... */
   blit::screen.text(
     "NEW HIGH SCORE!",
-    *assets.message_font,
+    assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 10 ),
     true,
     blit::TextAlign::top_center
   );
   blit::screen.text(
     "LEFT/RIGHT TO SELECT",
-    *assets.number_font,
+    assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 55 ),
     true,
     blit::TextAlign::bottom_center
   );
   blit::screen.text(
     "UP/DOWN TO CHANGE",
-    *assets.number_font,
+    assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 40 ),
     true,
     blit::TextAlign::bottom_center
@@ -231,7 +231,7 @@ void DeathState::render( uint32_t p_time )
   /* Lastly, prompt the user to press a button. */
   blit::screen.text(
     "PRESS 'B' TO SAVE",
-    *assets.message_font,
+    assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,
     blit::TextAlign::bottom_center
