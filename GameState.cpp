@@ -307,9 +307,10 @@ gamestate_t GameState::update( uint32_t p_time )
       l_ball->bounce( false );
     }
 
-    /* And the edges of the screen. */
+    /* And the edges of the screen, which gives some points too! */
     if ( l_new_bounds.x <= 0 || ( l_new_bounds.x + l_new_bounds.w ) >= blit::screen.bounds.w )
     {
+      score++;
       output.trigger_haptic( 0.25f, 50 );
       output.play_effect_bounce( FREQ_BOUNDS );
       l_ball->bounce( true );
@@ -471,6 +472,13 @@ gamestate_t GameState::update( uint32_t p_time )
   if ( lives == 0 && splash_tween.is_finished() ) 
   {
     return STATE_DEATH;
+  }
+
+  /* Lastly, check the level - if we've cleared all the clearable bricks, */
+  /* then it's time to move onto the next one!                            */
+  if ( level->get_brick_count() == 0 )
+  {
+    load_level( level->get_level() + 1 );
   }
 
   /* The font pen we use will pulse more subtlely. */
