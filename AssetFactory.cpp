@@ -29,11 +29,11 @@
 AssetFactory::AssetFactory( void )
 {
   /* Load up the primary sprite sheet. */
-  spritesheet_game = blit::SpriteSheet::load( a_game_sprites_img );
+  spritesheet_game = blit::SpriteSheet::load( a_img_game_sprites );
 
   /* And then any individual image assets. */
-  surface_logo = blit::Surface::load( a_logo_img );
-  surface_long_logo = blit::Surface::load( a_long_logo_img );
+  surface_logo = blit::Surface::load( a_img_logo );
+  surface_long_logo = blit::Surface::load( a_img_long_logo );
 
   /* And the fonts. */
   //number_font = blit::Font( a_number_font );

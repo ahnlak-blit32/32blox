@@ -3,28 +3,38 @@
 # References can be picked up by including assets.hpp
 
 assets_images.cpp:
+  prefix: a_img_
+
   assets/32blox-logo.png:
-    name: a_logo_img
+    name: logo
+
   assets/32blox-long-logo.png:
-    name: a_long_logo_img
+    name: long_logo
+
   assets/game-sprites.png:
-    name: a_game_sprites_img
+    name: game_sprites
+
 
 assets_levels.cpp:
+  prefix: a_level_
+
   assets/level01.csv: 
-    name: a_level_01_dat
+    name: "01"
+
   assets/level02.csv: 
-    name: a_level_02_dat
+    name: "02"
 
 assets_fonts.cpp:
+  prefix: a_font_
+
   assets/PressStart2P-Regular.ttf:
-    name: a_number_font
-    height: 8
-  assets/PressStart2P-Regular-copy.ttf:
-    name: a_message_font
-    height: 16
+    - name: number
+      height: 8
+    - name: message
+      height: 16
+
   assets/Wallpoet-Regular.ttf:
-    name: a_splash_font
+    name: splash
     height: 48
 
 # End of assets.yml

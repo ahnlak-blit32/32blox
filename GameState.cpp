@@ -172,8 +172,13 @@ blit::Point GameState::screen_to_brick( blit::Point p_location )
 
 void GameState::spawn_ball( void )
 {
+  /* The ball starts in the middle of the bat. */
+  blit::Vec2 l_ballpos( bat_position, bat_height - 4 );
+
+  /* But then we offset it a little one side or the other... */
+
   /* create a new ball. */
-  Ball *l_ball = new Ball( blit::Vec2( bat_position, bat_height - 4 ) );
+  Ball *l_ball = new Ball( l_ballpos );
 
   /* Stick it to the bat. */
   l_ball->stuck = true;

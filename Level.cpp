@@ -42,10 +42,10 @@ Level::Level( uint8_t p_level )
   switch( p_level )
   {
     case 1:
-      init( a_level_01_dat, a_level_01_dat_length );
+      init( a_level_01, a_level_01_length );
       break;
     case 2:
-      init( a_level_02_dat, a_level_02_dat_length );
+      init( a_level_02, a_level_02_length );
       break;
     default:
       init( nullptr, 0 );
