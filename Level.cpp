@@ -44,6 +44,9 @@ Level::Level( uint8_t p_level )
     case 1:
       init( a_level_01_dat, a_level_01_dat_length );
       break;
+    case 2:
+      init( a_level_02_dat, a_level_02_dat_length );
+      break;
     default:
       init( nullptr, 0 );
       break;

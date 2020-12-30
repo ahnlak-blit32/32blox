@@ -13,6 +13,8 @@ assets_images.cpp:
 assets_levels.cpp:
   assets/level01.csv: 
     name: a_level_01_dat
+  assets/level02.csv: 
+    name: a_level_02_dat
 
 assets_fonts.cpp:
   assets/PressStart2P-Regular.ttf:
@@ -21,7 +23,7 @@ assets_fonts.cpp:
   assets/PressStart2P-Regular-copy.ttf:
     name: a_message_font
     height: 16
-  assets/Audiowide-Regular.ttf:
+  assets/Wallpoet-Regular.ttf:
     name: a_splash_font
     height: 48
 
