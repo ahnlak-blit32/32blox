@@ -176,6 +176,21 @@ void GameState::spawn_ball( void )
   blit::Vec2 l_ballpos( bat_position, bat_height - 4 );
 
   /* But then we offset it a little one side or the other... */
+  switch( blit::random() % 4 )
+  {
+    case 0:
+      l_ballpos.x -= 4;
+      break;
+    case 1:
+      l_ballpos.x -= 2;
+      break;
+    case 2:
+      l_ballpos.x += 2;
+      break;
+    case 3:
+      l_ballpos.x += 4;
+      break;
+  }
 
   /* create a new ball. */
   Ball *l_ball = new Ball( l_ballpos );

@@ -47,6 +47,9 @@ Level::Level( uint8_t p_level )
     case 2:
       init( a_level_02, a_level_02_length );
       break;
+    case 3:
+      init( a_level_03, a_level_03_length );
+      break;
     default:
       init( nullptr, 0 );
       break;
@@ -144,6 +147,12 @@ uint8_t Level::hit_brick( blit::Point p_point )
 {
   /* If there's nothing there, there is nothing to do. */
   if ( bricks[p_point.y][p_point.x] == 0 )
+  {
+    return 0;
+  }
+
+  /* Also, if it's an unbreakable brick, we skip it too. */
+  if ( bricks[p_point.y][p_point.x] == 8 )
   {
     return 0;
   }
