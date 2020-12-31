@@ -85,8 +85,8 @@ blit::Point Ball::get_render_location( void )
 blit::Rect Ball::get_bounds( void )
 {
   return blit::Rect( 
-    location - blit::Vec2( ball_size[ball_type] / 2, ball_size[ball_type] / 2 ),
-    location + blit::Vec2( ball_size[ball_type] / 2, ball_size[ball_type] / 2 )
+    location - blit::Vec2( ball_size[ball_type] / 2 - 1, ball_size[ball_type] / 2 - 1 ),
+    location + blit::Vec2( ball_size[ball_type] / 2 - 1, ball_size[ball_type] / 2 - 1 )
   );
 }
 

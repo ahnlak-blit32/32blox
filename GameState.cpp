@@ -173,7 +173,7 @@ blit::Point GameState::screen_to_brick( blit::Point p_location )
 void GameState::spawn_ball( void )
 {
   /* The ball starts in the middle of the bat. */
-  blit::Vec2 l_ballpos( bat_position, bat_height - 4 );
+  blit::Vec2 l_ballpos( bat_position, bat_height - 3 );
 
   /* But then we offset it a little one side or the other... */
   switch( blit::random() % 4 )
