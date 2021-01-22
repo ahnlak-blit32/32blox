@@ -27,10 +27,11 @@
  * constructor - Spawns a ball at the specified location, of the specfied type
  */
 
-Ball::Ball( blit::Vec2 p_origin, ball_type_t p_type )
+Ball::Ball( blit::Point p_origin, ball_type_t p_type )
 {
   /* Save the origin and type. */
-  location = p_origin;
+  location.x = p_origin.x;
+  location.y = p_origin.y;
   ball_type = p_type;
 
   /* And set some defaults, for now. */
@@ -142,6 +143,7 @@ void Ball::render( void )
   );
 }
 
+
 /*
  * launch - releases a stuck ball from the bat; a random vector is picked,
  *          but it's (partially) influenced by how close to the centre of the
@@ -163,6 +165,25 @@ void Ball::launch( void )
   /* All done. */
   return;
 }
+
+
+/*
+ * randomise - sets the ball vector to a random (upwards) direction
+ */
+
+void Ball::randomise( void )
+{
+  /* First off, start with a launch-speed vertical vector. */
+  vector.x = 0;
+  vector.y = -1.5;
+
+  /* And apply a random angle to it. */
+  vector.rotate( 0 );
+
+  /* All done. */
+  return;
+}
+
 
 /*
  * bounce - bounces the ball off a horizontal or vertical surface; this is

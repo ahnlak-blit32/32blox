@@ -30,7 +30,7 @@ private:
   blit::Point   get_render_location( void );
 
 public:
-                Ball( blit::Vec2, ball_type_t = BALL_NORMAL );
+                Ball( blit::Point, ball_type_t = BALL_NORMAL );
   blit::Rect    get_bounds( void );
   ball_type_t   get_type( void );
   bool          moving_up( void );
@@ -38,6 +38,7 @@ public:
   void          update( void );
   void          render( void );
   void          launch( void );
+  void          randomise( void );
   void          bounce( bool );
   bool          bat_bounce( uint16_t );
   void          offset( blit::Vec2 );

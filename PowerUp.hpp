@@ -14,9 +14,10 @@
 typedef enum
 {
   POWERUP_SPEED,
+  POWERUP_SLOW,
   POWERUP_STICKY,
-  POWERUP_GROW,
   POWERUP_SHRINK,
+  POWERUP_GROW,
   POWERUP_MULTI,
   POWERUP_MAX
 } powerup_type_t;
@@ -35,6 +36,7 @@ public:
   powerup_type_t  get_type( void );
   void            update( void );
   void            render( void );
+  void            remove( void );
 };
 
 #endif /* _POWERUP_HPP_ */

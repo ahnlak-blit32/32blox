@@ -132,9 +132,7 @@ void GameState::move_bat( float p_movement )
   for ( auto l_ball : balls )
   {
     /* Then we can just ask the ball to move itself, if it wants to. */
-    l_ball->move_bat( blit::Rect( bat_position - ( bat_width[bat_type] / 2 ), 
-                                  bat_height, bat_width[bat_type], 1 ), 
-                      bat_position - l_last_pos );
+    l_ball->move_bat( bat_bounds(), bat_position - l_last_pos );
   }
 
   /* All done! */
@@ -167,41 +165,75 @@ blit::Point GameState::screen_to_brick( blit::Point p_location )
 
 
 /*
- * spawn_ball - creates a new ball on the bat; either at the start of the level,
- *              or after a ball is lost 
+ * bat_bounds - returns a Rect defining the countaining bounds of the current
+ *              bat. This take into account the bat type, so dynimcally changes
+ *              if, for example, a powerup changes the bat.
  */
 
-void GameState::spawn_ball( void )
+blit::Rect GameState::bat_bounds( void )
 {
-  /* The ball starts in the middle of the bat. */
-  blit::Vec2 l_ballpos( bat_position, bat_height - 3 );
+  return blit::Rect( 
+                     bat_position - ( bat_width[bat_type] / 2 ),
+                     bat_height,
+                     bat_width[bat_type],
+                     8
+                   );
+}
 
-  /* But then we offset it a little one side or the other... */
-  switch( blit::random() % 4 )
+
+/*
+ * spawn_ball - creates a new ball; on the bat - either at the start of the 
+ *              level, or after a ball is lost - when the flag is set, or at
+ *              the location of another ball in 'mid flight', when false.
+ */
+
+void GameState::spawn_ball( bool pBat )
+{
+  Ball *l_ball;
+  blit::Point l_ballpos;
+
+  /* Work out the right place for the ball to be. */
+  if ( pBat )
   {
-    case 0:
-      l_ballpos.x -= 4;
-      break;
-    case 1:
-      l_ballpos.x -= 2;
-      break;
-    case 2:
-      l_ballpos.x += 2;
-      break;
-    case 3:
-      l_ballpos.x += 4;
-      break;
+    /* The ball starts in the middle of the bat. */
+    l_ballpos = blit::Point( bat_position, bat_height - 3 );
+
+    /* But then we offset it a little one side or the other... */
+    switch( blit::random() % 4 )
+    {
+      case 0:
+        l_ballpos.x -= 4;
+        break;
+      case 1:
+        l_ballpos.x -= 2;
+        break;
+      case 2:
+        l_ballpos.x += 2;
+        break;
+      case 3:
+        l_ballpos.x += 4;
+        break;
+    }
+
+    /* create a new ball. */
+    l_ball = new Ball( l_ballpos );
+
+    /* Stick it to the bat. */
+    l_ball->stuck = true;
+  }
+  else
+  {
+    /* Grab the location of the first ball in the queue. */
+    auto l_current_ball = balls.front();
+    l_ballpos = l_current_ball->get_bounds().center();
+
+    /* create a new ball. */
+    l_ball = new Ball( l_ballpos );
+    l_ball->randomise();
   }
 
-  /* create a new ball. */
-  Ball *l_ball = new Ball( l_ballpos );
-
-  /* Stick it to the bat. */
-  l_ball->stuck = true;
-  l_ball->move_bat( blit::Rect( bat_position - ( bat_width[bat_type] / 2 ), 
-                                bat_height, bat_width[bat_type], 1 ), 0.0f );
-
   /* And add it to the internal ball list. */
+  l_ball->move_bat( bat_bounds(), 0.0f );
   balls.push_front( l_ball );
 
   /* All done. */
@@ -226,7 +258,7 @@ void GameState::load_level( uint8_t p_level )
 
   /* Clear out the list of balls, and spawn one on the bat. */
   balls.clear();
-  spawn_ball();
+  spawn_ball( true );
 
   /* Clear out the list of powerups, too. */
   powerups.clear();
@@ -531,7 +563,7 @@ gamestate_t GameState::update( uint32_t p_time )
     {
       /* Work out the screen location of the brick. */
       blit::Rect l_brick = brick_to_screen( l_brick_location.y, l_brick_location.x );
-      powerups.push_front( new PowerUp( blit::Point( l_brick.x + l_brick.w / 2, l_brick.y + l_brick.h / 2 ) ) );
+      powerups.push_front( new PowerUp( l_brick.center() ) );
     }
 
     /* And lastly, the bat itself. */
@@ -548,19 +580,87 @@ gamestate_t GameState::update( uint32_t p_time )
   }
 
   /* Clean up any balls that drop off the bottom of the screen. */
-  balls.remove_if( []( auto l_ball) { return l_ball->get_bounds().y > blit::screen.bounds.h; } );
+  balls.remove_if( [](auto l_ball) { return l_ball->get_bounds().y > blit::screen.bounds.h; } );
 
-  /* Update the powerup positions. */
+  /* Work through all the powerups. */
   for ( auto l_powerup : powerups )
   {
+    /* Update the powerup position. */
     l_powerup->update();
-  }  
+
+    /* And then check to see if there's a collision with the bat. */
+    if ( l_powerup->get_bounds().intersects( bat_bounds() ) )
+    {
+      /* Apply the amazing power up. */
+      switch( l_powerup->get_type() )
+      {
+      case POWERUP_SPEED:
+        snprintf( splash_message, 30, "SPEED\nUP!" );
+        bat_speed += 0.8f;
+        break;
+      case POWERUP_SLOW:
+        snprintf( splash_message, 30, "SLOW\nDOWN" );
+        bat_speed -= 0.6f;
+        if ( bat_speed < 0.5f )
+        {
+          bat_speed = 0.5f;
+        }
+        break;
+      case POWERUP_STICKY:
+        snprintf( splash_message, 30, "STICKY\nBAT!" );
+        break;
+      case POWERUP_GROW:
+        snprintf( splash_message, 30, "GROW\nBAT!" );
+        if ( bat_type == BAT_NARROW )
+        {
+          bat_type = BAT_NORMAL;
+        }
+        else
+        {
+          bat_type = BAT_WIDE;
+        }
+        break;
+      case POWERUP_SHRINK:
+        snprintf( splash_message, 30, "SHRINK\nBAT!" );
+        if ( bat_type == BAT_WIDE )
+        {
+          bat_type = BAT_NORMAL;
+        }
+        else
+        {
+          bat_type = BAT_NARROW;
+        }
+        break;
+      case POWERUP_MULTI:
+        snprintf( splash_message, 30, "MULTI\nBALL!" );
+        spawn_ball( false );
+        break;
+      }
+
+      /* Splash a message for it. */
+      splash_tween.start();
+
+      /* Grant some points for it! */
+      score += 15;
+
+      /* And just drop the thing off the bottom of the screen; it'll get */
+      /* then get cleared up in a little while.                          */
+      l_powerup->remove();
+    }
+  }
+
+  /* And clean up any powerups that are off the screen too. */
+  powerups.remove_if( [](auto l_powerup) { return l_powerup->get_bounds().y > blit::screen.bounds.h; } );
 
   /* If there are no more balls in play, then we lose a life. */
   if ( std::distance( balls.begin(), balls.end() ) == 0 )
   {
+    /* Switch the bat back to standard speed, too. */
+    bat_speed = 1.0f;
+
+    /* Reduce our lives, spawn a fresh ball if we can. */
     lives--;
-    spawn_ball();
+    spawn_ball( true );
     if ( lives == 0 )
     {
       snprintf( splash_message, 30, "Game\nOver" );
@@ -676,10 +776,30 @@ void GameState::render( uint32_t p_time )
   /* Add in the bat; the position is the centre location. */
   switch( bat_type )
   {
-    case BAT_NORMAL:  /* Simple bat, two sprites wide. */
+    case BAT_NORMAL:  /* Simple bat, three sprites wide. */
       blit::screen.sprite(
         blit::Rect( 0, SPRITE_ROW_BAT, 3, 1 ),
         blit::Point( bat_position - ( bat_width[bat_type] / 2 ), bat_height )
+      );
+      break;
+    case BAT_NARROW:  /* Shortened bat, two sprites wide. */
+      blit::screen.sprite(
+        blit::Rect( 0, SPRITE_ROW_BAT, 1, 1 ),
+        blit::Point( bat_position - ( bat_width[bat_type] / 2 ), bat_height )
+      );
+      blit::screen.sprite(
+        blit::Rect( 2, SPRITE_ROW_BAT, 1, 1 ),
+        blit::Point( bat_position - ( bat_width[bat_type] / 2 ) + 8, bat_height )
+      );
+      break;
+    case BAT_WIDE:  /* Stretched bat, four sprites wide. */
+      blit::screen.sprite(
+        blit::Rect( 0, SPRITE_ROW_BAT, 2, 1 ),
+        blit::Point( bat_position - ( bat_width[bat_type] / 2 ), bat_height )
+      );
+      blit::screen.sprite(
+        blit::Rect( 1, SPRITE_ROW_BAT, 2, 1 ),
+        blit::Point( bat_position - ( bat_width[bat_type] / 2 ) + 16, bat_height )
       );
       break;
   }

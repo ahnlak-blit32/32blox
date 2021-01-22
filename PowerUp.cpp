@@ -110,4 +110,15 @@ void PowerUp::render( void )
 }
 
 
+/*
+ * remove - drops the powerup off the bottom of the screen; this flags it
+ *          for removal from the internal lists later.
+ */
+
+void PowerUp::remove( void )
+{
+  location.y = blit::screen.bounds.h + 10;
+}
+
+
 /* End of PowerUp.cpp */

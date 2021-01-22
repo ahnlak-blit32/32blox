@@ -60,7 +60,8 @@ private:
   void                        move_bat( float );
   blit::Rect                  brick_to_screen( uint8_t, uint8_t );
   blit::Point                 screen_to_brick( blit::Point );
-  void                        spawn_ball( void );
+  blit::Rect                  bat_bounds( void );
+  void                        spawn_ball( bool );
   void                        load_level( uint8_t );
 
 public:
