@@ -18,6 +18,7 @@
 #define SPRITE_ROW_BRICK     0
 #define SPRITE_ROW_BALL      2
 #define SPRITE_ROW_BAT       3
+#define SPRITE_ROW_POWERUP   4
 
 #define SAVE_SLOT_HISCORE    0
 #define SAVE_SLOT_OUTPUT     1

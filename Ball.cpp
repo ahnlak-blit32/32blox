@@ -130,6 +130,19 @@ void Ball::update( void )
 
 
 /*
+ * render - draw the ball in it's current position / type
+ */
+
+void Ball::render( void )
+{
+  /* We know all we need to know about ourselves! */
+  blit::screen.sprite(
+    blit::Rect( ball_type, SPRITE_ROW_BALL, 1, 1 ),
+    get_render_location()
+  );
+}
+
+/*
  * launch - releases a stuck ball from the bat; a random vector is picked,
  *          but it's (partially) influenced by how close to the centre of the
  *          bat it is...

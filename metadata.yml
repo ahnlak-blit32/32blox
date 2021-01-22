@@ -7,6 +7,6 @@ splash:
   file: assets/32blox-image.png
 icon:
   file: assets/32blox-icon.png
-version: v0.2.1
+version: v0.2.2
 
 # End of metadata.yml

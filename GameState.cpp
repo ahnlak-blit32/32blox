@@ -23,6 +23,7 @@
 #include "GameState.hpp"
 #include "HighScore.hpp"
 #include "Level.hpp"
+#include "PowerUp.hpp"
 
 
 /* Functions. */
@@ -227,6 +228,9 @@ void GameState::load_level( uint8_t p_level )
   balls.clear();
   spawn_ball();
 
+  /* Clear out the list of powerups, too. */
+  powerups.clear();
+
   /* Let the user know what level they're on. */
   snprintf( splash_message, 30, "Level\n%02d", level->get_level() );
   splash_tween.start();
@@ -309,6 +313,8 @@ gamestate_t GameState::update( uint32_t p_time )
   {
     bool l_bounce_vertical = false;
     bool l_bounce_horizontal = false;
+    bool l_brick_destroyed = false;
+    blit::Point l_brick_location;
 
     /* Fetch the bounds of the ball's current position. */
     blit::Rect l_old_bounds = l_ball->get_bounds();
@@ -348,8 +354,16 @@ gamestate_t GameState::update( uint32_t p_time )
         /* We've crossed a line. See if it's occupied! */
         if ( level->get_brick( l_new_tl ) > 0 )
         {
+          /* Bounce and increment the score. */
           score += level->hit_brick( l_new_tl );
           l_bounce_vertical = true;
+
+          /* Check to see if the brick was destroyed. */
+          if ( level->get_brick( l_new_tl ) == 0 )
+          {
+            l_brick_destroyed = true;
+            l_brick_location = l_new_tl;
+          }
         }
 
         /* Also consider the top right corner, in case we bounced on a boundary. */
@@ -357,8 +371,16 @@ gamestate_t GameState::update( uint32_t p_time )
         {
           if ( level->get_brick( l_new_tr ) > 0 )
           {
+            /* Bounce, and increment the score. */
             score += level->hit_brick( l_new_tr );
             l_bounce_vertical = true;
+
+            /* Check to see if the brick was destroyed. */
+            if ( level->get_brick( l_new_tr ) == 0 )
+            {
+              l_brick_destroyed = true;
+              l_brick_location = l_new_tr;
+            }
           }
         }
       }
@@ -374,8 +396,16 @@ gamestate_t GameState::update( uint32_t p_time )
         /* We've crossed a line. See if it's occupied! */
         if ( level->get_brick( l_new_bl ) > 0 )
         {
+          /* Bounce, and increment the score. */
           score += level->hit_brick( l_new_bl );
           l_bounce_vertical = true;
+
+          /* Check to see if the brick was destroyed. */
+          if ( level->get_brick( l_new_bl ) == 0 )
+          {
+            l_brick_destroyed = true;
+            l_brick_location = l_new_bl;
+          }
         }
 
         /* Also consider the top right corner, in case we bounced on a boundary. */
@@ -383,8 +413,16 @@ gamestate_t GameState::update( uint32_t p_time )
         {
           if ( level->get_brick( l_new_br ) > 0 )
           {
+            /* Bounce, and increment the score. */
             score += level->hit_brick( l_new_br );
             l_bounce_vertical = true;
+
+            /* Check to see if the brick was destroyed. */
+            if ( level->get_brick( l_new_br ) == 0 )
+            {
+              l_brick_destroyed = true;
+              l_brick_location = l_new_br;
+            }
           }
         }
       }
@@ -400,8 +438,16 @@ gamestate_t GameState::update( uint32_t p_time )
         /* We've crossed a line. See if it's occupied! */
         if ( level->get_brick( l_new_tl ) > 0 )
         {
+          /* Bounce, and increment the score. */
           score += level->hit_brick( l_new_tl );
           l_bounce_horizontal = true;
+
+          /* Check to see if the brick was destroyed. */
+          if ( level->get_brick( l_new_tl ) == 0 )
+          {
+            l_brick_destroyed = true;
+            l_brick_location = l_new_tl;
+          }
         }
 
         /* Also consider the top right corner, in case we bounced on a boundary. */
@@ -409,8 +455,16 @@ gamestate_t GameState::update( uint32_t p_time )
         {
           if ( level->get_brick( l_new_bl ) > 0 )
           {
+            /* Bounce, and increment the score. */
             score += level->hit_brick( l_new_bl );
             l_bounce_horizontal = true;
+
+            /* Check to see if the brick was destroyed. */
+            if ( level->get_brick( l_new_bl ) == 0 )
+            {
+              l_brick_destroyed = true;
+              l_brick_location = l_new_bl;
+            }
           }
         }
       }
@@ -426,8 +480,16 @@ gamestate_t GameState::update( uint32_t p_time )
         /* We've crossed a line. See if it's occupied! */
         if ( level->get_brick( l_new_tr ) > 0 )
         {
+          /* Bounce, and increment the score. */
           score += level->hit_brick( l_new_tr );
           l_bounce_horizontal = true;
+
+          /* Check to see if the brick was destroyed. */
+          if ( level->get_brick( l_new_tr ) == 0 )
+          {
+            l_brick_destroyed = true;
+            l_brick_location = l_new_tr;
+          }
         }
 
         /* Also consider the top right corner, in case we bounced on a boundary. */
@@ -435,8 +497,16 @@ gamestate_t GameState::update( uint32_t p_time )
         {
           if ( level->get_brick( l_new_br ) > 0 )
           {
+            /* Bounce, and increment the score. */
             score += level->hit_brick( l_new_br );
             l_bounce_horizontal = true;
+
+            /* Check to see if the brick was destroyed. */
+            if ( level->get_brick( l_new_br ) == 0 )
+            {
+              l_brick_destroyed = true;
+              l_brick_location = l_new_br;
+            }
           }
         }
       }
@@ -456,6 +526,14 @@ gamestate_t GameState::update( uint32_t p_time )
       l_ball->bounce( true );
     }
 
+    /* If a brick was fully destroyed, maybe spawn a powerup. */
+    if ( l_brick_destroyed )
+    {
+      /* Work out the screen location of the brick. */
+      blit::Rect l_brick = brick_to_screen( l_brick_location.y, l_brick_location.x );
+      powerups.push_front( new PowerUp( blit::Point( l_brick.x + l_brick.w / 2, l_brick.y + l_brick.h / 2 ) ) );
+    }
+
     /* And lastly, the bat itself. */
     if ( ( l_new_bounds.x <= ( bat_position + bat_width[bat_type] / 2 ) ) &&
          ( ( l_new_bounds.x + l_new_bounds.w ) >= ( bat_position - bat_width[bat_type] / 2 ) ) &&
@@ -471,6 +549,12 @@ gamestate_t GameState::update( uint32_t p_time )
 
   /* Clean up any balls that drop off the bottom of the screen. */
   balls.remove_if( []( auto l_ball) { return l_ball->get_bounds().y > blit::screen.bounds.h; } );
+
+  /* Update the powerup positions. */
+  for ( auto l_powerup : powerups )
+  {
+    l_powerup->update();
+  }  
 
   /* If there are no more balls in play, then we lose a life. */
   if ( std::distance( balls.begin(), balls.end() ) == 0 )
@@ -600,14 +684,17 @@ void GameState::render( uint32_t p_time )
       break;
   }
 
+  /* Render the powerups, too - these go behind (before) the balls. */
+  for ( auto l_powerup : powerups )
+  {
+    l_powerup->render();
+  }
+
   /* Balls next; we could have a number of them, in a handy container. */
   for ( auto l_ball : balls )
   {
     /* Render the ball. */
-    blit::screen.sprite(
-      blit::Rect( l_ball->get_type(), SPRITE_ROW_BALL, 1, 1 ),
-      l_ball->get_render_location()
-    );
+    l_ball->render();
 
     /* And remember if it's stuck to the bat... */
     if ( l_ball->stuck )

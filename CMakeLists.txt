@@ -3,8 +3,9 @@ cmake_minimum_required(VERSION 3.8)
 
 project(32blox)
 set(32BLIT_PATH "../" CACHE PATH "Path to 32blit.cmake")
-set(PROJECT_SOURCE 32blox.cpp AssetFactory.cpp OutputManager.cpp Ball.cpp Level.cpp HighScore.cpp
-                   SplashState.cpp GameState.cpp DeathState.cpp HiscoreState.cpp MenuState.cpp)
+set(PROJECT_SOURCE 32blox.cpp AssetFactory.cpp Ball.cpp Level.cpp HighScore.cpp
+                   OutputManager.cpp PowerUp.cpp MenuState.cpp
+                   SplashState.cpp GameState.cpp DeathState.cpp HiscoreState.cpp)
 set(DISTRIBS README.md LICENSE)
 
 # Build configuration; approach this with caution!

@@ -18,6 +18,7 @@
 #include "HighScore.hpp"
 #include "Level.hpp"
 #include "OutputManager.hpp"
+#include "PowerUp.hpp"
 
 
 typedef enum
@@ -35,39 +36,40 @@ typedef enum
 class GameState : public GameStateInterface
 {
 private:
-  AssetFactory             &assets = AssetFactory::get_instance();
-  OutputManager            &output = OutputManager::get_instance();
-  HighScore                *high_score;
-  Level                    *level;
-  uint8_t                   lives;
-  blit::Pen                 font_pen;
-  blit::Pen                 number_pen;
-  blit::Tween               font_tween;
-  blit::Tween               splash_tween;
-  char                      splash_message[32];
-  float                     bat_position;
-  float                     bat_speed;
-  uint16_t                  bat_height;
-  bat_type_t                bat_type;
-  uint16_t                  score;
-  uint16_t                  hiscore;
-  std::forward_list<Ball*>  balls;
-  const uint8_t             bat_width[BAT_MAX] = { 24, 16, 32 };
+  AssetFactory               &assets = AssetFactory::get_instance();
+  OutputManager              &output = OutputManager::get_instance();
+  HighScore                  *high_score;
+  Level                      *level;
+  uint8_t                     lives;
+  blit::Pen                   font_pen;
+  blit::Pen                   number_pen;
+  blit::Tween                 font_tween;
+  blit::Tween                 splash_tween;
+  char                        splash_message[32];
+  float                       bat_position;
+  float                       bat_speed;
+  uint16_t                    bat_height;
+  bat_type_t                  bat_type;
+  uint16_t                    score;
+  uint16_t                    hiscore;
+  std::forward_list<Ball*>    balls;
+  std::forward_list<PowerUp*> powerups;
+  const uint8_t               bat_width[BAT_MAX] = { 24, 16, 32 };
 
-  void                      init( void );
-  void                      move_bat( float );
-  blit::Rect                brick_to_screen( uint8_t, uint8_t );
-  blit::Point               screen_to_brick( blit::Point );
-  void                      spawn_ball( void );
-  void                      load_level( uint8_t );
+  void                        init( void );
+  void                        move_bat( float );
+  blit::Rect                  brick_to_screen( uint8_t, uint8_t );
+  blit::Point                 screen_to_brick( blit::Point );
+  void                        spawn_ball( void );
+  void                        load_level( uint8_t );
 
 public:
-                            GameState( void );
-  void                      init( GameStateInterface * );
-  void                      fini( GameStateInterface * );
-  uint16_t                  get_score( void );
-  gamestate_t               update( uint32_t );
-  void                      render( uint32_t );
+                              GameState( void );
+  void                        init( GameStateInterface * );
+  void                        fini( GameStateInterface * );
+  uint16_t                    get_score( void );
+  gamestate_t                 update( uint32_t );
+  void                        render( uint32_t );
 };
 
 #endif /* _GAMESTATE_HPP_ */

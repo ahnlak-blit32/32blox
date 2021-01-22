@@ -134,7 +134,6 @@ gamestate_t DeathState::update( uint32_t p_time )
   /* If the user presses the save button, then we save their score and move on. */
   if ( blit::buttons.pressed & blit::Button::B )
   {
-    printf( "%s has scored %d\n", name, score );
     high_score->save( score, name );
     return STATE_HISCORE;
   }
