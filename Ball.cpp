@@ -38,7 +38,6 @@ Ball::Ball( blit::Point p_origin, ball_type_t p_type )
   vector = blit::Vec2( 0, 0 );
   bat_position = blit::Rect( 0, 0, 0, 0 );
   stuck = false;
-  sticky = false;
 
   /* All done. */
   return;
@@ -124,6 +123,20 @@ void Ball::update( void )
 {
   /* This is relatively painless, actually. */
   location += vector;
+
+  /* BUT, we need to sanity check things - if we've gone off the sides, then */
+  /* we need to (a) nudge ourselves back on, and (b) give it some momentum.  */
+  blit::Rect l_bounds = get_bounds();
+  if ( l_bounds.x < 0 )
+  {
+    vector.x -= l_bounds.x;
+    location.x = 0;
+  }
+  if ( l_bounds.x + l_bounds.w > blit::screen.bounds.w )
+  {
+    vector.x -= l_bounds.x + l_bounds.w - blit::screen.bounds.w;
+    location.x = blit::screen.bounds.w;
+  }
 
   /* All done. */
   return;
@@ -212,11 +225,12 @@ void Ball::bounce( bool p_horizontal )
  * bat_bounce - a special kind of bounce to handle the bat being involved.
  *              Called whenever the ball is in proximity to the bat.
  * uint16_t - the height of the bat, needed to know if we've just hit. 
+ * bool     - a flag to indicate if the bat is sticky.
  *
  * Returns a bool flag to indicate whether this was, indeed, a bounce
  */
 
-bool Ball::bat_bounce( uint16_t p_bat_height )
+bool Ball::bat_bounce( uint16_t p_bat_height, bool p_sticky )
 {
   /* Sanity check; nothing to do if the ball is already stuck to the bat. */
   if ( stuck )
@@ -232,11 +246,22 @@ bool Ball::bat_bounce( uint16_t p_bat_height )
     return false;
   }
 
-  /* So... do a vertical bounce first. */
-  bounce( false );
+  /* So it's a hit, respond appropriately. */
+  if ( p_sticky )
+  {
+    /* Just set a flag to say we're stuck, and zero the vector. */
+    stuck = true;
+    vector.x = vector.y = 0;
+    location.y -= l_bounds.bl().y - bat_position.y;
+  }
+  else
+  {
+    /* So... do a vertical bounce first. */
+    bounce( false );
 
-  /* And apply a suitable rotation, too. */
-  vector.rotate( compute_bat_angle() );
+    /* And apply a suitable rotation, too. */
+    vector.rotate( compute_bat_angle() );
+  }
 
   /* All done. */
   return true;
@@ -262,15 +287,16 @@ void Ball::offset( blit::Vec2 p_offset )
  * move_bat - handles the bat moving, if we happen to be stuck to it
  * Rect     - the location of the current bat
  * float    - the offset by which the bat has moved
+ * bool     - whether the bat is sticky
  */
 
-void Ball::move_bat( blit::Rect p_bat, float p_offset )
+void Ball::move_bat( blit::Rect p_bat, float p_offset, bool p_sticky )
 {
   /* Remeber the position of the bat, we'll often need it. */
   bat_position = p_bat;
 
-  /* So, this is only significant if the ball is sticky. */
-  if ( !stuck && !sticky )
+  /* So, this is only significant if the bat is sticky. */
+  if ( !stuck && !p_sticky )
   {
     return;
   }
@@ -290,7 +316,18 @@ void Ball::move_bat( blit::Rect p_bat, float p_offset )
     /* If we're already stuck, just follow the bat. */
     if ( stuck )
     {
+      /* Apply the bat offset. */
       location.x += p_offset;
+
+      /* But make sure we're still on the screen. */
+      if ( location.x < ball_size[ball_type] / 2 )
+      {
+        location.x = ball_size[ball_type] / 2;
+      }
+      if ( location.x > blit::screen.bounds.w - ball_size[ball_type] / 2 )
+      {
+        location.x = blit::screen.bounds.w - ball_size[ball_type] / 2;
+      }
     }
 
     /* Otherwise, remember we're stuck and have done with it. */

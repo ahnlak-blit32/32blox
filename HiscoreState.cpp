@@ -30,10 +30,7 @@
 
 HiscoreState::HiscoreState( void )
 {
-  /* Load up the game spritesheet. */
-  //sprites = blit::SpriteSheet::load( a_game_sprites_img );
-
-  /* And compute the gradient colours for the background. */
+  /* Compute the gradient colours for the background. */
   for ( uint16_t i = 0; i < HISCORESTATE_GRADIENT_HEIGHT / 2; i++ )
   {
     gradient_pen[i] = gradient_pen[HISCORESTATE_GRADIENT_HEIGHT - i - 1]

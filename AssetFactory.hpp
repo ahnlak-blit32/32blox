@@ -23,7 +23,7 @@ public:
 
   blit::Surface        *surface_logo;
   blit::Surface        *surface_long_logo;
-  blit::SpriteSheet    *spritesheet_game;
+  blit::Surface        *spritesheet_game;
   const blit::Font      number_font = blit::Font( a_font_number );
   const blit::Font      message_font = blit::Font( a_font_message );
   const blit::Font      splash_font = blit::Font( a_font_splash );

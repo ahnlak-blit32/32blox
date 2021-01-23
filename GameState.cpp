@@ -128,11 +128,11 @@ void GameState::move_bat( float p_movement )
     bat_position = blit::screen.bounds.w - ( bat_width[bat_type] / 2 );
   }
 
-  /* Now, check to see if any of our balls are sticky. */
+  /* Now, ask our balls to respond to the current bat. */
   for ( auto l_ball : balls )
   {
     /* Then we can just ask the ball to move itself, if it wants to. */
-    l_ball->move_bat( bat_bounds(), bat_position - l_last_pos );
+    l_ball->move_bat( bat_bounds(), bat_position - l_last_pos, bat_type == BAT_STICKY );
   }
 
   /* All done! */
@@ -233,7 +233,7 @@ void GameState::spawn_ball( bool pBat )
   }
 
   /* And add it to the internal ball list. */
-  l_ball->move_bat( bat_bounds(), 0.0f );
+  l_ball->move_bat( bat_bounds(), 0.0f, false );
   balls.push_front( l_ball );
 
   /* All done. */
@@ -335,6 +335,9 @@ gamestate_t GameState::update( uint32_t p_time )
       {
         /* Balls know how to launch themselves, happily. */
         l_ball->launch();
+
+        /* But only launch one... */
+        break;
       }
     }
   }
@@ -571,7 +574,7 @@ gamestate_t GameState::update( uint32_t p_time )
          ( ( l_new_bounds.x + l_new_bounds.w ) >= ( bat_position - bat_width[bat_type] / 2 ) ) &&
          ( ( l_new_bounds.y + l_new_bounds.h ) >= bat_height ) )
     {
-      if ( l_ball->bat_bounce( bat_height ) )
+      if ( l_ball->bat_bounce( bat_height, bat_type == BAT_STICKY ) )
       {
         output.trigger_haptic( 0.25f, 50 );
         output.play_effect_bounce( FREQ_BOUNDS );
@@ -608,6 +611,7 @@ gamestate_t GameState::update( uint32_t p_time )
         break;
       case POWERUP_STICKY:
         snprintf( splash_message, 30, "STICKY\nBAT!" );
+        bat_type = BAT_STICKY;
         break;
       case POWERUP_GROW:
         snprintf( splash_message, 30, "GROW\nBAT!" );
@@ -633,6 +637,7 @@ gamestate_t GameState::update( uint32_t p_time )
         break;
       case POWERUP_MULTI:
         snprintf( splash_message, 30, "MULTI\nBALL!" );
+        spawn_ball( false );
         spawn_ball( false );
         break;
       }
@@ -802,6 +807,12 @@ void GameState::render( uint32_t p_time )
         blit::Point( bat_position - ( bat_width[bat_type] / 2 ) + 16, bat_height )
       );
       break;
+    case BAT_STICKY:  /* Sticky bat, three sprites wide. */
+      blit::screen.sprite(
+        blit::Rect( 3, SPRITE_ROW_BAT, 3, 1 ),
+        blit::Point( bat_position - ( bat_width[bat_type] / 2 ), bat_height )
+      );
+      break;
   }
 
   /* Render the powerups, too - these go behind (before) the balls. */
@@ -823,7 +834,7 @@ void GameState::render( uint32_t p_time )
     }
   }
 
-  /* So, if we have a sticky ball, explain what the user needs to do... */
+  /* So, if we have a stuck ball, explain what the user needs to do... */
   if ( l_stuck_ball && lives > 0 )
   {
     blit::screen.pen = font_pen;

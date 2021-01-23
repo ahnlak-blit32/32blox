@@ -26,6 +26,7 @@ typedef enum
   BAT_NORMAL,
   BAT_NARROW,
   BAT_WIDE,
+  BAT_STICKY,
   BAT_MAX
 } bat_type_t;
 
@@ -54,7 +55,7 @@ private:
   uint16_t                    hiscore;
   std::forward_list<Ball*>    balls;
   std::forward_list<PowerUp*> powerups;
-  const uint8_t               bat_width[BAT_MAX] = { 24, 16, 32 };
+  const uint8_t               bat_width[BAT_MAX] = { 24, 16, 32, 24 };
 
   void                        init( void );
   void                        move_bat( float );

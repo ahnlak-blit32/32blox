@@ -99,11 +99,16 @@ void PowerUp::update( void )
 
 void PowerUp::render( void )
 {
-  /* This is a relatively simple sprite blit. */
+  /* This is a relatively simple sprite blit, with some positionsl alpha. */
+  uint8_t l_oldalpha = blit::screen.alpha;
+  blit::screen.alpha = 255 - ( (int)location.y % 10 ) * 10;
+
   blit::screen.sprite(
     blit::Rect( powerup_type * 2, SPRITE_ROW_POWERUP, 2, 1 ),
     get_render_location()
   );
+
+  blit::screen.alpha = l_oldalpha;
 
   /* All done. */
   return;

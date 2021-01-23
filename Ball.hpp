@@ -40,12 +40,11 @@ public:
   void          launch( void );
   void          randomise( void );
   void          bounce( bool );
-  bool          bat_bounce( uint16_t );
+  bool          bat_bounce( uint16_t, bool );
   void          offset( blit::Vec2 );
-  void          move_bat( blit::Rect, float );
+  void          move_bat( blit::Rect, float, bool );
 
   bool          stuck;
-  bool          sticky;
 };
 
 #endif /* _BALL_HPP_ */
