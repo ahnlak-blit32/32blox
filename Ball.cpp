@@ -191,7 +191,7 @@ void Ball::randomise( void )
   vector.y = -1.5;
 
   /* And apply a random angle to it. */
-  vector.rotate( 0 );
+  vector.rotate( (float)( blit::random() % 180 ) / 100.0f - 0.9f );
 
   /* All done. */
   return;

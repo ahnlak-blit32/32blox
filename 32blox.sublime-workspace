@@ -113,7 +113,7 @@
 			"file": "HiscoreState.cpp",
 			"settings":
 			{
-				"buffer_size": 4589,
+				"buffer_size": 4485,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -167,7 +167,7 @@
 			"file": "GameState.cpp",
 			"settings":
 			{
-				"buffer_size": 23896,
+				"buffer_size": 24410,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -194,15 +194,6 @@
 			"settings":
 			{
 				"buffer_size": 3478,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": ".github/workflows/build.yml",
-			"settings":
-			{
-				"buffer_size": 4228,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -292,7 +283,7 @@
 			"file": "GameState.hpp",
 			"settings":
 			{
-				"buffer_size": 2321,
+				"buffer_size": 2339,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -310,7 +301,7 @@
 			"file": "PowerUp.cpp",
 			"settings":
 			{
-				"buffer_size": 2428,
+				"buffer_size": 2596,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -336,7 +327,7 @@
 			"file": "Ball.hpp",
 			"settings":
 			{
-				"buffer_size": 1236,
+				"buffer_size": 1224,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -345,7 +336,7 @@
 			"file": "Ball.cpp",
 			"settings":
 			{
-				"buffer_size": 6581,
+				"buffer_size": 7809,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -363,7 +354,7 @@
 			"file": "OutputManager.hpp",
 			"settings":
 			{
-				"buffer_size": 1366,
+				"buffer_size": 1444,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -372,7 +363,7 @@
 			"file": "OutputManager.cpp",
 			"settings":
 			{
-				"buffer_size": 3777,
+				"buffer_size": 4463,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -381,7 +372,7 @@
 			"file": "AssetFactory.cpp",
 			"settings":
 			{
-				"buffer_size": 1253,
+				"buffer_size": 1249,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -426,6 +417,7 @@
 	],
 	"file_history":
 	[
+		"/home/pete/Development/32blit/32blox/.github/workflows/build.yml",
 		"/home/pete/Development/web/32BPL/example.php",
 		"/home/pete/Development/web/32BPL/32BPL.php",
 		"/home/pete/Development/32blit/32blit-beta/vs/examples/text/text.vcxproj",
@@ -444,7 +436,6 @@
 		"/home/pete/Development/ProDragonRuby/teenytiny/adrift/README.md",
 		"/home/pete/Development/ProDragonRuby/teenytiny/README.md",
 		"/home/pete/Development/32blit/32blox/README.md",
-		"/home/pete/Development/32blit/32blox/.github/workflows/build.yml",
 		"/home/pete/Development/32blit/32blox/DeathState.cpp",
 		"/home/pete/Development/32blit/32blox/32blox.cpp",
 		"/home/pete/Development/32blit/32blox/assets/levels.csv",
@@ -519,6 +510,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"play_effect",
+			"powerup",
+			"bat_bounc",
+			"move_bat",
+			"sticky",
 			"spawn_ball",
 			"spawn",
 			"bat_type",
@@ -559,7 +555,7 @@
 	"groups":
 	[
 		{
-			"selected": 27,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -575,8 +571,8 @@
 						"selection":
 						[
 							[
-								3064,
-								3064
+								326,
+								326
 							]
 						],
 						"settings":
@@ -586,10 +582,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 765.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -617,7 +613,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -626,15 +622,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4589,
+						"buffer_size": 4485,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4382,
-								4382
+								605,
+								605
 							]
 						],
 						"settings":
@@ -644,10 +640,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1376.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
@@ -677,7 +673,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 22,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
@@ -705,7 +701,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 19,
 					"type": "text"
 				},
 				{
@@ -735,7 +731,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
@@ -765,7 +761,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 27,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
@@ -795,7 +791,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
@@ -804,15 +800,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23896,
+						"buffer_size": 24410,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5528,
-								5528
+								18265,
+								18265
 							]
 						],
 						"settings":
@@ -822,10 +818,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2646.0,
+						"translation.y": 7794.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -855,7 +851,7 @@
 						"translation.y": 540.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 21,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
@@ -883,7 +879,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -910,44 +906,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1530.0,
+						"translation.y": 1226.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
 					"buffer": 12,
-					"file": ".github/workflows/build.yml",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4228,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2238,
-								2238
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/YAML/YAML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 761.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 32,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
 					"file": "CMakeLists.txt",
 					"semi_transient": false,
 					"settings":
@@ -971,11 +937,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
-					"buffer": 14,
+					"buffer": 13,
 					"file": "MenuState.hpp",
 					"semi_transient": false,
 					"settings":
@@ -1005,7 +971,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 15,
+					"buffer": 14,
 					"file": "MenuState.cpp",
 					"semi_transient": false,
 					"settings":
@@ -1035,7 +1001,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 16,
+					"buffer": 15,
 					"file": "SplashState.hpp",
 					"semi_transient": false,
 					"settings":
@@ -1065,7 +1031,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 17,
+					"buffer": 16,
 					"file": "SplashState.cpp",
 					"semi_transient": false,
 					"settings":
@@ -1095,7 +1061,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 18,
+					"buffer": 17,
 					"file": "assets.yml",
 					"semi_transient": false,
 					"settings":
@@ -1121,11 +1087,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
-					"buffer": 19,
+					"buffer": 18,
 					"file": "assets/level03.csv",
 					"semi_transient": false,
 					"settings":
@@ -1149,11 +1115,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 23,
+					"stack_index": 25,
 					"type": "text"
 				},
 				{
-					"buffer": 20,
+					"buffer": 19,
 					"file": "assets/level02.csv",
 					"semi_transient": false,
 					"settings":
@@ -1177,11 +1143,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 25,
+					"stack_index": 27,
 					"type": "text"
 				},
 				{
-					"buffer": 21,
+					"buffer": 20,
 					"file": "32blox.cpp",
 					"semi_transient": false,
 					"settings":
@@ -1207,24 +1173,24 @@
 						"translation.y": 730.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 26,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 22,
+					"buffer": 21,
 					"file": "GameState.hpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2321,
+						"buffer_size": 2339,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1876,
-								1876
+								1571,
+								1571
 							]
 						],
 						"settings":
@@ -1237,11 +1203,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 23,
+					"buffer": 22,
 					"file": "PowerUp.hpp",
 					"semi_transient": false,
 					"settings":
@@ -1267,24 +1233,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 17,
 					"type": "text"
 				},
 				{
-					"buffer": 24,
+					"buffer": 23,
 					"file": "PowerUp.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2428,
+						"buffer_size": 2596,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								676,
-								676
+								2168,
+								2168
 							]
 						],
 						"settings":
@@ -1294,14 +1260,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 760.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 25,
+					"buffer": 24,
 					"file": "assets/level10.csv",
 					"semi_transient": true,
 					"settings":
@@ -1325,11 +1291,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 26,
+					"buffer": 25,
 					"file": "assets/level01.csv",
 					"semi_transient": false,
 					"settings":
@@ -1353,24 +1319,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 24,
+					"stack_index": 26,
 					"type": "text"
 				},
 				{
-					"buffer": 27,
+					"buffer": 26,
 					"file": "Ball.hpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1236,
+						"buffer_size": 1224,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								342,
-								342
+								1054,
+								1054
 							]
 						],
 						"settings":
@@ -1383,24 +1349,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 28,
+					"buffer": 27,
 					"file": "Ball.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6581,
+						"buffer_size": 7809,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3876,
-								3876
+								4343,
+								4343
 							]
 						],
 						"settings":
@@ -1410,14 +1376,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1800.0,
+						"translation.y": 2965.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 29,
+					"buffer": 28,
 					"file": "AssetFactory.hpp",
 					"semi_transient": false,
 					"settings":
@@ -1429,8 +1395,8 @@
 						"selection":
 						[
 							[
-								824,
-								824
+								681,
+								681
 							]
 						],
 						"settings":
@@ -1441,24 +1407,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 30,
+					"buffer": 29,
 					"file": "OutputManager.hpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1366,
+						"buffer_size": 1444,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1292,
-								1292
+								1373,
+								1373
 							]
 						],
 						"settings":
@@ -1471,24 +1437,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 31,
+					"buffer": 30,
 					"file": "OutputManager.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3777,
+						"buffer_size": 4463,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3714,
-								3714
+								4463,
+								4463
 							]
 						],
 						"settings":
@@ -1498,27 +1464,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1256.0,
+						"translation.y": 1645.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 32,
+					"buffer": 31,
 					"file": "AssetFactory.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1253,
+						"buffer_size": 1249,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								878,
-								878
+								696,
+								696
 							]
 						],
 						"settings":
@@ -1531,7 +1497,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 14,
 					"type": "text"
 				}
 			]

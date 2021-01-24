@@ -562,7 +562,7 @@ gamestate_t GameState::update( uint32_t p_time )
     }
 
     /* If a brick was fully destroyed, maybe spawn a powerup. */
-    if ( l_brick_destroyed )
+    if ( l_brick_destroyed && ( ( blit::random() % 10 ) <= ( level->get_level() / 3 ) ) )
     {
       /* Work out the screen location of the brick. */
       blit::Rect l_brick = brick_to_screen( l_brick_location.y, l_brick_location.x );
@@ -570,8 +570,8 @@ gamestate_t GameState::update( uint32_t p_time )
     }
 
     /* And lastly, the bat itself. */
-    if ( ( l_new_bounds.x <= ( bat_position + bat_width[bat_type] / 2 ) ) &&
-         ( ( l_new_bounds.x + l_new_bounds.w ) >= ( bat_position - bat_width[bat_type] / 2 ) ) &&
+    if ( ( l_new_bounds.x < ( bat_position + bat_width[bat_type] / 2 ) ) &&
+         ( ( l_new_bounds.x + l_new_bounds.w ) > ( bat_position - bat_width[bat_type] / 2 ) ) &&
          ( ( l_new_bounds.y + l_new_bounds.h ) >= bat_height ) )
     {
       if ( l_ball->bat_bounce( bat_height, bat_type == BAT_STICKY ) )
@@ -647,6 +647,9 @@ gamestate_t GameState::update( uint32_t p_time )
 
       /* Grant some points for it! */
       score += 15;
+
+      /* Ping! */
+      output.play_effect_pickup();
 
       /* And just drop the thing off the bottom of the screen; it'll get */
       /* then get cleared up in a little while.                          */

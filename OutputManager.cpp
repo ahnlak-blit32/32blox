@@ -38,6 +38,14 @@ OutputManager::OutputManager( void )
   }
 
   /* Set up the sound channels. */
+  blit::channels[CHANNEL_PICKUP].waveforms  = blit::Waveform::TRIANGLE;
+  blit::channels[CHANNEL_PICKUP].frequency  = 1400;
+  blit::channels[CHANNEL_PICKUP].volume     = 0x7fff;
+  blit::channels[CHANNEL_PICKUP].attack_ms  = 8;
+  blit::channels[CHANNEL_PICKUP].decay_ms   = 128;
+  blit::channels[CHANNEL_PICKUP].sustain    = 0;
+  blit::channels[CHANNEL_PICKUP].release_ms = 64;
+
   blit::channels[CHANNEL_BOUNCE].waveforms  = blit::Waveform::SAW | blit::Waveform::NOISE;
   blit::channels[CHANNEL_BOUNCE].volume     = 0x7fff;
   blit::channels[CHANNEL_BOUNCE].attack_ms  = 8;
@@ -160,6 +168,23 @@ void OutputManager::play_effect_bounce( uint16_t p_frequency )
   {
     blit::channels[CHANNEL_BOUNCE].frequency  = p_frequency;
     blit::channels[CHANNEL_BOUNCE].trigger_attack();
+  }
+
+  /* All done. */
+  return;
+}
+
+
+/*
+ * play_effect_pickup - plays the sound effect of a powerup being picked up.
+ */
+
+void OutputManager::play_effect_pickup( void )
+{
+  /* Only do this if sound effects are enabled. */
+  if ( flags.sound_enabled )
+  {
+    blit::channels[CHANNEL_PICKUP].trigger_attack();
   }
 
   /* All done. */
