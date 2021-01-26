@@ -38,9 +38,17 @@ OutputManager::OutputManager( void )
   }
 
   /* Set up the sound channels. */
+  blit::channels[CHANNEL_FALLING].waveforms  = blit::Waveform::SINE;
+  blit::channels[CHANNEL_FALLING].frequency  = 1000;
+  blit::channels[CHANNEL_FALLING].volume     = 0x3fff;
+  blit::channels[CHANNEL_FALLING].attack_ms  = 4;
+  blit::channels[CHANNEL_FALLING].decay_ms   = 32;
+  blit::channels[CHANNEL_FALLING].sustain    = 0;
+  blit::channels[CHANNEL_FALLING].release_ms = 32;
+
   blit::channels[CHANNEL_PICKUP].waveforms  = blit::Waveform::TRIANGLE;
   blit::channels[CHANNEL_PICKUP].frequency  = 1400;
-  blit::channels[CHANNEL_PICKUP].volume     = 0x7fff;
+  blit::channels[CHANNEL_PICKUP].volume     = 0xffff;
   blit::channels[CHANNEL_PICKUP].attack_ms  = 8;
   blit::channels[CHANNEL_PICKUP].decay_ms   = 128;
   blit::channels[CHANNEL_PICKUP].sustain    = 0;
@@ -191,5 +199,24 @@ void OutputManager::play_effect_pickup( void )
   return;
 }
 
+
+/*
+ * play_effect_falling - plays the sound of a powerup dropping from the sky
+ *
+ * uint8_t - the current row on the screen of the powerup, or 0 to turn off
+ */
+
+void OutputManager::play_effect_falling( uint8_t p_height )
+{
+  /* Only do this if sound effects are enabled. */
+  if ( flags.sound_enabled )
+  {
+    blit::channels[CHANNEL_FALLING].frequency  = 1000 - p_height * 4;
+    blit::channels[CHANNEL_FALLING].trigger_attack();
+  }
+
+  /* All done. */
+  return;
+}
 
 /* End of OutputManager.cpp */

@@ -216,6 +216,21 @@ void Ball::bounce( bool p_horizontal )
     vector.y *= -1;
   }
 
+  /* Sanity check, we should never end up *too* horizontal (<30 degrees) */
+  float l_current_angle = vector.angle( blit::Vec2( 1, 0 ) );
+  if ( fabs( l_current_angle ) < 0.5f )
+  {
+    /* Rotate a bit further toward vertical then. */
+    if ( l_current_angle < 0.0f )
+    {
+      vector.rotate( 0.5f + l_current_angle );
+    }
+    else
+    {
+      vector.rotate( l_current_angle - 0.5f );
+    }
+  }
+
   /* All done. */
   return;
 }

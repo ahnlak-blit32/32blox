@@ -20,6 +20,7 @@ typedef struct
   bool                  haptic_enabled;  
 } output_flags_t;
 
+#define CHANNEL_FALLING 5
 #define CHANNEL_PICKUP  6
 #define CHANNEL_BOUNCE  7
 
@@ -42,6 +43,7 @@ public:
   void                  trigger_haptic( float, uint32_t );
   void                  play_effect_bounce( uint16_t );
   void                  play_effect_pickup( void );
+  void                  play_effect_falling( uint8_t );
 };
 
 

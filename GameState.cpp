@@ -369,7 +369,9 @@ gamestate_t GameState::update( uint32_t p_time )
     }
 
     /* And the edges of the screen, which gives some points too! */
-    if ( l_new_bounds.x <= 0 || ( l_new_bounds.x + l_new_bounds.w ) >= blit::screen.bounds.w )
+    if ( ( l_new_bounds.x <= 0 && l_ball->moving_left() )
+         || 
+         ( ( l_new_bounds.x + l_new_bounds.w ) >= blit::screen.bounds.w ) && !l_ball->moving_left() )
     {
       score++;
       output.trigger_haptic( 0.25f, 50 );
@@ -562,7 +564,7 @@ gamestate_t GameState::update( uint32_t p_time )
     }
 
     /* If a brick was fully destroyed, maybe spawn a powerup. */
-    if ( l_brick_destroyed && ( ( blit::random() % 10 ) <= ( level->get_level() / 3 ) ) )
+    if ( l_brick_destroyed ) // && ( ( blit::random() % 10 ) <= ( level->get_level() / 3 ) ) )
     {
       /* Work out the screen location of the brick. */
       blit::Rect l_brick = brick_to_screen( l_brick_location.y, l_brick_location.x );
@@ -590,9 +592,13 @@ gamestate_t GameState::update( uint32_t p_time )
   {
     /* Update the powerup position. */
     l_powerup->update();
+    blit::Rect l_powerup_bounds = l_powerup->get_bounds();
+
+    /* Update the falling noise effect. */
+    output.play_effect_falling( l_powerup_bounds.center().y );
 
     /* And then check to see if there's a collision with the bat. */
-    if ( l_powerup->get_bounds().intersects( bat_bounds() ) )
+    if ( l_powerup_bounds.intersects( bat_bounds() ) )
     {
       /* Apply the amazing power up. */
       switch( l_powerup->get_type() )
@@ -648,7 +654,8 @@ gamestate_t GameState::update( uint32_t p_time )
       /* Grant some points for it! */
       score += 15;
 
-      /* Ping! */
+      /* Turn off the falling sound, and Ping! */
+      output.play_effect_falling( 0 );
       output.play_effect_pickup();
 
       /* And just drop the thing off the bottom of the screen; it'll get */
