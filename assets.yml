@@ -1,6 +1,4 @@
-# All these assets will be created in assets.cpp, which CMake will
-# link automagically.
-# References can be picked up by including assets.hpp
+# These assets are now funneled into different asset files, for different things.
 
 assets_images.cpp:
   prefix: a_img_
@@ -40,5 +38,11 @@ assets_fonts.cpp:
   assets/Wallpoet-Regular.ttf:
     name: splash
     height: 48
+
+assets_audio.cpp:
+  prefix: a_audio_
+  
+  assets/music.wav:
+    name: music
 
 # End of assets.yml

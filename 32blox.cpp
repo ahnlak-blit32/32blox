@@ -66,6 +66,10 @@ void init( void )
   /* We'll also need a menu state for the in-game menu. */
   m_menu_state = new MenuState();
 
+  /* Ask the output manager to play the music, if we're supposed to be! */
+  OutputManager &l_output = OutputManager::get_instance();
+  l_output.enable_music( l_output.music_enabled() );
+
   /* All done. */
   return;
 }

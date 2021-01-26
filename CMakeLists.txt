@@ -5,6 +5,7 @@ project(32blox)
 set(32BLIT_PATH "../" CACHE PATH "Path to 32blit.cmake")
 set(PROJECT_SOURCE 32blox.cpp AssetFactory.cpp Ball.cpp Level.cpp HighScore.cpp
                    OutputManager.cpp PowerUp.cpp MenuState.cpp
+                   daft_freak_wav.cpp
                    SplashState.cpp GameState.cpp DeathState.cpp HiscoreState.cpp)
 set(DISTRIBS README.md LICENSE)
 

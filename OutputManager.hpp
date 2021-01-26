@@ -20,10 +20,10 @@ typedef struct
   bool                  haptic_enabled;  
 } output_flags_t;
 
+#define CHANNEL_MUSIC   0
 #define CHANNEL_FALLING 5
 #define CHANNEL_PICKUP  6
 #define CHANNEL_BOUNCE  7
-
 
 class OutputManager
 {
@@ -31,6 +31,9 @@ private:
                         OutputManager( void );
   output_flags_t        flags;
   blit::Tween           haptic_tween;
+  void                  play_music( void );
+  void                  stop_music( void );
+
 public:
   static OutputManager &get_instance( void );
   bool                  sound_enabled( void );

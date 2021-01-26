@@ -18,9 +18,11 @@
 #include "32blox.hpp"
 
 #include "OutputManager.hpp"
+#include "assets_audio.hpp"
 
 
 /* Functions. */
+
 
 /*
  * constructor - Initialises all the asset objects
@@ -115,8 +117,19 @@ void OutputManager::enable_sound( bool p_flag )
 }
 void OutputManager::enable_music( bool p_flag )
 {
+  /* Set and save the flag. */
   flags.music_enabled = p_flag;
   blit::write_save( flags, SAVE_SLOT_OUTPUT );
+
+  /* And either stop or start the music, as required. */
+  if ( p_flag )
+  {
+    play_music();
+  }
+  else
+  {
+    stop_music();
+  }
   return;
 }
 void OutputManager::enable_haptic( bool p_flag )
@@ -224,5 +237,26 @@ void OutputManager::play_effect_falling( uint8_t p_height )
   /* All done. */
   return;
 }
+
+
+/*
+ * play_music / stop_music - runs the compiled-in WAV file. These functions
+ * are pretty much lifted from the ever-talented DaftFreak.
+ */
+
+void play_wav(int channel, const uint8_t *ptr, bool loop = false);
+void stop_wav(int channel);
+
+void OutputManager::play_music( void )
+{
+  blit::channels[CHANNEL_MUSIC].volume = 0x7fff;
+  play_wav( CHANNEL_MUSIC, a_audio_music, true );
+}
+
+void OutputManager::stop_music( void )
+{
+  stop_wav( CHANNEL_MUSIC );
+}
+
 
 /* End of OutputManager.cpp */
