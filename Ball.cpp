@@ -204,7 +204,7 @@ void Ball::bounce( bool p_horizontal )
 
   /* Sanity check, we should never end up *too* horizontal (<30 degrees) */
   float l_current_angle = vector.angle( blit::Vec2( 1, 0 ) );
-  if ( fabs( l_current_angle ) > 2.6f )
+  if ( fabsf( l_current_angle ) > 2.6f )
   {
     l_current_angle = vector.angle( blit::Vec2( -1, 0 ) );
   }
