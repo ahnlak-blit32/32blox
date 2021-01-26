@@ -103,8 +103,14 @@ bool OutputManager::haptic_enabled( void )
 
 void OutputManager::enable_sound( bool p_flag )
 {
+  /* Set and save the flag. */
   flags.sound_enabled = p_flag;
   blit::write_save( flags, SAVE_SLOT_OUTPUT );
+
+  /* And turn off any currently playing sounds. */
+  blit::channels[CHANNEL_FALLING].off();
+  blit::channels[CHANNEL_PICKUP].off();
+  blit::channels[CHANNEL_BOUNCE].off();
   return;
 }
 void OutputManager::enable_music( bool p_flag )

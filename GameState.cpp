@@ -371,7 +371,7 @@ gamestate_t GameState::update( uint32_t p_time )
     /* And the edges of the screen, which gives some points too! */
     if ( ( l_new_bounds.x <= 0 && l_ball->moving_left() )
          || 
-         ( ( l_new_bounds.x + l_new_bounds.w ) >= blit::screen.bounds.w ) && !l_ball->moving_left() )
+         ( ( l_new_bounds.x + l_new_bounds.w ) >= blit::screen.bounds.w && !l_ball->moving_left() ) )
     {
       score++;
       output.trigger_haptic( 0.25f, 50 );
@@ -564,7 +564,7 @@ gamestate_t GameState::update( uint32_t p_time )
     }
 
     /* If a brick was fully destroyed, maybe spawn a powerup. */
-    if ( l_brick_destroyed ) // && ( ( blit::random() % 10 ) <= ( level->get_level() / 3 ) ) )
+    if ( ( l_brick_destroyed ) && ( ( blit::random() % 10 ) <= ( level->get_level() / 3 ) ) )
     {
       /* Work out the screen location of the brick. */
       blit::Rect l_brick = brick_to_screen( l_brick_location.y, l_brick_location.x );

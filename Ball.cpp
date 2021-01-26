@@ -124,20 +124,6 @@ void Ball::update( void )
   /* This is relatively painless, actually. */
   location += vector;
 
-  /* BUT, we need to sanity check things - if we've gone off the sides, then */
-  /* we need to (a) nudge ourselves back on, and (b) give it some momentum.  */
-  blit::Rect l_bounds = get_bounds();
-  if ( l_bounds.x < 0 )
-  {
-    vector.x -= l_bounds.x;
-    location.x = 0;
-  }
-  if ( l_bounds.x + l_bounds.w > blit::screen.bounds.w )
-  {
-    vector.x -= l_bounds.x + l_bounds.w - blit::screen.bounds.w;
-    location.x = blit::screen.bounds.w;
-  }
-
   /* All done. */
   return;
 }
@@ -218,7 +204,11 @@ void Ball::bounce( bool p_horizontal )
 
   /* Sanity check, we should never end up *too* horizontal (<30 degrees) */
   float l_current_angle = vector.angle( blit::Vec2( 1, 0 ) );
-  if ( fabs( l_current_angle ) < 0.5f )
+  if ( fabs( l_current_angle ) > 2.6f )
+  {
+    l_current_angle = vector.angle( blit::Vec2( -1, 0 ) );
+  }
+  if ( fabsf( l_current_angle ) < 0.5f )
   {
     /* Rotate a bit further toward vertical then. */
     if ( l_current_angle < 0.0f )
