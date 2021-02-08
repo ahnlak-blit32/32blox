@@ -39,7 +39,7 @@ Level::Level( uint8_t p_level )
    * In a normal world, we'd load a level file based on level number. But as
    * we're embedded, level data is compiled in so we just access it.
    */
-  switch( p_level )
+  switch( ( p_level % LEVEL_MAX ) )
   {
     case 1:
       init( a_level_01, a_level_01_length );
@@ -49,6 +49,27 @@ Level::Level( uint8_t p_level )
       break;
     case 3:
       init( a_level_03, a_level_03_length );
+      break;
+    case 4:
+      init( a_level_04, a_level_04_length );
+      break;
+    case 5:
+      init( a_level_05, a_level_05_length );
+      break;
+    case 6:
+      init( a_level_06, a_level_06_length );
+      break;
+    case 7:
+      init( a_level_07, a_level_07_length );
+      break;
+    case 8:
+      init( a_level_08, a_level_08_length );
+      break;
+    case 9:
+      init( a_level_09, a_level_09_length );
+      break;
+    case 0:
+      init( a_level_10, a_level_10_length );
       break;
     default:
       init( nullptr, 0 );
@@ -164,5 +185,25 @@ uint8_t Level::hit_brick( blit::Point p_point )
   return 10;
 }
 
+
+/*
+ * get_ball_speed - works out how fast a standard ball should be moving, which
+ *                  is based on the level we're currently on. It's a cynical
+ *                  trick to increase difficulty without building load of new
+ *                  levels :-)
+ *
+ * Returns float, the speed of the ball
+ */
+
+float Level::get_ball_speed( void )
+{
+  float l_base_speed = 1.5f;
+
+  /* Levels are cyclic, and we have a speed bump for each complete cycle. */
+  l_base_speed += ( ( level - 1 ) / LEVEL_MAX ) / 2.0f;
+
+  /* All done, return it. */
+  return l_base_speed;
+}
  
 /* End of Level.cpp */

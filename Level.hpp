@@ -14,6 +14,8 @@
 #define   BOARD_HEIGHT  15
 #define   BOARD_WIDTH   10
 
+#define   LEVEL_MAX     10
+
 class Level
 {
 private:
@@ -29,6 +31,7 @@ public:
   uint8_t     get_brick( uint8_t, uint8_t );
   uint8_t     get_brick( blit::Point );
   uint8_t     hit_brick( blit::Point );
+  float       get_ball_speed( void );
 };
 
 #endif /* _LEVEL_HPP_ */

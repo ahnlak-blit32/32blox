@@ -23,6 +23,7 @@ class Ball
 private:
   blit::Vec2    location;
   blit::Vec2    vector;
+  float         speed;
   ball_type_t   ball_type;
   blit::Rect    bat_position;
   const uint8_t ball_size[BALL_MAX] = { 8, 6 };
@@ -30,7 +31,7 @@ private:
   blit::Point   get_render_location( void );
 
 public:
-                Ball( blit::Point, ball_type_t = BALL_NORMAL );
+                Ball( blit::Point, float = 1.5, ball_type_t = BALL_NORMAL );
   blit::Rect    get_bounds( void );
   ball_type_t   get_type( void );
   bool          moving_up( void );

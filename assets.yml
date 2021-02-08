@@ -25,6 +25,27 @@ assets_levels.cpp:
   assets/level03.csv: 
     name: "03"
 
+  assets/level04.csv: 
+    name: "04"
+
+  assets/level05.csv: 
+    name: "05"
+
+  assets/level06.csv: 
+    name: "06"
+
+  assets/level07.csv: 
+    name: "07"
+
+  assets/level08.csv: 
+    name: "08"
+
+  assets/level09.csv: 
+    name: "09"
+
+  assets/level10.csv: 
+    name: "10"
+
 
 assets_fonts.cpp:
   prefix: a_font_

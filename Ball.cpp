@@ -27,12 +27,13 @@
  * constructor - Spawns a ball at the specified location, of the specfied type
  */
 
-Ball::Ball( blit::Point p_origin, ball_type_t p_type )
+Ball::Ball( blit::Point p_origin, float p_speed, ball_type_t p_type )
 {
   /* Save the origin and type. */
   location.x = p_origin.x;
   location.y = p_origin.y;
   ball_type = p_type;
+  speed = p_speed;
 
   /* And set some defaults, for now. */
   vector = blit::Vec2( 0, 0 );
@@ -153,7 +154,7 @@ void Ball::launch( void )
 {
   /* First off, start with a launch-speed vertical vector. */
   vector.x = 0;
-  vector.y = -1.5;
+  vector.y = speed * -1.0f;
 
   /* And apply a launch angle to that. */
   vector.rotate( compute_bat_angle() );
@@ -174,7 +175,7 @@ void Ball::randomise( void )
 {
   /* First off, start with a launch-speed vertical vector. */
   vector.x = 0;
-  vector.y = -1.5;
+  vector.y = speed * -1.0f;
 
   /* And apply a random angle to it. */
   vector.rotate( (float)( blit::random() % 180 ) / 100.0f - 0.9f );

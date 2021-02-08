@@ -216,7 +216,7 @@ void GameState::spawn_ball( bool pBat )
     }
 
     /* create a new ball. */
-    l_ball = new Ball( l_ballpos );
+    l_ball = new Ball( l_ballpos, level->get_ball_speed() );
 
     /* Stick it to the bat. */
     l_ball->stuck = true;
@@ -228,7 +228,7 @@ void GameState::spawn_ball( bool pBat )
     l_ballpos = l_current_ball->get_bounds().center();
 
     /* create a new ball. */
-    l_ball = new Ball( l_ballpos );
+    l_ball = new Ball( l_ballpos, level->get_ball_speed() );
     l_ball->randomise();
   }
 
@@ -670,8 +670,9 @@ gamestate_t GameState::update( uint32_t p_time )
   /* If there are no more balls in play, then we lose a life. */
   if ( std::distance( balls.begin(), balls.end() ) == 0 )
   {
-    /* Switch the bat back to standard speed, too. */
+    /* Switch the bat back to standard type and speed, too. */
     bat_speed = 1.0f;
+    bat_type = BAT_NORMAL;
 
     /* Reduce our lives, spawn a fresh ball if we can. */
     lives--;

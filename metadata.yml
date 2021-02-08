@@ -3,10 +3,12 @@
 title: 32Blox
 description: A breakout clone
 author: ahnlak
+category: game
+url: https://github.com/ahnlak-blit32/32blox
 splash:
   file: assets/32blox-image.png
 icon:
   file: assets/32blox-icon.png
-version: v0.3.0a
+version: v0.9.0
 
 # End of metadata.yml
