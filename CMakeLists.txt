@@ -7,7 +7,7 @@ set(PROJECT_SOURCE 32blox.cpp AssetFactory.cpp Ball.cpp Level.cpp HighScore.cpp
                    OutputManager.cpp PowerUp.cpp MenuState.cpp
                    daft_freak_wav.cpp
                    SplashState.cpp GameState.cpp DeathState.cpp HiscoreState.cpp)
-set(DISTRIBS README.md LICENSE)
+set(PROJECT_DISTRIBS README.md LICENSE)
 
 # Build configuration; approach this with caution!
 if(MSVC)
@@ -24,4 +24,10 @@ blit_executable (${PROJECT_NAME} ${PROJECT_SOURCE})
 blit_assets_yaml (${PROJECT_NAME} assets.yml)
 blit_metadata (${PROJECT_NAME} metadata.yml)
 add_custom_target (flash DEPENDS ${PROJECT_NAME}.flash)
+
+# setup release packages
+install (FILES ${PROJECT_DISTRIBS} DESTINATION .)
+set (CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
+set (CPACK_GENERATOR "ZIP" "TGZ")
+include (CPack)
 # End of CMakeList.txt
