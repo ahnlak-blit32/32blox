@@ -850,7 +850,7 @@ void GameState::render( uint32_t p_time )
   {
     blit::screen.pen = font_pen;
     blit::screen.text(
-      "Press 'B' To Launch",
+      STR_B_TO_LAUNCH,
       assets.message_font,
       blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 45 ),
       true,

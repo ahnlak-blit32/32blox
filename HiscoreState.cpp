@@ -173,7 +173,7 @@ void HiscoreState::render( uint32_t p_time )
 
   /* Lastly, prompt the user to press a button. */
   blit::screen.text(
-    "PRESS 'A' TO START",
+    STR_A_TO_START,
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,

@@ -256,7 +256,7 @@ void MenuState::render( uint32_t p_time )
 
   blit::screen.pen = plain_pen;
   blit::screen.text(
-    "PRESS <MENU> TO RETURN",
+    STR_MENU_TO_RETURN,
     assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, 200 ),
     true,

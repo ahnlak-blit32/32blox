@@ -14,6 +14,19 @@
 
 #include "assets_fonts.hpp"
 
+/* Key prompts depend on whether we're on the actual Blit or not. */
+#ifdef    TARGET_32BLIT_HW
+#define   STR_B_TO_LAUNCH     "Press 'B' To Launch"
+#define   STR_B_TO_SAVE       "PRESS 'B' TO SAVE"
+#define   STR_A_TO_START      "PRESS 'A' TO START"
+#define   STR_MENU_TO_RETURN  "PRESS <MENU> TO RETURN"
+#else  /* TARGET_32BLIT_HW */
+#define   STR_B_TO_LAUNCH     "Press 'X' To Launch"
+#define   STR_B_TO_SAVE       "PRESS 'X' TO SAVE"
+#define   STR_A_TO_START      "PRESS 'Z' TO START"
+#define   STR_MENU_TO_RETURN  "PRESS '2' TO RETURN"
+#endif /* TARGET_32BLIT_HW */
+
 class AssetFactory
 {
 private:

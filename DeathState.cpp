@@ -229,7 +229,7 @@ void DeathState::render( uint32_t p_time )
 
   /* Lastly, prompt the user to press a button. */
   blit::screen.text(
-    "PRESS 'B' TO SAVE",
+    STR_B_TO_SAVE,
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,
