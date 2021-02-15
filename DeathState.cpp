@@ -206,21 +206,21 @@ void DeathState::render( uint32_t p_time )
 
   /* The static messaging next - congrats, and how to enter your name... */
   blit::screen.text(
-    "NEW HIGH SCORE!",
+    assets.get_text( STR_NEW_HIGH_SCORE ),
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 10 ),
     true,
     blit::TextAlign::top_center
   );
   blit::screen.text(
-    "LEFT/RIGHT TO SELECT",
+    assets.get_text( STR_LEFT_RIGHT_SELECT ),
     assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 55 ),
     true,
     blit::TextAlign::bottom_center
   );
   blit::screen.text(
-    "UP/DOWN TO CHANGE",
+    assets.get_text( STR_UP_DOWN_CHANGE ),
     assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 40 ),
     true,
@@ -229,7 +229,7 @@ void DeathState::render( uint32_t p_time )
 
   /* Lastly, prompt the user to press a button. */
   blit::screen.text(
-    STR_B_TO_SAVE,
+    assets.get_text( STR_B_TO_SAVE ),
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,

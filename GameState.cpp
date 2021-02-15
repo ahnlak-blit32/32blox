@@ -264,7 +264,7 @@ void GameState::load_level( uint8_t p_level )
   powerups.clear();
 
   /* Let the user know what level they're on. */
-  snprintf( splash_message, 30, "Level\n%02d", level->get_level() );
+  snprintf( splash_message, 30, "%s\n%02d", assets.get_text( STR_LEVEL ), level->get_level() );
   splash_tween.start();
 
   /* All done. */
@@ -604,11 +604,11 @@ gamestate_t GameState::update( uint32_t p_time )
       switch( l_powerup->get_type() )
       {
       case POWERUP_SPEED:
-        snprintf( splash_message, 30, "SPEED\nUP!" );
+        snprintf( splash_message, 30, "%s", assets.get_text( STR_POWERUP_SPEED ) );
         bat_speed += 0.8f;
         break;
       case POWERUP_SLOW:
-        snprintf( splash_message, 30, "SLOW\nDOWN" );
+        snprintf( splash_message, 30, "%s", assets.get_text( STR_POWERUP_SLOW ) );
         bat_speed -= 0.6f;
         if ( bat_speed < 0.5f )
         {
@@ -616,11 +616,11 @@ gamestate_t GameState::update( uint32_t p_time )
         }
         break;
       case POWERUP_STICKY:
-        snprintf( splash_message, 30, "STICKY\nBAT!" );
+        snprintf( splash_message, 30, "%s", assets.get_text( STR_POWERUP_STICKY ) );
         bat_type = BAT_STICKY;
         break;
       case POWERUP_GROW:
-        snprintf( splash_message, 30, "GROW\nBAT!" );
+        snprintf( splash_message, 30, "%s", assets.get_text( STR_POWERUP_GROW ) );
         if ( bat_type == BAT_NARROW )
         {
           bat_type = BAT_NORMAL;
@@ -631,7 +631,7 @@ gamestate_t GameState::update( uint32_t p_time )
         }
         break;
       case POWERUP_SHRINK:
-        snprintf( splash_message, 30, "SHRINK\nBAT!" );
+        snprintf( splash_message, 30, "%s", assets.get_text( STR_POWERUP_SHRINK ) );
         if ( bat_type == BAT_WIDE )
         {
           bat_type = BAT_NORMAL;
@@ -642,7 +642,7 @@ gamestate_t GameState::update( uint32_t p_time )
         }
         break;
       case POWERUP_MULTI:
-        snprintf( splash_message, 30, "MULTI\nBALL!" );
+        snprintf( splash_message, 30, "%s", assets.get_text( STR_POWERUP_MULTI ) );
         spawn_ball( false );
         spawn_ball( false );
         break;
@@ -679,11 +679,11 @@ gamestate_t GameState::update( uint32_t p_time )
     spawn_ball( true );
     if ( lives == 0 )
     {
-      snprintf( splash_message, 30, "Game\nOver" );
+      snprintf( splash_message, 30, "%s", assets.get_text( STR_GAME_OVER ) );
     }
     else
     {
-      snprintf( splash_message, 30, "Ball\nLost" );
+      snprintf( splash_message, 30, "%s", assets.get_text( STR_BALL_LOST ) );
     }
     splash_tween.start();
   }
@@ -732,7 +732,7 @@ void GameState::render( uint32_t p_time )
   }
 
   /* Draw in the score line. */
-  snprintf( l_buffer, 30, "SCORE: %05d", score );
+  snprintf( l_buffer, 30, "%s: %05d", assets.get_text( STR_SCORE ), score );
   blit::screen.pen = number_pen;
   blit::screen.text(
     l_buffer,
@@ -741,7 +741,7 @@ void GameState::render( uint32_t p_time )
     true,
     blit::TextAlign::top_left
   );
-  snprintf( l_buffer, 30, "HI: %05d", hiscore );
+  snprintf( l_buffer, 30, "%s: %05d", assets.get_text( STR_HISCORE ), hiscore );
   blit::screen.text(
     l_buffer,
     assets.number_font,
@@ -850,7 +850,7 @@ void GameState::render( uint32_t p_time )
   {
     blit::screen.pen = font_pen;
     blit::screen.text(
-      STR_B_TO_LAUNCH,
+      assets.get_text( STR_B_TO_LAUNCH ),
       assets.message_font,
       blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 45 ),
       true,

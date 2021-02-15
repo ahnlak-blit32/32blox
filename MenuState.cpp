@@ -160,7 +160,7 @@ gamestate_t MenuState::update( uint32_t p_time )
 
 void MenuState::render( uint32_t p_time )
 {
-  char l_buffer[16];
+  const char *l_charptr;
 
   /* Clear the screen down. */
   blit::screen.clear();
@@ -181,7 +181,7 @@ void MenuState::render( uint32_t p_time )
   /* Now render all our menu options, highlighting what we're currently on. */
   blit::screen.pen = plain_pen;
   blit::screen.text(
-    "Sounds",
+    assets.get_text( STR_MENU_SOUND ),
     assets.message_font,
     blit::Point( ( blit::screen.bounds.w - menu_size.w ) / 2, 100 ),
     true,
@@ -189,15 +189,15 @@ void MenuState::render( uint32_t p_time )
   );
   if ( output.sound_enabled() )
   {
-    strcpy( l_buffer, "  <ON>" );
+    l_charptr = assets.get_text( STR_MENU_ON );
   }
   else
   {
-    strcpy( l_buffer, " <OFF>" );
+    l_charptr = assets.get_text( STR_MENU_OFF );
   }
   blit::screen.pen = ( cursor == 0 ) ? font_pen : plain_pen;
   blit::screen.text(
-    l_buffer,
+    l_charptr,
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 100 ),
     true,
@@ -206,7 +206,7 @@ void MenuState::render( uint32_t p_time )
 
   blit::screen.pen = plain_pen;
   blit::screen.text(
-    "Music ",
+    assets.get_text( STR_MENU_MUSIC ),
     assets.message_font,
     blit::Point( ( blit::screen.bounds.w - menu_size.w ) / 2, 130 ),
     true,
@@ -214,15 +214,15 @@ void MenuState::render( uint32_t p_time )
   );
   if ( output.music_enabled() )
   {
-    strcpy( l_buffer, "  <ON>" );
+    l_charptr = assets.get_text( STR_MENU_ON );
   }
   else
   {
-    strcpy( l_buffer, " <OFF>" );
+    l_charptr = assets.get_text( STR_MENU_OFF );
   }
   blit::screen.pen = ( cursor == 1 ) ? font_pen : plain_pen;
   blit::screen.text(
-    l_buffer,
+    l_charptr,
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 130 ),
     true,
@@ -231,7 +231,7 @@ void MenuState::render( uint32_t p_time )
 
   blit::screen.pen = plain_pen;
   blit::screen.text(
-    "Haptic",
+    assets.get_text( STR_MENU_HAPTIC ),
     assets.message_font,
     blit::Point( ( blit::screen.bounds.w - menu_size.w ) / 2, 160 ),
     true,
@@ -239,15 +239,15 @@ void MenuState::render( uint32_t p_time )
   );
   if ( output.haptic_enabled() )
   {
-    strcpy( l_buffer, "  <ON>" );
+    l_charptr = assets.get_text( STR_MENU_ON );
   }
   else
   {
-    strcpy( l_buffer, " <OFF>" );
+    l_charptr = assets.get_text( STR_MENU_OFF );
   }
   blit::screen.pen = ( cursor == 2 ) ? font_pen : plain_pen;
   blit::screen.text(
-    l_buffer,
+    l_charptr,
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 160 ),
     true,
@@ -256,7 +256,7 @@ void MenuState::render( uint32_t p_time )
 
   blit::screen.pen = plain_pen;
   blit::screen.text(
-    STR_MENU_TO_RETURN,
+    assets.get_text( STR_MENU_TO_EXIT ),
     assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, 200 ),
     true,
@@ -265,7 +265,7 @@ void MenuState::render( uint32_t p_time )
 
   /* Lastly some gratuitous self-promotion. */
   blit::screen.text(
-    "VISIT US AT https://32blit.ahnlak.com",
+    assets.get_text( STR_MENU_URL ),
     assets.number_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,

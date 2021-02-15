@@ -176,7 +176,7 @@ void SplashState::render( uint32_t p_time )
   /* Lastly, prompt the user to press a button. */
   blit::screen.pen = font_pen;
   blit::screen.text(
-    STR_A_TO_START,
+    assets.get_text( STR_A_TO_START),
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 45 ),
     true,

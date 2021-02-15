@@ -164,7 +164,7 @@ void HiscoreState::render( uint32_t p_time )
   /* The static messaging next - hi score table heading. */
   blit::screen.pen = font_pen;
   blit::screen.text(
-    "HIGH SCORES",
+    assets.get_text( STR_HIGH_SCORES ),
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, 10 ),
     true,
@@ -173,7 +173,7 @@ void HiscoreState::render( uint32_t p_time )
 
   /* Lastly, prompt the user to press a button. */
   blit::screen.text(
-    STR_A_TO_START,
+    assets.get_text( STR_A_TO_START ),
     assets.message_font,
     blit::Point( blit::screen.bounds.w / 2, blit::screen.bounds.h - 10 ),
     true,

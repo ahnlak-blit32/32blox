@@ -14,22 +14,56 @@
 
 #include "assets_fonts.hpp"
 
-/* Key prompts depend on whether we're on the actual Blit or not. */
-#ifdef    TARGET_32BLIT_HW
-#define   STR_B_TO_LAUNCH     "Press 'B' To Launch"
-#define   STR_B_TO_SAVE       "PRESS 'B' TO SAVE"
-#define   STR_A_TO_START      "PRESS 'A' TO START"
-#define   STR_MENU_TO_RETURN  "PRESS <MENU> TO RETURN"
-#else  /* TARGET_32BLIT_HW */
-#define   STR_B_TO_LAUNCH     "Press 'X' To Launch"
-#define   STR_B_TO_SAVE       "PRESS 'X' TO SAVE"
-#define   STR_A_TO_START      "PRESS 'Z' TO START"
-#define   STR_MENU_TO_RETURN  "PRESS '2' TO RETURN"
-#endif /* TARGET_32BLIT_HW */
+/* All text is now output via the Asset Factory, so we can switch for both */
+/* platform and language options.                                          */
+typedef enum
+{
+  LANG_EN
+} str_lang_t;
+
+typedef enum
+{
+  STR_LANG_EN = LANG_EN,
+  STR_A_TO_START,
+  STR_B_TO_LAUNCH,
+  STR_B_TO_SAVE,
+  STR_MENU_TO_EXIT,
+  STR_NEW_HIGH_SCORE,
+  STR_LEFT_RIGHT_SELECT,
+  STR_UP_DOWN_CHANGE,
+  STR_LEVEL,
+  STR_POWERUP_SPEED,
+  STR_POWERUP_SLOW,
+  STR_POWERUP_STICKY,
+  STR_POWERUP_GROW,
+  STR_POWERUP_SHRINK,
+  STR_POWERUP_MULTI,
+  STR_GAME_OVER,
+  STR_BALL_LOST,
+  STR_SCORE,
+  STR_HISCORE,
+  STR_HIGH_SCORES,
+  STR_MENU_SOUND,
+  STR_MENU_MUSIC,
+  STR_MENU_HAPTIC,
+  STR_MENU_ON,
+  STR_MENU_OFF,
+  STR_MENU_URL
+} str_message_t;
+
 
 class AssetFactory
 {
 private:
+
+#ifdef    TARGET_32BLIT_HW
+  const bool            c_blit_hardware = true;
+#else  /* TARGET_32BLIT_HW */
+  const bool            c_blit_hardware = false;
+#endif /* TARGET_32BLIT_HW */
+
+  str_lang_t            c_language = LANG_EN;
+
                         AssetFactory( void );
 public:
   static AssetFactory  &get_instance( void );
@@ -37,9 +71,13 @@ public:
   blit::Surface        *surface_logo;
   blit::Surface        *surface_long_logo;
   blit::Surface        *spritesheet_game;
+
   const blit::Font      number_font = blit::Font( a_font_number );
   const blit::Font      message_font = blit::Font( a_font_message );
   const blit::Font      splash_font = blit::Font( a_font_splash );
+  const char *          get_text( str_message_t );
+  str_lang_t            get_language( void );
+  void                  set_language( str_lang_t );
 };
 
 
