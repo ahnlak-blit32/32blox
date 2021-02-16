@@ -85,10 +85,22 @@ blit::Point Ball::get_render_location( void )
 
 blit::Rect Ball::get_bounds( void )
 {
-  return blit::Rect( 
-    location - blit::Vec2( ball_size[ball_type] / 2 - 1, ball_size[ball_type] / 2 - 1 ),
-    location + blit::Vec2( ball_size[ball_type] / 2 - 1, ball_size[ball_type] / 2 - 1 )
-  );
+  /* Work out the corners. */
+  blit::Point l_tl = location - blit::Vec2( ball_size[ball_type] / 2 - 1, ball_size[ball_type] / 2 - 1 );
+  blit::Point l_br = location + blit::Vec2( ball_size[ball_type] / 2 - 1, ball_size[ball_type] / 2 - 1 );
+
+  /* Clamp the left/right edges of the screen - unsigned, so may have wrapped. */
+  if ( ( l_tl.x < 0 ) || ( l_tl.x > blit::screen.bounds.w ) )
+  {
+    l_tl.x = 0;
+  }
+  if ( l_br.x > blit::screen.bounds.w )
+  {
+    l_br.x = blit::screen.bounds.w;
+  }
+
+  /* And return the resulting rectangle. */
+  return blit::Rect( l_tl, l_br );
 }
 
 

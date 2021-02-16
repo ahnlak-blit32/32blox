@@ -160,7 +160,11 @@ blit::Rect GameState::brick_to_screen( uint8_t p_row, uint8_t p_column )
 
 blit::Point GameState::screen_to_brick( blit::Point p_location )
 {
-  return blit::Point( p_location.x / 32, ( p_location.y - 10 ) / 16 );
+  /* Clamp the location to the screen, in case a bounding box has slipped */
+  /* off somewhere, which can get ... messy.                              */
+  blit::Point l_location = blit::screen.clip.clamp( p_location );
+
+  return blit::Point( l_location.x / 32, ( l_location.y - 10 ) / 16 );
 }
 
 
