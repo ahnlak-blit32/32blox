@@ -45,7 +45,7 @@ OutputManager::OutputManager( void )
   blit::channels[CHANNEL_LEVEL].volume     = 0xffff;
   blit::channels[CHANNEL_LEVEL].attack_ms  = 32;
   blit::channels[CHANNEL_LEVEL].decay_ms   = 512;
-  blit::channels[CHANNEL_LEVEL].sustain    = 256;
+  blit::channels[CHANNEL_LEVEL].sustain    = 0;
   blit::channels[CHANNEL_LEVEL].release_ms = 128;
 
   blit::channels[CHANNEL_FALLING].waveforms  = blit::Waveform::SINE;
@@ -66,8 +66,8 @@ OutputManager::OutputManager( void )
 
   blit::channels[CHANNEL_BOUNCE].waveforms  = blit::Waveform::SAW | blit::Waveform::NOISE;
   blit::channels[CHANNEL_BOUNCE].volume     = 0x7fff;
-  blit::channels[CHANNEL_BOUNCE].attack_ms  = 8;
-  blit::channels[CHANNEL_BOUNCE].decay_ms   = 32;
+  blit::channels[CHANNEL_BOUNCE].attack_ms  = 4;
+  blit::channels[CHANNEL_BOUNCE].decay_ms   = 64;
   blit::channels[CHANNEL_BOUNCE].sustain    = 0;
   blit::channels[CHANNEL_BOUNCE].release_ms = 16;
 
@@ -118,6 +118,7 @@ void OutputManager::enable_sound( bool p_flag )
   blit::write_save( flags, SAVE_SLOT_OUTPUT );
 
   /* And turn off any currently playing sounds. */
+  blit::channels[CHANNEL_LEVEL].off();
   blit::channels[CHANNEL_FALLING].off();
   blit::channels[CHANNEL_PICKUP].off();
   blit::channels[CHANNEL_BOUNCE].off();
@@ -166,6 +167,16 @@ void OutputManager::update( uint32_t p_time )
   {
     blit::vibration = 0.0f;
   }
+
+  /* Check if any channels have hit their sustain phase. */
+  if ( blit::channels[CHANNEL_LEVEL].adsr_phase == blit::ADSRPhase::SUSTAIN )
+    blit::channels[CHANNEL_LEVEL].trigger_release();
+  if ( blit::channels[CHANNEL_FALLING].adsr_phase == blit::ADSRPhase::SUSTAIN )
+    blit::channels[CHANNEL_FALLING].trigger_release();
+  if ( blit::channels[CHANNEL_PICKUP].adsr_phase == blit::ADSRPhase::SUSTAIN )
+    blit::channels[CHANNEL_PICKUP].trigger_release();
+  if ( blit::channels[CHANNEL_BOUNCE].adsr_phase == blit::ADSRPhase::SUSTAIN )
+    blit::channels[CHANNEL_BOUNCE].trigger_release();
 
   /* All done. */
   return;
