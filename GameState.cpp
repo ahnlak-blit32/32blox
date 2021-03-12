@@ -568,7 +568,7 @@ gamestate_t GameState::update( uint32_t p_time )
     }
 
     /* If a brick was fully destroyed, maybe spawn a powerup. */
-    if ( ( l_brick_destroyed ) && ( ( blit::random() % 10 ) <= ( level->get_level() / 3 ) ) )
+    if ( ( l_brick_destroyed )  && ( ( blit::random() % 10 ) <= ( level->get_level() / 3 ) ) )
     {
       /* Work out the screen location of the brick. */
       blit::Rect l_brick = brick_to_screen( l_brick_location.y, l_brick_location.x );
@@ -649,6 +649,10 @@ gamestate_t GameState::update( uint32_t p_time )
         snprintf( splash_message, 30, "%s", assets.get_text( STR_POWERUP_MULTI ) );
         spawn_ball( false );
         spawn_ball( false );
+        break;
+      case POWERUP_EXTRA:
+        snprintf( splash_message, 30, "%s", assets.get_text( STR_POWERUP_EXTRA ) );
+        lives++;
         break;
       }
 

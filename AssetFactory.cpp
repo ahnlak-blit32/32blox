@@ -125,6 +125,9 @@ const char *AssetFactory::get_text( str_message_t p_message )
         case STR_POWERUP_MULTI:
           l_text = "MULTI\nBALL";
           break;
+        case STR_POWERUP_EXTRA:
+          l_text = "EXTRA\nLIFE";
+          break;
         case STR_GAME_OVER:
           l_text = "GAME\nOVER";
           break;

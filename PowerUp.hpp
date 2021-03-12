@@ -19,6 +19,7 @@ typedef enum
   POWERUP_SHRINK,
   POWERUP_GROW,
   POWERUP_MULTI,
+  POWERUP_EXTRA,
   POWERUP_MAX
 } powerup_type_t;
 
