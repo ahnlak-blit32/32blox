@@ -706,6 +706,7 @@ gamestate_t GameState::update( uint32_t p_time )
   /* then it's time to move onto the next one!                            */
   if ( level->get_brick_count() == 0 )
   {
+    output.play_effect_level_complete();
     load_level( level->get_level() + 1 );
   }
 

@@ -21,6 +21,7 @@ typedef struct
 } output_flags_t;
 
 #define CHANNEL_MUSIC   0
+#define CHANNEL_LEVEL   4
 #define CHANNEL_FALLING 5
 #define CHANNEL_PICKUP  6
 #define CHANNEL_BOUNCE  7
@@ -47,6 +48,7 @@ public:
   void                  play_effect_bounce( uint16_t );
   void                  play_effect_pickup( void );
   void                  play_effect_falling( uint8_t );
+  void                  play_effect_level_complete( void );
 };
 
 

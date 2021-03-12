@@ -40,6 +40,14 @@ OutputManager::OutputManager( void )
   }
 
   /* Set up the sound channels. */
+  blit::channels[CHANNEL_LEVEL].waveforms  = blit::Waveform::TRIANGLE | blit::Waveform::SINE | blit::Waveform::SQUARE;
+  blit::channels[CHANNEL_LEVEL].frequency  = 3500;
+  blit::channels[CHANNEL_LEVEL].volume     = 0xffff;
+  blit::channels[CHANNEL_LEVEL].attack_ms  = 32;
+  blit::channels[CHANNEL_LEVEL].decay_ms   = 512;
+  blit::channels[CHANNEL_LEVEL].sustain    = 256;
+  blit::channels[CHANNEL_LEVEL].release_ms = 128;
+
   blit::channels[CHANNEL_FALLING].waveforms  = blit::Waveform::SINE;
   blit::channels[CHANNEL_FALLING].frequency  = 1000;
   blit::channels[CHANNEL_FALLING].volume     = 0x3fff;
@@ -232,6 +240,23 @@ void OutputManager::play_effect_falling( uint8_t p_height )
   {
     blit::channels[CHANNEL_FALLING].frequency  = 1000 - p_height * 4;
     blit::channels[CHANNEL_FALLING].trigger_attack();
+  }
+
+  /* All done. */
+  return;
+}
+
+
+/*
+ * play_effect_level_complete - plays a beep when you clear the level.
+ */
+
+void OutputManager::play_effect_level_complete( void )
+{
+  /* Only do this if sound effects are enabled. */
+  if ( flags.sound_enabled )
+  {
+    blit::channels[CHANNEL_LEVEL].trigger_attack();
   }
 
   /* All done. */
