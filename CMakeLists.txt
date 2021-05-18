@@ -16,7 +16,7 @@ else()
   add_compile_options("-Wall" "-Wextra" "-Wdouble-promotion" "-Wno-unused-parameter" "-Wno-switch")
 endif()
 
-find_package(32BLIT CONFIG REQUIRED PATHS ../32blit-sdk-0.1.11)
+find_package(32BLIT CONFIG REQUIRED PATHS ../32blit-sdk-v0.1.12)
 
 install(FILES ${DISTRIBS} DESTINATION bin)
 blit_executable (${PROJECT_NAME} ${PROJECT_SOURCE})
