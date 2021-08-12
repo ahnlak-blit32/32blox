@@ -11,6 +11,9 @@
 
 /* System headers. */
 
+#include <string.h>
+
+
 /* Local headers. */
 
 #include "32blit.hpp"
@@ -34,6 +37,20 @@ AssetFactory::AssetFactory( void )
   /* And then any individual image assets. */
   surface_logo = blit::Surface::load( a_img_logo );
   surface_long_logo = blit::Surface::load( a_img_long_logo );
+
+  /* Determine what our hardware target is. */
+#ifdef TARGET_32BLIT_HW
+  c_target = TARGET_32BLIT;
+#else
+  if ( strcmp( PICO_BOARD, "pimoroni_picosystem" ) == 0 )
+  {
+    c_target = TARGET_PICOSYSTEM;
+  }
+  else
+  {
+    c_target = TARGET_SDL;
+  }
+#endif
 
   /* All done. */
   return;
@@ -68,25 +85,31 @@ const char *AssetFactory::get_text( str_message_t p_message )
       switch( p_message )
       {
         case STR_A_TO_START:
-          if ( c_blit_hardware )
+          if ( TARGET_32BLIT == c_target )
             l_text = "PRESS 'A' TO START";
+          else if ( TARGET_PICOSYSTEM == c_target )
+            l_text = "'A' TO START";
           else
             l_text = "PRESS 'Z' TO START";
           break;
         case STR_B_TO_LAUNCH:
-          if ( c_blit_hardware )
+          if ( TARGET_32BLIT == c_target )
             l_text = "PRESS 'B' TO LAUNCH";
+          else if ( TARGET_PICOSYSTEM == c_target )
+            l_text = "'B' TO LAUNCH";
           else
             l_text = "PRESS 'X' TO LAUNCH";
           break;
         case STR_B_TO_SAVE:
-          if ( c_blit_hardware )
+          if ( TARGET_32BLIT == c_target )
             l_text = "PRESS 'B' TO SAVE";
+          else if ( TARGET_PICOSYSTEM == c_target )
+            l_text = "'B' TO SAVE";
           else
             l_text = "PRESS 'X' TO SAVE";
           break;
         case STR_MENU_TO_EXIT:
-          if ( c_blit_hardware )
+          if ( TARGET_32BLIT == c_target )
             l_text = "PRESS <MENU> TO EXIT";
           else
             l_text = "PRESS '2' TO EXIT";
@@ -192,6 +215,20 @@ void AssetFactory::set_language( str_lang_t p_language )
   /* All done. */
   return;
 }
+
+
+/*
+ * get_platform - describes the platform we're playing on.
+ *
+ * This is kind of the wrong place for this, but the main area where platform
+ * differences exist is in the strings we use.
+ */
+
+target_type_t AssetFactory::get_platform( void )
+{
+  return c_target;
+}
+
 
 
 /* End of AssetFactory.cpp */

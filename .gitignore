@@ -1,4 +1,5 @@
 build/
 build.em/
+build.pico/
 build.stm32/
 *.sublime-workspace

@@ -1,6 +1,13 @@
 # Basic parameters; check that these match your project / environment
 cmake_minimum_required(VERSION 3.8)
 
+# we're using the copy of the import files from the 32Blit SDK here
+# this example checks if PICO_SDK_PATH is set to allow compiling for other targets when it isn't set
+if(PICO_SDK_PATH)
+  include(${32BLIT_DIR}/32blit-pico/pico_sdk_import.cmake)
+  include(${32BLIT_DIR}/32blit-pico/pico_extras_import.cmake)
+endif()
+
 project(32blox)
 
 set(PROJECT_SOURCE 32blox.cpp AssetFactory.cpp Ball.cpp Level.cpp HighScore.cpp

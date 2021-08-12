@@ -52,6 +52,13 @@ typedef enum
   STR_MENU_URL
 } str_message_t;
 
+typedef enum
+{
+  TARGET_32BLIT,
+  TARGET_PICOSYSTEM,
+  TARGET_SDL
+} target_type_t;
+
 
 class AssetFactory
 {
@@ -63,6 +70,7 @@ private:
   const bool            c_blit_hardware = false;
 #endif /* TARGET_32BLIT_HW */
 
+  target_type_t         c_target;
   str_lang_t            c_language = LANG_EN;
 
                         AssetFactory( void );
@@ -79,6 +87,7 @@ public:
   const char *          get_text( str_message_t );
   str_lang_t            get_language( void );
   void                  set_language( str_lang_t );
+  target_type_t         get_platform( void );
 };
 
 

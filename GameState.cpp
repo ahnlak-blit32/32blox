@@ -727,6 +727,7 @@ gamestate_t GameState::update( uint32_t p_time )
 void GameState::render( uint32_t p_time )
 {
   uint8_t l_brick;
+  uint8_t l_lives_offset = 0;
   bool    l_stuck_ball = false;
   char    l_buffer[32];
 
@@ -760,19 +761,24 @@ void GameState::render( uint32_t p_time )
   );
 
   /* And a display of the remaining lives. */
+  if ( TARGET_PICOSYSTEM == assets.get_platform() )
+  {
+    l_lives_offset = 10;
+  }
+
   blit::screen.sprite(
     blit::Rect( 0, SPRITE_ROW_BAT, 1, 1 ),
-    blit::Point( blit::screen.bounds.w / 2 - 24, 1 )
+    blit::Point( blit::screen.bounds.w / 2 - 24 + l_lives_offset, 1 )
   );
   blit::screen.sprite(
     blit::Rect( 2, SPRITE_ROW_BAT, 1, 1 ),
-    blit::Point( blit::screen.bounds.w / 2 - 16, 1 )
+    blit::Point( blit::screen.bounds.w / 2 - 16 + l_lives_offset, 1 )
   );
   snprintf( l_buffer, 30, "x%d", lives );
   blit::screen.text( 
     l_buffer, 
     assets.number_font, 
-    blit::Point( blit::screen.bounds.w / 2 - 4, 1 ),
+    blit::Point( blit::screen.bounds.w / 2 - 4 + l_lives_offset, 1 ),
     true, blit::TextAlign::top_left
   );
 

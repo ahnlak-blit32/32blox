@@ -39,7 +39,7 @@ static MenuState           *m_menu_state;
 
 void init( void )
 {
-  /* Switch the screen into high res (320x240) mode. */
+  /* Switch the screen into high res (240px high) mode. */
   blit::set_screen_mode( blit::ScreenMode::hires );
 
   /* Black then screen to a nice dark blue. */

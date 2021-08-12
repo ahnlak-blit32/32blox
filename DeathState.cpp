@@ -57,7 +57,8 @@ void DeathState::init( GameStateInterface *p_previous )
   font_tween.start();
 
   /* The previous state *should* have been a GameState. */
-  GameState *l_game = dynamic_cast<GameState *>( p_previous );
+  GameState *l_game = (GameState *)( p_previous );
+//  GameState *l_game = dynamic_cast<GameState *>( p_previous );
   if ( nullptr == l_game )
   {
     /* Then we have no idea what state we're in, and have to move on. */
@@ -108,6 +109,12 @@ gamestate_t DeathState::update( uint32_t p_time )
   if ( 0 == score )
   {
     return STATE_HISCORE;
+  }
+
+  /* Also, for now the PicoSystem doesn't support saving, so no high score. */
+  if ( TARGET_PICOSYSTEM == assets.get_platform() )
+  {
+    return STATE_SPLASH;
   }
 
   /* The font pen we use will pulse more subtlely. */
