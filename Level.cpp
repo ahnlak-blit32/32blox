@@ -20,6 +20,7 @@
 #include "32blit.hpp"
 #include "32blox.hpp"
 #include "assets_levels.hpp"
+#include "assets_pico_levels.hpp"
 
 #include "Level.hpp"
 
@@ -30,46 +31,70 @@
  * constructor - create the Level data
  */
 
-Level::Level( uint8_t p_level )
+Level::Level( uint8_t p_level, target_type_t p_target )
 {
+  bool l_pico = false;
+
   /* Save the level number. */
   level = p_level;
 
   /*
+   * The level dimensions are determined by platform, because not all screens
+   * are equal in size, or even aspect ratio.
+   */
+  switch( p_target )
+  {
+    case TARGET_PICOSYSTEM: /* Need to shrink things. */
+    /* case TARGET_SDL:        /* (for testing) */
+      width = 7;
+      height = 8;
+      margin = 8;
+      l_pico = true;
+      break;
+    default:                /* In all other cases, use maximum size. */
+      width = MAX_BOARD_WIDTH;
+      height = MAX_BOARD_HEIGHT;
+      margin = 0;
+      break;
+  }
+
+  /*
    * In a normal world, we'd load a level file based on level number. But as
    * we're embedded, level data is compiled in so we just access it.
+   *
+   * We have a seperate set of levels for pico systems.
    */
   switch( ( p_level % LEVEL_MAX ) )
   {
     case 1:
-      init( a_level_01, a_level_01_length );
+      l_pico ? init( a_pico_level_01, a_pico_level_01_length ) : init( a_level_01, a_level_01_length );
       break;
     case 2:
-      init( a_level_02, a_level_02_length );
+      l_pico ? init( a_pico_level_02, a_pico_level_02_length ) : init( a_level_02, a_level_02_length );
       break;
     case 3:
-      init( a_level_03, a_level_03_length );
+      l_pico ? init( a_pico_level_03, a_pico_level_03_length ) : init( a_level_03, a_level_03_length );
       break;
     case 4:
-      init( a_level_04, a_level_04_length );
+      l_pico ? init( a_pico_level_04, a_pico_level_04_length ) : init( a_level_04, a_level_04_length );
       break;
     case 5:
-      init( a_level_05, a_level_05_length );
+      l_pico ? init( a_pico_level_05, a_pico_level_05_length ) : init( a_level_05, a_level_05_length );
       break;
     case 6:
-      init( a_level_06, a_level_06_length );
+      l_pico ? init( a_pico_level_06, a_pico_level_06_length ) : init( a_level_06, a_level_06_length );
       break;
     case 7:
-      init( a_level_07, a_level_07_length );
+      l_pico ? init( a_pico_level_07, a_pico_level_07_length ) : init( a_level_07, a_level_07_length );
       break;
     case 8:
-      init( a_level_08, a_level_08_length );
+      l_pico ? init( a_pico_level_08, a_pico_level_08_length ) : init( a_level_08, a_level_08_length );
       break;
     case 9:
-      init( a_level_09, a_level_09_length );
+      l_pico ? init( a_pico_level_09, a_pico_level_09_length ) : init( a_level_09, a_level_09_length );
       break;
     case 0:
-      init( a_level_10, a_level_10_length );
+      l_pico ? init( a_pico_level_10, a_pico_level_10_length ) : init( a_level_10, a_level_10_length );
       break;
     default:
       init( nullptr, 0 );
@@ -89,12 +114,12 @@ Level::Level( uint8_t p_level )
 void Level::init( const uint8_t *p_data, uint32_t p_datalength )
 {
   /* Firstly, we make sure the brick matrix is empty. */
-  memset( bricks, 0, BOARD_HEIGHT * BOARD_WIDTH );
+  memset( bricks, 0, MAX_BOARD_HEIGHT * MAX_BOARD_WIDTH );
 
   /* Now we work through all the data we have. */
   for( uint32_t i = 0; i < p_datalength; i++ )
   {
-    bricks[i / BOARD_WIDTH][i % BOARD_WIDTH] = p_data[i];
+    bricks[i / width][i % width] = p_data[i];
   }
 
   /* That's it, that's all we have to do. */
@@ -113,6 +138,37 @@ uint8_t Level::get_level( void )
 
 
 /*
+ * get_width - return the width of the level, in bricks.
+ */
+
+uint8_t Level::get_width( void )
+{
+  return width;
+}
+
+
+/*
+ * get_height - return the height of the level, in bricks.
+ */
+
+uint8_t Level::get_height( void )
+{
+  return height;
+}
+
+
+/*
+ * get_margin - returns the width of the side margin, when the board doesn't
+ *              fill the whole screen.
+ */
+
+uint8_t Level::get_margin( void )
+{
+  return margin;
+}
+
+
+/*
  * get_brick_count - return an absolute count of remaining breakable bricks.
  */
 
@@ -121,9 +177,9 @@ uint16_t Level::get_brick_count( void )
   uint16_t l_total = 0;
 
   /* So, work through the bricks counting as we go. */
-  for( uint8_t row = 0; row < BOARD_HEIGHT; row++ )
+  for( uint8_t row = 0; row < MAX_BOARD_HEIGHT; row++ )
   {
-    for( uint8_t col = 0; col < BOARD_WIDTH; col++ )
+    for( uint8_t col = 0; col < MAX_BOARD_WIDTH; col++ )
     {
       /* We only count breakable bricks - greater than 0, less than 8. */
       if ( bricks[row][col] > 0 && bricks[row][col] < 8 )

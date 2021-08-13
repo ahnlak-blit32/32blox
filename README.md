@@ -1,6 +1,8 @@
 # 32Blox
 
-This is a breakout-style game for the 32Blit console.
+This is a breakout-style game, initially for the 32Blit console but also
+available on various desktops and even browsers, via SDL and even on the
+magnificent PicoSystem!
 
 ![Build](https://github.com/ahnlak-blit32/32blox/workflows/Build/badge.svg)
 

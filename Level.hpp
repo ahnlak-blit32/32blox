@@ -11,22 +11,30 @@
 #ifndef   _LEVEL_HPP_
 #define   _LEVEL_HPP_
 
-#define   BOARD_HEIGHT  15
-#define   BOARD_WIDTH   10
+#include "AssetFactory.hpp"
 
-#define   LEVEL_MAX     10
+#define   MAX_BOARD_HEIGHT  15
+#define   MAX_BOARD_WIDTH   10
+
+#define   LEVEL_MAX         10
 
 class Level
 {
 private:
   uint8_t     level;
-  uint8_t     bricks[BOARD_HEIGHT][BOARD_WIDTH];
+  uint8_t     bricks[MAX_BOARD_HEIGHT][MAX_BOARD_WIDTH];
+  uint8_t     width = MAX_BOARD_WIDTH;
+  uint8_t     height = MAX_BOARD_HEIGHT;
+  uint8_t     margin = 0;
 
   void        init( const uint8_t *, uint32_t );
 
 public:
-              Level( uint8_t );
+              Level( uint8_t, target_type_t );
   uint8_t     get_level( void );
+  uint8_t     get_width( void );
+  uint8_t     get_height( void );
+  uint8_t     get_margin( void );
   uint16_t    get_brick_count( void );
   uint8_t     get_brick( uint8_t, uint8_t );
   uint8_t     get_brick( blit::Point );

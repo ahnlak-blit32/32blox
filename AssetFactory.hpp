@@ -64,11 +64,9 @@ class AssetFactory
 {
 private:
 
-#ifdef    TARGET_32BLIT_HW
-  const bool            c_blit_hardware = true;
-#else  /* TARGET_32BLIT_HW */
-  const bool            c_blit_hardware = false;
-#endif /* TARGET_32BLIT_HW */
+#ifndef   PICO_BOARD
+#define   PICO_BOARD  "none"
+#endif /* PICO_BOARD */
 
   target_type_t         c_target;
   str_lang_t            c_language = LANG_EN;

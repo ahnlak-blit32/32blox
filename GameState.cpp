@@ -118,14 +118,14 @@ void GameState::move_bat( float p_movement )
   float l_last_pos = bat_position;
   bat_position += p_movement;
 
-  /* And then clamp it, top and bottom. */
-  if ( bat_position < ( bat_width[bat_type] / 2 ) )
+  /* And then clamp it, left and right, honouring any level margins. */
+  if ( bat_position < ( ( bat_width[bat_type] / 2 ) + level->get_margin() ) )
   {
-    bat_position = bat_width[bat_type] / 2;
+    bat_position = ( bat_width[bat_type] / 2 ) + level->get_margin();
   }
-  if ( bat_position > blit::screen.bounds.w - ( bat_width[bat_type] / 2 ) )
+  if ( bat_position > blit::screen.bounds.w - ( bat_width[bat_type] / 2 ) - level->get_margin() )
   {
-    bat_position = blit::screen.bounds.w - ( bat_width[bat_type] / 2 );
+    bat_position = blit::screen.bounds.w - ( bat_width[bat_type] / 2 ) - level->get_margin();
   }
 
   /* Now, ask our balls to respond to the current bat. */
@@ -148,7 +148,7 @@ void GameState::move_bat( float p_movement )
 
 blit::Rect GameState::brick_to_screen( uint8_t p_row, uint8_t p_column )
 {
-  return blit::Rect( p_column * 32, p_row * 16 + 10, 32, 16 );
+  return blit::Rect( ( p_column * 32 ) + level->get_margin(), p_row * 16 + 10, 32, 16 );
 }
 
 
@@ -164,7 +164,7 @@ blit::Point GameState::screen_to_brick( blit::Point p_location )
   /* off somewhere, which can get ... messy.                              */
   blit::Point l_location = blit::screen.clip.clamp( p_location );
 
-  return blit::Point( l_location.x / 32, ( l_location.y - 10 ) / 16 );
+  return blit::Point( ( l_location.x - level->get_margin() ) / 32, ( l_location.y - 10 ) / 16 );
 }
 
 
@@ -253,7 +253,7 @@ void GameState::spawn_ball( bool pBat )
 void GameState::load_level( uint8_t p_level )
 {
   /* Load up the level data. */
-  level = new Level( p_level );
+  level = new Level( p_level, assets.get_platform() );
 
   /* Centre the bat, and set it to a default type. */
   bat_position = blit::screen.bounds.w / 2;
@@ -373,9 +373,9 @@ gamestate_t GameState::update( uint32_t p_time )
     }
 
     /* And the edges of the screen, which gives some points too! */
-    if ( ( l_new_bounds.x <= 0 && l_ball->moving_left() )
+    if ( ( l_new_bounds.x <= level->get_margin() && l_ball->moving_left() )
          || 
-         ( ( l_new_bounds.x + l_new_bounds.w ) >= blit::screen.bounds.w && !l_ball->moving_left() ) )
+         ( ( l_new_bounds.x + l_new_bounds.w ) >= ( blit::screen.bounds.w - level->get_margin() ) && !l_ball->moving_left() ) )
     {
       score++;
       output.trigger_haptic( 0.25f, 50 );
@@ -782,10 +782,28 @@ void GameState::render( uint32_t p_time )
     true, blit::TextAlign::top_left
   );
 
-  /* Now we work through the level one brick at a time... */
-  for ( uint8_t l_row = 0; l_row < BOARD_HEIGHT; l_row++ )
+  /* If we have a margin, we need to draw some walls in. */
+  if ( level->get_margin() > 0 )
   {
-    for ( uint8_t l_column = 0; l_column < BOARD_WIDTH; l_column++ )
+    for ( int l_index = level->get_margin() - 1; l_index >= 0; l_index-- )
+    {
+      blit::screen.alpha = 255 - ( l_index * ( 200 / level->get_margin() ) );
+      blit::screen.v_span(
+        blit::Point( l_index, 10 ), blit::screen.bounds.h - 10
+      );
+      blit::screen.v_span(
+        blit::Point( blit::screen.bounds.w - l_index, 10 ), blit::screen.bounds.h - 10
+      );
+    }
+
+    /* Reset the alpha. */
+    blit::screen.alpha = 255;
+  }
+
+  /* Now we work through the level one brick at a time... */
+  for ( uint8_t l_row = 0; l_row < level->get_height(); l_row++ )
+  {
+    for ( uint8_t l_column = 0; l_column < level->get_width(); l_column++ )
     {
       /* Fetch the brick for this location. */
       l_brick = level->get_brick( l_row, l_column );
@@ -799,7 +817,7 @@ void GameState::render( uint32_t p_time )
       /* Then draw the appropriate brick from the spritesheet. */
       blit::screen.sprite( 
         blit::Rect( ( l_brick - 1 ) * 4, SPRITE_ROW_BRICK, 4, 2 ),
-        blit::Point( l_column * 32, l_row * 16 + 10 )
+        blit::Point( ( l_column * 32 ) + level->get_margin(), l_row * 16 + 10 )
       );
     }
   }
